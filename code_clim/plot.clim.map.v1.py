@@ -16,12 +16,14 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
    scrip_file_list.append(scrip_file)
 #-------------------------------------------------------------------------------
 var,lev_list,var_str = [],[],[]
-def add_var(var_name,lev=0,s=None): 
+htype_list = []
+def add_var(var_name,lev=0,s=None,htype=None): 
    var.append(var_name); lev_list.append(lev); 
    if s is None:
       var_str.append(var_name)
    else:
       var_str.append(s)
+   htype_list.append(htype)
 #-------------------------------------------------------------------------------
 # fig_file = os.getenv('HOME')+'/E3SM_analysis/figs_clim/clim.map.v1.png'
 fig_file = 'figs_clim/clim.map.v1.png'
@@ -40,17 +42,25 @@ if host=='nersc':
    ### 2025 scidac multi-fidelity tests
    # add_case('E3SM.2025-MF-test-00.ne18pg2.F20TR.NN_12',n='ne18',p='/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu',s='run',scrip_file='/global/cfs/cdirs/m4310/whannah/files_grid/ne18pg2_scrip.nc')
 
-   ### Wandi's frontogensis gradient correction
-   tmp_path,tmp_sub = '/pscratch/sd/w/wandiyu/e3sm_scratch/pm-cpu','run'
-   scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-   # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('v3.LR.GW.fronto.correction.pfix.Jan.20251104', n='p-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('v3.LR.GW.fronto.correction.zfix.Jan.20251104', n='z-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   htype,first_file,num_files = 'eam.h0',0,1
+   # ### Wandi's frontogensis gradient correction
+   # tmp_path,tmp_sub = '/pscratch/sd/w/wandiyu/e3sm_scratch/pm-cpu','run'
+   # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   # # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('v3.LR.GW.fronto.correction.pfix.Jan.20251104', n='p-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # # add_case('v3.LR.GW.fronto.correction.zfix.Jan.20251104', n='z-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'eam.h0',0,1
 
    # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
    # htype,first_file,num_files = 'eam.h1',-1,1
    # use_snapshot,ss_t = True,-1
+
+   ### ERA5 remapped surface pressure for 2026 CONUS-RRM
+   tmp_path,tmp_sub = '/pscratch/sd/m/meng/hiccup','tmp'
+   scrip_file = '/global/cfs/cdirs/e3sm/2026-INCITE-CONUS-RRM/files_grid/2026-incite-conus-1024x2-np4_scrip.nc'
+   # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('incite_conus', n='', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'eam.h0',0,1
+
 
 #-------------------------------------------------------------------------------
 if host=='lcrc':
@@ -70,6 +80,9 @@ if host=='llnl':
    htype,first_file,num_files = 'eam.h1',-1,1
 
 #-------------------------------------------------------------------------------
+
+# add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
+add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
 
 # add_var('PS')
 
@@ -91,7 +104,7 @@ if host=='llnl':
 # add_var('Q',     lev=900)
 # add_var('OMEGA',lev=500)
 
-add_var('FRONTGF',lev=-57,s='FRONTGF [K^2/km^2/day]')
+# add_var('FRONTGF',lev=-57,s='FRONTGF [K^2/km^2/day]')
 
 #-------------------------------------------------------------------------------
 # lat1,lat2 = -30,30
@@ -107,7 +120,7 @@ add_var('FRONTGF',lev=-57,s='FRONTGF [K^2/km^2/day]')
 # plot_diff,add_diff = False,False
 plot_diff,add_diff = True,False
 
-print_stats          = False
+print_stats          = True
 var_x_case           = False
 
 # num_plot_col         = len(case)
@@ -130,10 +143,17 @@ diff_base = 0
 # set up figure objects
 subplot_kwargs = {}
 # subplot_kwargs['projection'] = ccrs.Robinson(central_longitude=180)
-subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
+# subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
+lat_min, lat_max = -90, -60
+subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85)
 (d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
 # dx=10;figsize = (dx*num_var,dx*num_case) if var_x_case else (dx*num_case,dx*num_var)
-figsize = (30,30)
+
+fdx,fdy=10,10;figsize = (fdx*num_case,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_case)
+title_fontsize,lable_fontsize = 20,18
+
+# figsize = (30,30); title_fontsize,lable_fontsize = 25,15
+
 fig, axs = plt.subplots(d1,d2, subplot_kw=subplot_kwargs, figsize=figsize, squeeze=False )
 
 #---------------------------------------------------------------------------------------------------
@@ -148,7 +168,14 @@ for v in range(num_var):
    for c in range(num_case):
       print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
       #-------------------------------------------------------------------------
-      file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
+      htype_loc = None
+      if 'htype' in globals():
+         if htype is not None:
+            htype_loc = htype
+      if htype_list[v] is not None:
+         htype_loc = htype_list[v]
+      # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype_loc}*'
+      file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_loc}*'
       file_list = sorted(glob.glob(file_path))
       if 'first_file' in locals(): file_list = file_list[first_file:]
       if 'num_files'  in locals(): file_list = file_list[:num_files]
@@ -162,8 +189,28 @@ for v in range(num_var):
       # ds = xr.open_mfdataset( file_list )
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
-      uxds = ux.open_mfdataset(scrip_file_list[c], file_list)
+      uxds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
+
+      uxds = uxds.isel(valid_time=0)
+      # hapy.check_invalid_values(uxds, variables=[var[v]], check_range=None)
+      # exit()
+
       data = uxds[var[v]]
+
+      print()
+      print(data)
+
+      
+      # lon_min, lon_max = -180, 180
+      mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
+      mask.load()
+      data = data.where(mask, drop=True)
+      data.load()
+
+      print()
+      print(data)
+      print()
+      # exit()
       #-------------------------------------------------------------------------
       # adjust units
       if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
@@ -220,16 +267,19 @@ for v in range(num_var):
    # set color bar levels
    clev = None
    if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
+
+   # if var[v] in ['PS','sp']: clev = np.linspace( 800e2, 1020e2, num=40)
+   if var[v] in ['PS','sp']: clev = np.arange(600e2,1040e2+2e2,10e2)
    #----------------------------------------------------------------------------
    # set color map
-   # cmap = 'viridis'
-   cmap = cmocean.cm.rain
+   cmap = 'viridis'
+   # cmap = cmocean.cm.rain
    #----------------------------------------------------------------------------
    for c in range(num_case):
       #-------------------------------------------------------------------------
       img_kwargs = {}
       img_kwargs['origin'] = 'lower'
-      img_kwargs['extent'] = [-180, 180, -90, 90]
+      # img_kwargs['extent'] = [-180, 180, -90, 90]
       img_kwargs['cmap']   = cmap
 
       if plot_diff and c!=diff_base:
@@ -246,17 +296,17 @@ for v in range(num_var):
 
       ax = axs[v,c] if var_x_case else axs[c,v]
       ax.coastlines(linewidth=0.2,edgecolor='white')
-      ax.set_title(name[c],   fontsize=25, loc='left')
-      ax.set_title(var_str[v],fontsize=25, loc='right')
+      ax.set_title(name[c],   fontsize=title_fontsize, loc='left')
+      ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
       ax.set_global()
 
-      img = ax.imshow(data_list[c].to_raster(ax=ax), **img_kwargs)
+      img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
 
       # orientation = 'vertical' if var_x_case else 'horizontal'
       # if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation=orientation)
 
       cbar = fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
-      cbar.ax.tick_params(labelsize=15)
+      cbar.ax.tick_params(labelsize=lable_fontsize)
 
       # if var_x_case:
       #    if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
