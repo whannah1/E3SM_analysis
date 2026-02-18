@@ -144,7 +144,8 @@ diff_base = 0
 subplot_kwargs = {}
 # subplot_kwargs['projection'] = ccrs.Robinson(central_longitude=180)
 # subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
-lat_min, lat_max = -90, -60
+# lat_min, lat_max = -90, -60
+lat_min, lat_max = -90, -80
 subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85)
 (d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
 # dx=10;figsize = (dx*num_var,dx*num_case) if var_x_case else (dx*num_case,dx*num_var)
@@ -163,7 +164,7 @@ for v in range(num_var):
    print(' '*2+'var: '+hapy.tclr.MAGENTA+var[v]+hapy.tclr.END)
    data_list = []
    glb_avg_list = []
-   lat_list,lon_list = [],[]
+   grid_ds_list = []
    if 'lev_list' in locals(): lev = lev_list[v]
    for c in range(num_case):
       print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
@@ -190,57 +191,52 @@ for v in range(num_var):
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
       uxds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
-
       uxds = uxds.isel(valid_time=0)
       # hapy.check_invalid_values(uxds, variables=[var[v]], check_range=None)
       # exit()
 
       data = uxds[var[v]]
 
-      print()
-      print(data)
-
-      
       # lon_min, lon_max = -180, 180
       mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
-      mask.load()
+      # mask.load()
       data = data.where(mask, drop=True)
-      data.load()
 
-      print()
-      print(data)
-      print()
-      # exit()
+
+      grid_ds = xr.open_dataset(scrip_file_list[c])
+      grid_ds = grid_ds.where(mask, drop=True)
+      grid_ds_list.append(grid_ds)
+
       #-------------------------------------------------------------------------
-      # adjust units
-      if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
+      # # adjust units
+      # if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
       #-------------------------------------------------------------------------
-      if 'lev' in data.dims:
-         # data = data.isel(lev=0)
-         # if requested lev<0 use model levels without interpolation
-         if lev_list[v]<0: data = data.isel(lev=np.absolute(lev_list),drop=True)
+      # if 'lev' in data.dims:
+      #    # data = data.isel(lev=0)
+      #    # if requested lev<0 use model levels without interpolation
+      #    if lev_list[v]<0: data = data.isel(lev=np.absolute(lev_list),drop=True)
       #-------------------------------------------------------------------------
       # # print stats before time averaging
       # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
       #-------------------------------------------------------------------------
-      # average over time dimension
-      if 'time' in data.dims : 
-         hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
-         if use_snapshot:
-            data = data.isel(time=ss_t,drop=True)
-            print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
-         else:
-            data = data.mean(dim='time')
+      # # average over time dimension
+      # if 'time' in data.dims : 
+      #    hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
+      #    if use_snapshot:
+      #       data = data.isel(time=ss_t,drop=True)
+      #       print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
+      #    else:
+      #       data = data.mean(dim='time')
       #-------------------------------------------------------------------------
-      # Calculate area weighted global mean
-      if 'area' in locals() :
-         gbl_mean = ( (data*area).sum() / area.sum() ).values 
-         print(hapy.tcolor.CYAN+f'      Area Weighted Global Mean : {gbl_mean:6.4}'+hapy.tcolor.END)
-      else:
-         glb_avg_list.append(None)
+      # # Calculate area weighted global mean
+      # if 'area' in locals() :
+      #    gbl_mean = ( (data*area).sum() / area.sum() ).values 
+      #    print(hapy.tcolor.CYAN+f'      Area Weighted Global Mean : {gbl_mean:6.4}'+hapy.tcolor.END)
+      # else:
+      #    glb_avg_list.append(None)
       #-------------------------------------------------------------------------
-      # print stats after time averaging
-      if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
+      # # print stats after time averaging
+      # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
       #-------------------------------------------------------------------------
       # append to data lists
       data_list.append( data )
@@ -300,7 +296,10 @@ for v in range(num_var):
       ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
       ax.set_global()
 
-      img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
+      rst = hapy.to_raster(data_list[c], grid_ds_list[c], ax)
+      img = ax.imshow(rst, extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
+
+      # img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
 
       # orientation = 'vertical' if var_x_case else 'horizontal'
       # if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation=orientation)
