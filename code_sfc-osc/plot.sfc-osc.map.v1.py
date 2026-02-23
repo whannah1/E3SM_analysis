@@ -26,58 +26,39 @@ def add_var(var_name,lev=0,s=None,**kwargs):
    var_opts_list.append(var_opts)
 #-------------------------------------------------------------------------------
 # fig_file = os.getenv('HOME')+'/E3SM_analysis/figs_clim/clim.map.v1.png'
-fig_file = 'figs_clim/clim.map.v1.png'
+fig_file = 'figs_sfc-osc/sfc-osc.map.v1.png'
 #-------------------------------------------------------------------------------
-if host=='olcf':
+# if host=='olcf':
 
-   scrip_file_path = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   # scrip_file_path = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
 
    ### 2023 coriolis test
    # add_case('E3SM.2023-coriolis-test.GNUGPU.ne30pg2_oECv3.F2010-MMF1.coriolis-off',n='MMF 2D')
    # add_case('E3SM.2023-coriolis-test.GNUGPU.ne30pg2_oECv3.F2010-MMF1.NXY_32_1.coriolis-on',n='MMF 2D + non-trad cor')
 
 #-------------------------------------------------------------------------------
-if host=='nersc':
+# if host=='nersc':
    
    ### 2025 scidac multi-fidelity tests
    # add_case('E3SM.2025-MF-test-00.ne18pg2.F20TR.NN_12',n='ne18',p='/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu',s='run',scrip_file='/global/cfs/cdirs/m4310/whannah/files_grid/ne18pg2_scrip.nc')
-
-   # ### Wandi's frontogensis gradient correction
-   # tmp_path,tmp_sub = '/pscratch/sd/w/wandiyu/e3sm_scratch/pm-cpu','run'
-   # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-   # # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # add_case('v3.LR.GW.fronto.correction.pfix.Jan.20251104', n='p-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # add_case('v3.LR.GW.fronto.correction.zfix.Jan.20251104', n='z-grad fix', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # htype,first_file,num_files = 'eam.h0',0,0
 
    # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
    # htype,first_file,num_files = 'eam.h1',-1,1
    # use_snapshot,ss_t = True,-1
 
-   ### ERA5 remapped surface pressure for 2026 CONUS-RRM
-   tmp_path,tmp_sub = '/pscratch/sd/m/meng/hiccup','tmp'
-   scrip_file = '/global/cfs/cdirs/e3sm/2026-INCITE-CONUS-RRM/files_grid/2026-incite-conus-1024x2-np4_scrip.nc'
-   # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('incite_conus', n='', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # htype,first_file,num_files = 'eam.h0',0,1
+#-------------------------------------------------------------------------------
+# if host=='lcrc':
 
+   # add_case('E3SM.2025-MF-test-00.ne22pg2.F20TR.NN_2',n='ne22 test',p='/lcrc/group/e3sm/ac.whannah/scratch/chrys/nersc_runs',s='run',scrip_file=f'/home/ac.whannah/E3SM/data_grid/ne22pg2_scrip.nc')
 
 #-------------------------------------------------------------------------------
-if host=='lcrc':
+# if host=='llnl':
+#    scrip_file_path = '/g/g19/hannah6/files_grid/ne30pg2_scrip.nc'
 
-   add_case('E3SM.2025-MF-test-00.ne22pg2.F20TR.NN_2',n='ne22 test',p='/lcrc/group/e3sm/ac.whannah/scratch/chrys/nersc_runs',s='run',scrip_file=f'/home/ac.whannah/E3SM/data_grid/ne22pg2_scrip.nc')
+#    ### STRONG tests
+#    add_case('v3.2026-STRONG-ENS-TEST-00.start_2018-07-04.seed_113355',n='00 seed_113355',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
 
-#-------------------------------------------------------------------------------
-if host=='llnl':
-   scrip_file_path = '/g/g19/hannah6/files_grid/ne30pg2_scrip.nc'
-
-   ### STRONG tests
-   add_case('v3.2026-STRONG-ENS-TEST-00.start_2018-07-04.seed_113355',n='00 seed_113355',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
-   # add_case('v3.2026-STRONG-ENS-TEST-00.start_2018-07-04.seed_224466',n='00 seed_224466',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
-   # add_case('v3.2026-STRONG-ENS-TEST-01.start_2018-07-04.seed_113355',n='01 seed_113355',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
-   # add_case('v3.2026-STRONG-ENS-TEST-01.start_2018-07-04.seed_224466',n='01 seed_224466',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
-   
-   htype,first_file,num_files = 'eam.h1',-1,1
+#    htype,first_file,num_files = 'eam.h1',-1,1
 
 #-------------------------------------------------------------------------------
 if host=='alcf':
@@ -88,32 +69,32 @@ if host=='alcf':
    # add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_256.NCPL_288',n='ne256 dt_phys=5min', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    first_file,num_files = 5,0
 
-#-------------------------------------------------------------------------------
+   add_var('T_2m_atm_backtend',          s='T2m backtend MAX', htype='output.scream.2D.MAX.ndays_x1.')
+   # add_var('wind_speed_10m_atm_backtend',s='wsp backtend MAX', htype='output.scream.2D.MAX.ndays_x1.')
+   # add_var('surf_sens_flux_atm_backtend',s='shf backtend MAX', htype='output.scream.2D.MAX.ndays_x1.')
 
-# add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
-add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
+   # add_var('T_2m_atm_backtend',          s='T2m backtend MIN', htype='output.scream.2D.MIN.ndays_x1.')
+   # add_var('wind_speed_10m_atm_backtend',s='wsp backtend MIN', htype='output.scream.2D.MIN.ndays_x1.')
+   # add_var('surf_sens_flux_atm_backtend',s='shf backtend MIN', htype='output.scream.2D.MIN.ndays_x1.')
+
+   add_var('T_2m_atm_backtend',          s='T2m backtend AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('wind_speed_10m_atm_backtend',s='wsp backtend AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('surf_sens_flux_atm_backtend',s='shf backtend AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+
+   add_var('T_2m_atm_backtend',          s='T2m backtend MAX', htype='output.scream.2D.MAX.ndays_x1.',method='std')
+
+#-------------------------------------------------------------------------------
 
 # add_var('PS')
 
 # add_var('TS')
-# add_var('PRECT',s='Precipitation')
+# add_var('PRECT',   s='Precipitation')
 # add_var('TGCLDLWP',s='Liq Water Path')
 # add_var('TGCLDIWP',s='Ice Water Path')
 # add_var('P-E')
 # add_var('TMQ')
 # add_var('LHFLX')
-# add_var('FSNT'); add_var('FLNT')
-# add_var('LWCF'); add_var('SWCF')
 # add_var('U10')
-
-# add_var('T',     lev=500)
-# add_var('U',     lev=500)
-# add_var('CLDLIQ',lev=500)
-# add_var('CLDICE',lev=500)
-# add_var('Q',     lev=900)
-# add_var('OMEGA',lev=500)
-
-# add_var('FRONTGF',lev=-57,s='FRONTGF [K^2/km^2/day]')
 
 #-------------------------------------------------------------------------------
 # lat1,lat2 = -30,30
@@ -151,12 +132,10 @@ diff_base = 0
 #---------------------------------------------------------------------------------------------------
 # set up figure objects
 subplot_kwargs = {}
-# subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
+# subplot_kwargs['projection'] = ccrs.Robinson(central_longitude=180)
 subplot_kwargs['projection'] = ccrs.PlateCarree()#central_longitude=180)
 (d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
 fdx,fdy=20,10;figsize = (fdx*num_case,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_case)
-title_fontsize,lable_fontsize = 20,18
-
 fig, axs = plt.subplots(d1,d2, subplot_kw=subplot_kwargs, figsize=figsize, squeeze=False )
 
 #---------------------------------------------------------------------------------------------------
@@ -167,7 +146,7 @@ for v in range(num_var):
    print(' '*2+'var: '+hapy.tclr.MAGENTA+var[v]+hapy.tclr.END)
    data_list = []
    glb_avg_list = []
-   grid_ds_list = []
+   lat_list,lon_list = [],[]
    if 'lev_list' in locals(): lev = lev_list[v]
    for c in range(num_case):
       print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
@@ -195,53 +174,51 @@ for v in range(num_var):
       # ds = xr.open_mfdataset( file_list )
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
-      uxds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
-      uxds = uxds.isel(valid_time=0)
-      # hapy.check_invalid_values(uxds, variables=[var[v]], check_range=None)
-      # exit()
-
+      uxds = ux.open_mfdataset(scrip_file_list[c], file_list)
       data = uxds[var[v]]
-
-      # lon_min, lon_max = -180, 180
-      mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
-      # mask.load()
-      data = data.where(mask, drop=True)
-
-
-      grid_ds = xr.open_dataset(scrip_file_list[c])
-      grid_ds = grid_ds.where(mask, drop=True)
-      grid_ds_list.append(grid_ds)
-
       #-------------------------------------------------------------------------
-      # # adjust units
-      # if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
+      # adjust units
+      if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
       #-------------------------------------------------------------------------
-      # if 'lev' in data.dims:
-      #    # data = data.isel(lev=0)
-      #    # if requested lev<0 use model levels without interpolation
-      #    if lev_list[v]<0: data = data.isel(lev=np.absolute(lev_list),drop=True)
+      if 'lev' in data.dims:
+         # data = data.isel(lev=0)
+         # if requested lev<0 use model levels without interpolation
+         if lev_list[v]<0: data = data.isel(lev=np.absolute(lev_list),drop=True)
       #-------------------------------------------------------------------------
       # # print stats before time averaging
       # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
       #-------------------------------------------------------------------------
-      # # average over time dimension
-      # if 'time' in data.dims : 
-      #    hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
-      #    if use_snapshot:
-      #       data = data.isel(time=ss_t,drop=True)
-      #       print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
-      #    else:
-      #       data = data.mean(dim='time')
+      # average over time dimension
+      if 'time' in data.dims : 
+         hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
+         if use_snapshot:
+            data = data.isel(time=ss_t,drop=True)
+            print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
+         else:
+            if 'backtend' in var[v]:
+               if 'method' in var_opts:
+                  if var_opts['method']=='std': data = data.std(dim='time')
+               else:
+                  if '.MAX.'     in var_opts['htype']: data = data.max(dim='time')
+                  if '.MIN.'     in var_opts['htype']: data = data.min(dim='time')
+                  if '.AVERAGE.' in var_opts['htype']: data = data.mean(dim='time')
+
+               print(f'{hapy.tclr.RED}WARNING - assuming case index order - WARNING{hapy.tclr.END}')
+               if c==0: data = data*10.*60.
+               if c==1: data = data* 5.*60.
+
+            else:
+               data = data.mean(dim='time')
       #-------------------------------------------------------------------------
-      # # Calculate area weighted global mean
-      # if 'area' in locals() :
-      #    gbl_mean = ( (data*area).sum() / area.sum() ).values 
-      #    print(hapy.tcolor.CYAN+f'      Area Weighted Global Mean : {gbl_mean:6.4}'+hapy.tcolor.END)
-      # else:
-      #    glb_avg_list.append(None)
+      # Calculate area weighted global mean
+      if 'area' in locals() :
+         gbl_mean = ( (data*area).sum() / area.sum() ).values 
+         print(hapy.tcolor.CYAN+f'      Area Weighted Global Mean : {gbl_mean:6.4}'+hapy.tcolor.END)
+      else:
+         glb_avg_list.append(None)
       #-------------------------------------------------------------------------
-      # # print stats after time averaging
-      # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
+      # print stats after time averaging
+      if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
       #-------------------------------------------------------------------------
       # append to data lists
       data_list.append( data )
@@ -269,21 +246,24 @@ for v in range(num_var):
    # set color bar levels
    clev = None
    if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
-
-   # if var[v] in ['PS','sp']: clev = np.linspace( 800e2, 1020e2, num=40)
-   if var[v] in ['PS','sp']: clev = np.arange(600e2,1040e2+2e2,10e2)
    #----------------------------------------------------------------------------
    # set color map
-   cmap = 'viridis'
+   # cmap = 'viridis'
    # cmap = cmocean.cm.rain
-   # cmap = cmocean.cm.amp
+   cmap = cmocean.cm.amp
    # cmap = cmocean.cm.balance
+   #----------------------------------------------------------------------------
+   if 'backtend' in var[v] and '.AVERAGE.' in var_opts['htype']:
+      cmap = cmocean.cm.balance
+      data_mag_max = max(abs(data_min),abs(data_max))
+      data_min = data_mag_max*-1
+      data_max = data_mag_max
    #----------------------------------------------------------------------------
    for c in range(num_case):
       #-------------------------------------------------------------------------
       img_kwargs = {}
       img_kwargs['origin'] = 'lower'
-      # img_kwargs['extent'] = [-180, 180, -90, 90]
+      img_kwargs['extent'] = [-180, 180, -90, 90]
       img_kwargs['cmap']   = cmap
 
       if plot_diff and c!=diff_base:
@@ -304,20 +284,17 @@ for v in range(num_var):
 
       ax = axs[v,c] if var_x_case else axs[c,v]
       ax.coastlines(linewidth=0.2,edgecolor='white')
-      ax.set_title(name[c],   fontsize=title_fontsize, loc='left')
-      ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
+      ax.set_title(name[c],   fontsize=20, loc='left')
+      ax.set_title(var_str[v],fontsize=20, loc='right')
       ax.set_global()
 
-      rst = hapy.to_raster(data_list[c], grid_ds_list[c], ax)
-      img = ax.imshow(rst, extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
-
-      # img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
+      img = ax.imshow(data_list[c].to_raster(ax=ax), **img_kwargs)
 
       # orientation = 'vertical' if var_x_case else 'horizontal'
       # if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation=orientation)
 
       cbar = fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
-      cbar.ax.tick_params(labelsize=lable_fontsize)
+      cbar.ax.tick_params(labelsize=15)
 
       # if var_x_case:
       #    if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
