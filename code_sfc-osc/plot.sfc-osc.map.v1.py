@@ -37,14 +37,19 @@ fig_file = 'figs_sfc-osc/sfc-osc.map.v1.png'
    # add_case('E3SM.2023-coriolis-test.GNUGPU.ne30pg2_oECv3.F2010-MMF1.NXY_32_1.coriolis-on',n='MMF 2D + non-trad cor')
 
 #-------------------------------------------------------------------------------
-# if host=='nersc':
+if host=='nersc':
    
-   ### 2025 scidac multi-fidelity tests
-   # add_case('E3SM.2025-MF-test-00.ne18pg2.F20TR.NN_12',n='ne18',p='/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu',s='run',scrip_file='/global/cfs/cdirs/m4310/whannah/files_grid/ne18pg2_scrip.nc')
+   ## 2025 scidac multi-fidelity tests
+   tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
+   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+   add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 dt_phys=10min',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   htype,first_file,num_files = 'eam.h1',-1,1
+   use_snapshot,ss_t = True,-1
 
-   # add_case('v3.LR.GW.fronto.correction.nofix.Jan.20251104',n='control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # htype,first_file,num_files = 'eam.h1',-1,1
-   # use_snapshot,ss_t = True,-1
+   add_var('T_2m_atm_backtend',                     s='T2m backtend AVERAGE',              htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_var('T_2m_atm_backtend2',                    s='T2m atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_var('T_2m_nf1.0_mac2_atm_osc_intermittency', s='T2m osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
 
 #-------------------------------------------------------------------------------
 # if host=='lcrc':
