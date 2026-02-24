@@ -30,16 +30,18 @@ tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
 add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8', n='E3SM', p=tmp_scratch, s='run')
 # first_file,num_files = 8,1
 
+
+# /lcrc/group/e3sm/ac.whannah/scratch/chrys/E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8
 #---------------------------------------------------------------------------------------------------
 
 htype_tmp = 'eam.h1'
 
-add_var('ZM_ENTR_UP',htype=htype_tmp)
+# add_var('ZM_ENTR_UP',htype=htype_tmp)
 add_var('ZM_DETR_UP',htype=htype_tmp)
 # add_var('ZM_ENTR_DN',htype=htype_tmp)
-add_var('ZMMU',      htype=htype_tmp)
+# add_var('ZMMU',      htype=htype_tmp)
 # add_var('ZMMD',      htype=htype_tmp)
-add_var('ZMDT',      htype=htype_tmp)
+# add_var('ZMDT',      htype=htype_tmp)
 # add_var('ZMDQ',      htype=htype_tmp)
 
 
@@ -59,15 +61,17 @@ var_x_case = True
 # ncol_chunk_size = int(100e3)
 
 #---------------------------------------------------------------------------------------------------
-# set up figure objects
 num_var,num_case = len(var),len(case)
+if 'first_file' not in globals(): first_file = 0
+if 'num_files'  not in globals(): num_files = 0
+#---------------------------------------------------------------------------------------------------
+# set up figure objects
 fdx,fdy=20,10;figsize = (fdx*num_case,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_case)
 title_fontsize,lable_fontsize = 25,25
 (d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
 if 'num_plot_col' in locals():
    (d1,d2) = ( int(np.ceil((num_var*num_case)/float(num_plot_col))), num_plot_col )
 fig, axs = plt.subplots( d1, d2, figsize=figsize, squeeze=False )
-#---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
 def get_file_list(case,case_opts,var_opts):
    case_dir = case_opts['p']
@@ -76,9 +80,8 @@ def get_file_list(case,case_opts,var_opts):
    #----------------------------------------------------------------------------
    file_path = f'{case_dir}/{case}/{case_sub}/*{htype}*'
    file_list = sorted(glob.glob(file_path))
-   if 'first_file' in globals():file_list = file_list[first_file:]
-   if 'num_files' in globals():
-      if num_files>0: file_list = file_list[:num_files]
+   if first_file>0:file_list = file_list[first_file:]
+   if num_files>0: file_list = file_list[:num_files]
    #----------------------------------------------------------------------------
    if file_list==[]:
       print('ERROR: file list is empty?')
@@ -144,7 +147,8 @@ for v in range(num_var):
 
          # bins = np.arange(0, 200+2, 2)
          # bins = np.arange(0.2, 20+0.2, 0.2)
-         bins = np.logspace( np.log10(0.001), np.log10(200), num=100)
+         # bins = np.logspace( np.log10(0.001), np.log10(200), num=100)
+         bins = np.logspace( np.log10(10), np.log10(500), num=40)
          data_binned = data_stacked.groupby_bins(prec_stacked, bins=bins).mean(dim='sample')
 
          # print()
@@ -189,7 +193,15 @@ for v in range(num_var):
       #-------------------------------------------------------------------------
       data_list.append( data_binned.values )
       bins_list.append( data_binned['PRECZ_bins'].values )
-      lev_list.append( data_binned['lev'].values )
+      # lev_list.append( data_binned['lev'].values )
+
+      lev_list.append( np.arange(len(data_binned['lev'].values)) )
+
+      
+
+      # zmid = np.log(data_binned[ 'lev']/1e3) * -6740.
+      # lev_list.append( zmid.values )
+
       # if not use_height: lev_list.append( data['lev'].values )
       # if     use_height: lev_list.append( hght.values )
    #----------------------------------------------------------------------------
@@ -271,7 +283,10 @@ for v in range(num_var):
       ax.set_title(var_opts_list[v]['str'],  fontsize=title_fontsize, loc='right')
       # ax.set_xlabel('Time')
       ax.set_ylabel('Reference Pressure Level')
-      ax.set_ylim(lev.max(), lev.min())   # invert: surface at bottom, TOA at top
+      
+      # ax.set_ylim(lev.max(), lev.min())   # invert: surface at bottom, TOA at top
+      ax.set_ylim(50, 23)
+      # ax.set_ylim(10e3, 30e3)
 
       ax.set_xscale('log')
       
