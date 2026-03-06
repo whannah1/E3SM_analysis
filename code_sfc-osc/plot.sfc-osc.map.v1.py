@@ -40,16 +40,22 @@ fig_file = 'figs_sfc-osc/sfc-osc.map.v1.png'
 if host=='nersc':
    
    ## 2025 scidac multi-fidelity tests
-   tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
+   # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
+   tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
    tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
    add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 dt_phys=10min',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   htype,first_file,num_files = 'eam.h1',-1,1
-   use_snapshot,ss_t = True,-1
+   # htype,first_file,num_files = 'eam.h1',-1,1
+   first_file,num_files = 2,0
+   # use_snapshot,ss_t = True,-1
 
-   add_var('T_2m_atm_backtend',                     s='T2m backtend AVERAGE',              htype='output.scream.2D.AVERAGE.ndays_x1.')
-   add_var('T_2m_atm_backtend2',                    s='T2m atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
-   add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
-   add_var('T_2m_nf1.0_mac2_atm_osc_intermittency', s='T2m osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('T_2m_atm_backtend',                     s='T2m backtend AVERAGE',              htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('T_2m_atm_backtend2',                    s='T2m atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('T_2m_nf1.0_mac2_atm_osc_intermittency', s='T2m osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+
+   add_var('wind_speed_10m_atm_backtend2',                    s='wspd atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_var('wind_speed_10m_atm_backtend2_product',            s='wspd atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_var('wind_speed_10m_nf2.0_mac2_atm_osc_intermittency', s='wspd osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
 
 #-------------------------------------------------------------------------------
 # if host=='lcrc':
@@ -251,6 +257,13 @@ for v in range(num_var):
    # set color bar levels
    clev = None
    if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
+   if var[v]=='T_2m_atm_backtend2'        : clev = np.linspace(-10,10,21)
+   if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
+
+   if var[v]=='wind_speed_10m_atm_backtend2'        : clev = np.linspace(-10,10,31)
+   if var[v]=='wind_speed_10m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
+
+   if 'atm_osc_intermittency' in var[v]: clev = np.arange(0.0,0.25+0.01,0.01)
    #----------------------------------------------------------------------------
    # set color map
    # cmap = 'viridis'
@@ -309,7 +322,7 @@ for v in range(num_var):
 
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
-fig.savefig(fig_file, dpi=100, bbox_inches='tight')
+fig.savefig(fig_file, dpi=200, bbox_inches='tight')
 plt.close(fig)
 
 print(f'\n{fig_file}\n')
