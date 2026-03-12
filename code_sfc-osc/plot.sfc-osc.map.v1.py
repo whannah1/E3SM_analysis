@@ -3,9 +3,7 @@ import uxarray as ux, cartopy
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import hapy
-host = hapy.get_host()
-xr.set_options(use_new_combine_kwarg_defaults=True)
+import hapy; host = hapy.get_host()
 #-------------------------------------------------------------------------------
 name,case,case_dir,case_sub = [],[],[],[]
 scrip_file_list = []
@@ -39,23 +37,51 @@ fig_file = 'figs_sfc-osc/sfc-osc.map.v1.png'
 #-------------------------------------------------------------------------------
 if host=='nersc':
    
-   ## 2025 scidac multi-fidelity tests
+   ### oscillation diagnostic tests
    # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
-   tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-   add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 dt_phys=10min',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+   # add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 old diags',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-osc-test-01.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 new daigs',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/ne30pg2_scrip.nc'
+   # add_case('E3SM.2026-osc-test-02a.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_4',n='ne256 old diags',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-osc-test-02b.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_4',n='ne256 new daigs',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    # htype,first_file,num_files = 'eam.h1',-1,1
-   first_file,num_files = 2,0
+   # first_file,num_files = 3,1
    # use_snapshot,ss_t = True,-1
 
    # add_var('T_2m_atm_backtend',                     s='T2m backtend AVERAGE',              htype='output.scream.2D.AVERAGE.ndays_x1.')
    # add_var('T_2m_atm_backtend2',                    s='T2m atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
    # add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+
+   # add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product MIN', htype='output.scream.2D.MIN.ndays_x1.')
+
+   # add_var('T_2m_btp', s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   
    # add_var('T_2m_nf1.0_mac2_atm_osc_intermittency', s='T2m osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
 
-   add_var('wind_speed_10m_atm_backtend2',                    s='wspd atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
-   add_var('wind_speed_10m_atm_backtend2_product',            s='wspd atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
-   add_var('wind_speed_10m_nf2.0_mac2_atm_osc_intermittency', s='wspd osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('wind_speed_10m_atm_backtend2',                    s='wspd atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('wind_speed_10m_atm_backtend2_product',            s='wspd atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('wind_speed_10m_nf2.0_mac2_atm_osc_intermittency', s='wspd osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+
+   ### 2026 splitform tests
+   tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   first_file,num_files = 2,None
+   htype='output.scream.2D.AVERAGE.ndays_x1.'
+
+   # add_var('ps')
+   # add_var('precip_total_surf_mass_flux')
+   # add_var('LiqWaterPath')
+   # add_var('IceWaterPath')
+   # add_var('T_2m')
+
+   add_var('T_2m_btp')
+   # add_var('surf_sens_flux_btp')
+   # add_var('wind_speed_10m_btp')
+   add_var('qv_at_model_bot_btp')
 
 #-------------------------------------------------------------------------------
 # if host=='lcrc':
@@ -132,7 +158,6 @@ use_common_label_bar = False
 if 'use_snapshot' not in locals(): use_snapshot,ss_t = False,-1
 
 #---------------------------------------------------------------------------------------------------
-# Set up plot resources
 if case==[]: raise ValueError('ERROR - case list is empty!')
 num_var,num_case = len(var),len(case)
 
@@ -169,27 +194,30 @@ for v in range(num_var):
       # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
       file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
       file_list = sorted(glob.glob(file_path))
-      if 'first_file' in locals(): 
-         if first_file!=0:
-            file_list = file_list[first_file:]
-      if 'num_files'  in locals(): 
-         if num_files!=0:
-            file_list = file_list[:num_files]
+      if 'first_file' in locals() and first_file is not None: file_list = file_list[:num_files]
+      if 'num_files'  in locals() and num_files  is not None: file_list = file_list[first_file:]
       #-------------------------------------------------------------------------
       if file_list==[]: print('ERROR: Empty file list:'); print(); print(file_path); exit()
       #-------------------------------------------------------------------------
-      # print();print(' '*6+'file_list:')
-      # for f in file_list: print(' '*6+f'{f}')
-      # print()
+      print();print(' '*6+'file_list:')
+      for f in file_list: print(' '*8+f'{hapy.tclr.YELLOW}{f}{hapy.tclr.END}')
+      print()
       #-------------------------------------------------------------------------
       # ds = xr.open_mfdataset( file_list )
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
       uxds = ux.open_mfdataset(scrip_file_list[c], file_list)
       data = uxds[var[v]]
+
+      # if '2026-osc-test-01' in case[c]:
+      #    if var[v]=='T_2m_atm_backtend2'        : data = uxds['T_2m_bt2']
+      #    if var[v]=='T_2m_atm_backtend2_product': data = uxds['T_2m_btp']
+      # else:
+      #    data = uxds[var[v]]
+
       #-------------------------------------------------------------------------
       # adjust units
-      if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
+      # if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
       #-------------------------------------------------------------------------
       if 'lev' in data.dims:
          # data = data.isel(lev=0)
@@ -213,11 +241,6 @@ for v in range(num_var):
                   if '.MAX.'     in var_opts['htype']: data = data.max(dim='time')
                   if '.MIN.'     in var_opts['htype']: data = data.min(dim='time')
                   if '.AVERAGE.' in var_opts['htype']: data = data.mean(dim='time')
-
-               print(f'{hapy.tclr.RED}WARNING - assuming case index order - WARNING{hapy.tclr.END}')
-               if c==0: data = data*10.*60.
-               if c==1: data = data* 5.*60.
-
             else:
                data = data.mean(dim='time')
       #-------------------------------------------------------------------------
@@ -242,6 +265,9 @@ for v in range(num_var):
    # calculate common limits for consistent contour levels
    data_min = np.min([np.nanmin(d) for d in data_list])
    data_max = np.max([np.nanmax(d) for d in data_list])
+   print()
+   print(f'  data_max: {data_max}')
+   print(f'  data_min: {data_min}')
    #----------------------------------------------------------------------------
    if plot_diff:
       tmp_data = copy.deepcopy(data_list)
@@ -253,12 +279,17 @@ for v in range(num_var):
       for c in range(num_case):
          if c!=diff_base:
             data_list[c] = data_list[c] - data_list[diff_base]
+      print()
+      print(f'  diff_data_max: {diff_data_max}')
+      print(f'  diff_data_min: {diff_data_min}')
    #----------------------------------------------------------------------------
    # set color bar levels
    clev = None
    if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
    if var[v]=='T_2m_atm_backtend2'        : clev = np.linspace(-10,10,21)
-   if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
+   # if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
+   # if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1,1,31)
+   if var[v]=='T_2m_btp': clev = np.linspace(-1,1,31)
 
    if var[v]=='wind_speed_10m_atm_backtend2'        : clev = np.linspace(-10,10,31)
    if var[v]=='wind_speed_10m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
@@ -271,11 +302,12 @@ for v in range(num_var):
    cmap = cmocean.cm.amp
    # cmap = cmocean.cm.balance
    #----------------------------------------------------------------------------
-   if 'backtend' in var[v] and '.AVERAGE.' in var_opts['htype']:
+   if any([x in var[v] for x in ['backtend','_btp']]):
       cmap = cmocean.cm.balance
-      data_mag_max = max(abs(data_min),abs(data_max))
-      data_min = data_mag_max*-1
-      data_max = data_mag_max
+      if clev is None:
+         data_mag_max = max(abs(data_min),abs(data_max))
+         data_min = data_mag_max*-1
+         data_max = data_mag_max
    #----------------------------------------------------------------------------
    for c in range(num_case):
       #-------------------------------------------------------------------------
@@ -289,11 +321,11 @@ for v in range(num_var):
          img_kwargs['vmin']   = diff_data_min
          img_kwargs['vmax']   = diff_data_max
          clev = None
-
-      if clev is None:
-         img_kwargs['vmin'],img_kwargs['vmax'] = data_min, data_max
       else:
-         img_kwargs['norm'] = mcolors.BoundaryNorm(clev, ncolors=256)
+         if clev is None:
+            img_kwargs['vmin'],img_kwargs['vmax'] = data_min, data_max
+         else:
+            img_kwargs['norm'] = mcolors.BoundaryNorm(clev, ncolors=256)
 
 
       # print()
@@ -322,7 +354,7 @@ for v in range(num_var):
 
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
-fig.savefig(fig_file, dpi=200, bbox_inches='tight')
+fig.savefig(fig_file, dpi=100, bbox_inches='tight')
 plt.close(fig)
 
 print(f'\n{fig_file}\n')

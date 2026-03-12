@@ -1,11 +1,11 @@
 import os, subprocess as sp, numpy as np, xarray as xr, copy, string, dask, glob, cmocean
-import hapy_common as hc
 import pywt
 # from statsmodels.tsa.arima.model import ARIMA
 import QBO_diagnostic_methods as QBO_methods
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
+import hapy; host = hapy.get_host()
 #-------------------------------------------------------------------------------
 # based on E3SM diagnostics package:
 # https://github.com/E3SM-Project/e3sm_diags/blob/main/e3sm_diags/driver/qbo_driver.py
@@ -22,55 +22,63 @@ def add_case(case_in,root=None,n=None,dsh=0,clr='black',mrk=0,msz=0.01,yr1=None,
    yr1_list.append(yr1) ; yr2_list.append(yr2)
    gidx_list.append(gidx) # group index for ensemble mean
 #-------------------------------------------------------------------------------
-# yr1,yr2=1980,2019
-yr1,yr2=1985,2014
+if host=='nersc':
+   yr1,yr2=1995,1999
+   grp_msz,ens_msz = 200,10
+   # add_case('ERA5', n='ERA5',clr='black',mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=0)
+   tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   clr='black', mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', clr='red',   mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', clr='orange',mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', clr='green', mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', clr='cyan',  mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', clr='blue',  mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', clr='purple',mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
+   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', clr='pink',  mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=1,root=tmp_scratch,s='run')
 
-grp_msz = 200
-ens_msz = 10
-
-add_case('ERA5', n='ERA5',clr='black',mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=0)
-
-# add_case('v2.LR.amip_0101', n='E3SMv2 AMIP', p='/global/cfs/cdirs/e3smdata/simulations',s='archive/atm/hist') 
-# add_case('v3.LR.amip_0101', n='E3SMv3 AMIP', p='/global/cfs/cdirs/m3312/whannah/e3smv3_amip',s='archive/atm/hist')
-
-ens_root = '/lcrc/group/e3sm2/ac.wlin/E3SMv3'
-tmp_case_list = []
-tmp_case_list.append('v3.LR.historical_0051')
-tmp_case_list.append('v3.LR.historical_0091')
-tmp_case_list.append('v3.LR.historical_0101')
-tmp_case_list.append('v3.LR.historical_0111')
-tmp_case_list.append('v3.LR.historical_0121')
-tmp_case_list.append('v3.LR.historical_0131')
-tmp_case_list.append('v3.LR.historical_0141')
-tmp_case_list.append('v3.LR.historical_0151')
-tmp_case_list.append('v3.LR.historical_0161')
-tmp_case_list.append('v3.LR.historical_0171')
-tmp_case_list.append('v3.LR.historical_0181')
-tmp_case_list.append('v3.LR.historical_0191')
-tmp_case_list.append('v3.LR.historical_0201')
-tmp_case_list.append('v3.LR.historical_0211')
-tmp_case_list.append('v3.LR.historical_0221')
-tmp_case_list.append('v3.LR.historical_0231')
-tmp_case_list.append('v3.LR.historical_0241')
-tmp_case_list.append('v3.LR.historical_0251')
-tmp_case_list.append('v3.LR.historical_0261')
-tmp_case_list.append('v3.LR.historical_0271')
-tmp_case_list.append('v3.LR.historical_0281')
-tmp_case_list.append('v3.LR.historical_0291')
-tmp_case_list.append('v3.LR.historical_0301')
-tmp_case_list.append('v3.LR.historical_0311')
-tmp_case_list.append('v3.LR.historical_0321')
-
-# for n in range(1):
-for n in range(2):
-   if n==0: yr1,yr2=1985,2014; c,m='blue','.'
-   if n==1: yr1,yr2=2021,2050; c,m='red' ,'.'
-   
-   # for tmp_case in tmp_case_list:
-   #    add_case(tmp_case,root=ens_root,clr=c,mrk=4,msz=0.01,yr1=yr1,yr2=yr2,gidx=n+1*2)
-
-   for tmp_case in tmp_case_list:
-      add_case(tmp_case,root=ens_root,clr=c,mrk=m,msz=ens_msz,yr1=yr1,yr2=yr2,gidx=n+1)
+#-------------------------------------------------------------------------------
+if host=='lcrc':
+   # yr1,yr2=1980,2019
+   yr1,yr2=1985,2014
+   grp_msz = 200
+   ens_msz = 10
+   add_case('ERA5', n='ERA5',clr='black',mrk='.',msz=grp_msz,yr1=yr1,yr2=yr2,gidx=0)
+   # add_case('v2.LR.amip_0101', n='E3SMv2 AMIP', p='/global/cfs/cdirs/e3smdata/simulations',s='archive/atm/hist') 
+   # add_case('v3.LR.amip_0101', n='E3SMv3 AMIP', p='/global/cfs/cdirs/m3312/whannah/e3smv3_amip',s='archive/atm/hist')
+   ens_root = '/lcrc/group/e3sm2/ac.wlin/E3SMv3'
+   tmp_case_list = []
+   tmp_case_list.append('v3.LR.historical_0051')
+   tmp_case_list.append('v3.LR.historical_0091')
+   tmp_case_list.append('v3.LR.historical_0101')
+   tmp_case_list.append('v3.LR.historical_0111')
+   tmp_case_list.append('v3.LR.historical_0121')
+   tmp_case_list.append('v3.LR.historical_0131')
+   tmp_case_list.append('v3.LR.historical_0141')
+   tmp_case_list.append('v3.LR.historical_0151')
+   tmp_case_list.append('v3.LR.historical_0161')
+   tmp_case_list.append('v3.LR.historical_0171')
+   tmp_case_list.append('v3.LR.historical_0181')
+   tmp_case_list.append('v3.LR.historical_0191')
+   tmp_case_list.append('v3.LR.historical_0201')
+   tmp_case_list.append('v3.LR.historical_0211')
+   tmp_case_list.append('v3.LR.historical_0221')
+   tmp_case_list.append('v3.LR.historical_0231')
+   tmp_case_list.append('v3.LR.historical_0241')
+   tmp_case_list.append('v3.LR.historical_0251')
+   tmp_case_list.append('v3.LR.historical_0261')
+   tmp_case_list.append('v3.LR.historical_0271')
+   tmp_case_list.append('v3.LR.historical_0281')
+   tmp_case_list.append('v3.LR.historical_0291')
+   tmp_case_list.append('v3.LR.historical_0301')
+   tmp_case_list.append('v3.LR.historical_0311')
+   tmp_case_list.append('v3.LR.historical_0321')
+   for n in range(2):
+      if n==0: yr1,yr2=1985,2014; c,m='blue','.'
+      if n==1: yr1,yr2=2021,2050; c,m='red' ,'.'
+      # for tmp_case in tmp_case_list:
+      #    add_case(tmp_case,root=ens_root,clr=c,mrk=4,msz=0.01,yr1=yr1,yr2=yr2,gidx=n+1*2)
+      for tmp_case in tmp_case_list:
+         add_case(tmp_case,root=ens_root,clr=c,mrk=m,msz=ens_msz,yr1=yr1,yr2=yr2,gidx=n+1)
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -80,7 +88,7 @@ num_lev = len(pow_spec_lev)
 
 fig_file = 'figs_QBO/QBO.ensemble_wavelet_amp-vs-period.v4.png'
 
-tmp_file_head     = 'data_temp/QBO.wavelet_profile.v1.alt_period' # latlon data
+tmp_file_head = 'data_temp/QBO.wavelet_profile.v1.alt_period' # latlon data
 
 var = ['U']
 
@@ -123,12 +131,12 @@ def get_tmp_file(case,var,yr1,yr2):
 # exit()
 #---------------------------------------------------------------------------------------------------
 # for v in range(num_var):
-#    hc.printline()
-#    print(f'  var: {hc.tclr.MAGENTA}{var[v]}{hc.tclr.END}')
+#    hapy.print_line()
+#    print(f'  var: {hapy.tclr.MAGENTA}{var[v]}{hapy.tclr.END}')
 v = 0
 for k in range(num_plev):
-   # hc.printline()
-   print(f'  plev: {hc.tclr.MAGENTA}{plev_list[k]}{hc.tclr.END}')
+   # hapy.print_line()
+   print(f'  plev: {hapy.tclr.MAGENTA}{plev_list[k]}{hapy.tclr.END}')
    #----------------------------------------------------------------------------
    gper = np.zeros(len(gind))
    gamp = np.zeros(len(gind))
@@ -147,7 +155,7 @@ for k in range(num_plev):
    x_list,y_list = [],[]
    for c in range(num_case):
       tmp_file = get_tmp_file(case_list[c],var[v],yr1_list[c],yr2_list[c])
-      # print(f'    case: {hc.tclr.GREEN}{case_list[c]}{hc.tclr.END}  =>  {tmp_file}')
+      # print(f'    case: {hapy.tclr.GREEN}{case_list[c]}{hapy.tclr.END}  =>  {tmp_file}')
       #-------------------------------------------------------------------------
       tmp_ds = xr.open_dataset( tmp_file, use_cftime=True  )
       per = tmp_ds['period'].values
@@ -245,6 +253,6 @@ plt.close(fig)
 
 print(f'\n{fig_file}\n')
 
-# hc.trim_png(fig_file)
+# hapy.trim_png(fig_file)
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------

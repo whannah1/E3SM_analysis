@@ -24,16 +24,34 @@ if host=='nersc':
    # add_case('ERA5', n='ERA5')
 
    tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
-   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_20', n='E3SM top_km_20', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch,s='run')
-   add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', p=tmp_scratch,s='run')
    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', p=tmp_scratch,s='run')
-   htype = '.eam.h0.'
+
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch,s='run')
+   # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch,s='run')
+   # # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_20', n='E3SM top_km_20', p=tmp_scratch,s='run')
+   # htype = '.eam.h0.'
+
+
+   tmp_path_ne256  = '/global/cfs/cdirs/e3smdata/simulations/scream-decadal-ne256'
+   add_case('ne256pg2_ne256pg2.F20TR-SCREAMv1.May-12.with.rain.frac.n0128',
+         n='SCREAM 13-km control', p=tmp_path_ne256, s='climo_180x360')
+   add_case('ne256pg2_ne256pg2.F20TR-SCREAMv1.July-1.spanc800.2xauto.acc150.n0032.test2.1',
+         n='SCREAM 13-km tuned', p=tmp_path_ne256, s='climo_180x360')
+   htype = '_ANN_199501_200512_climo'
 
 #-------------------------------------------------------------------------------
 # ERA5 levels
@@ -51,12 +69,14 @@ def add_var(var_in,s=None):
    var_str.append(var_in if s is None else s)
 #-------------------------------------------------------------------------------
 
-add_var('U',s='Zonal Wind [m/s]') # first variable is always used for contours
+add_var('U',s='Zonal Wind [m/s]')
+
+# add_var('U',s='Zonal Wind [m/s]') # first variable is always used for contours
 # add_var('OMEGA')
 # add_var('T')
 # add_var('O3')
 
-recalculate = False
+recalculate = True
 
 #-------------------------------------------------------------------------------
 
@@ -89,14 +109,8 @@ num_plot_col = 1
 # Set up plot resources
 #---------------------------------------------------------------------------------------------------
 num_var,num_case = len(var),len(case)
-if 'htype' not in locals(): htype = 'h0'
+if 'htype' not in locals(): htype = 'eam.h0'
 if 'lev'   not in locals(): lev = np.array([0])
-#---------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------
-def get_comp(case):
-   comp = 'eam'
-   if 'PI-CPL.v1' in case: comp = 'cam'
-   return comp
 #---------------------------------------------------------------------------------------------------
 def calculate_obs_area(lon,lat,lon_bnds,lat_bnds):
    re = 6.37122e06  # radius of earth
@@ -295,7 +309,11 @@ for v in range(num_var):
             #-------------------------------------------------------------------
             data = mask_data(ds,data)
             area = mask_data(ds,ds['area'])
-            data_avg = ( (data*area).sum(dim='ncol') / area.sum(dim='ncol') )
+            if 'ncol' in data.dims:
+               data_avg = ( (data*area).sum(dim='ncol') / area.sum(dim='ncol') )
+            if 'lat' in data.dims:
+               xy_dims = ('lon','lat')
+               data_avg = ( (data*area).sum(dim=xy_dims) / area.sum(dim=xy_dims) )
             #-------------------------------------------------------------------
             if var[v]=='O3': data_avg = data_avg*1e6 # mol/mol => ppmv
             #-------------------------------------------------------------------
