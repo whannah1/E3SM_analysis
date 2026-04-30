@@ -37,51 +37,63 @@ fig_file = 'figs_sfc-osc/sfc-osc.map.v1.png'
 #-------------------------------------------------------------------------------
 if host=='nersc':
    
-   ### oscillation diagnostic tests
-   # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
+   # ### oscillation diagnostic tests
+   # # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
    # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-   # add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 old diags',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   # add_case('E3SM.2026-osc-test-01.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',n='ne256 new daigs',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/ne30pg2_scrip.nc'
-   # add_case('E3SM.2026-osc-test-02a.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_4',n='ne256 old diags',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   # add_case('E3SM.2026-osc-test-02b.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_4',n='ne256 new daigs',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   # htype,first_file,num_files = 'eam.h1',-1,1
-   # first_file,num_files = 3,1
-   # use_snapshot,ss_t = True,-1
+   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'   
+   # add_case('E3SM.2026-osc-test-01.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',           n='ne256 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-osc-test-03.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.imp_flux_1',n='ne256 imp_flux_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # # htype,first_file,num_files = 'eam.h1',-1,1
+   # first_file,num_files = 2,None
+   # # use_snapshot,ss_t = True,-1
+   # add_var('T_2m_btp',           s='T 2m btp',    htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('surf_sens_flux_btp', s='SHF btp',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_var('wind_speed_10m_btp', s='wsp 10m btp', htype='output.scream.2D.AVERAGE.ndays_x1.')
 
-   # add_var('T_2m_atm_backtend',                     s='T2m backtend AVERAGE',              htype='output.scream.2D.AVERAGE.ndays_x1.')
-   # add_var('T_2m_atm_backtend2',                    s='T2m atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
-   # add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
-
-   # add_var('T_2m_atm_backtend2_product',            s='T2m atm_backtend2_product MIN', htype='output.scream.2D.MIN.ndays_x1.')
-
-   # add_var('T_2m_btp', s='T2m atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
+   ### oscillation diagnostic tests
+   tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/ne30pg2_scrip.nc'   
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_0',n='ne30 imp_flux_0',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1',n='ne30 imp_flux_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    
-   # add_var('T_2m_nf1.0_mac2_atm_osc_intermittency', s='T2m osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_0.debug',         n='ne30 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_0.gusty_1.debug', n='ne30 gust',      p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1.gusty_0.debug', n='ne30 iflux',     p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1.debug',         n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
 
-   # add_var('wind_speed_10m_atm_backtend2',                    s='wspd atm_backtend2 AVERAGE',         htype='output.scream.2D.AVERAGE.ndays_x1.')
-   # add_var('wind_speed_10m_atm_backtend2_product',            s='wspd atm_backtend2_product AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
-   # add_var('wind_speed_10m_nf2.0_mac2_atm_osc_intermittency', s='wspd osc_intermittency AVERAGE',     htype='output.scream.2D.AVERAGE.ndays_x1.')
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_0.debug',n='ne30 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_1.debug',n='ne30 gust',      p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_0.debug',n='ne30 iflux',     p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_1.debug',n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+
+   htype='output.1ma.AVERAGE.nmonths_x1'
+   # first_file,num_files = 2,None
+   add_var('T_2m_btp',s='T 2m btp')
+
 
    ### 2026 splitform tests
-   tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   first_file,num_files = 2,None
-   htype='output.scream.2D.AVERAGE.ndays_x1.'
+   # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+   # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+   # # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.tms_0.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)#,c='red',ls='-')
+   # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.tms_0.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)#,c='blue',ls='--')
+   # first_file,num_files = 2,None
+   # # htype='output.scream.2D.AVERAGE.ndays_x1.'
+   # # htype='output.scream.2D.AVERAGE.nhours_x3'
+   # # htype='output.scream.2D.MAX.nhours_x3'
+   # htype='output.scream.2D.MIN.nhours_x3'
 
    # add_var('ps')
    # add_var('precip_total_surf_mass_flux')
    # add_var('LiqWaterPath')
    # add_var('IceWaterPath')
-   # add_var('T_2m')
+   # add_var('T_2m',htype=htype)
 
-   add_var('T_2m_btp')
+   # add_var('T_2m_btp')
    # add_var('surf_sens_flux_btp')
    # add_var('wind_speed_10m_btp')
-   add_var('qv_at_model_bot_btp')
+   # add_var('qv_at_model_bot_btp')
 
 #-------------------------------------------------------------------------------
 # if host=='lcrc':
@@ -144,11 +156,11 @@ if host=='alcf':
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
 
+# plot_diff,add_diff = False,False
 plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False
 
 print_stats          = True
-var_x_case           = True
+var_x_case           = False
 
 # num_plot_col         = len(case)
 num_plot_col         = 1#len(var)
@@ -194,8 +206,8 @@ for v in range(num_var):
       # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
       file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
       file_list = sorted(glob.glob(file_path))
-      if 'first_file' in locals() and first_file is not None: file_list = file_list[:num_files]
-      if 'num_files'  in locals() and num_files  is not None: file_list = file_list[first_file:]
+      if 'first_file' in locals() and first_file is not None: file_list = file_list[first_file:]
+      if 'num_files'  in locals() and num_files  is not None: file_list = file_list[:num_files]
       #-------------------------------------------------------------------------
       if file_list==[]: print('ERROR: Empty file list:'); print(); print(file_path); exit()
       #-------------------------------------------------------------------------
@@ -227,22 +239,22 @@ for v in range(num_var):
       # # print stats before time averaging
       # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
       #-------------------------------------------------------------------------
+      # # count number of negative values
+      # if 'btp' in var[v]:
+      #    neg_count = np.sum(data.values<0)
+      #    print(f'{name[c]:20}  {var[v]:20} before mean => neg_count: {neg_count}')
+      #-------------------------------------------------------------------------
       # average over time dimension
       if 'time' in data.dims : 
-         hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
+         hapy.print_time_length(data.time,indent=' '*6)
          if use_snapshot:
             data = data.isel(time=ss_t,drop=True)
             print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
          else:
-            if 'backtend' in var[v]:
-               if 'method' in var_opts:
-                  if var_opts['method']=='std': data = data.std(dim='time')
-               else:
-                  if '.MAX.'     in var_opts['htype']: data = data.max(dim='time')
-                  if '.MIN.'     in var_opts['htype']: data = data.min(dim='time')
-                  if '.AVERAGE.' in var_opts['htype']: data = data.mean(dim='time')
-            else:
-               data = data.mean(dim='time')
+            data = data.mean(dim='time')
+            # if '.MAX.'     in var_opts['htype']: data = data.max(dim='time')
+            # if '.MIN.'     in var_opts['htype']: data = data.min(dim='time')
+            # if '.AVERAGE.' in var_opts['htype']: data = data.mean(dim='time')
       #-------------------------------------------------------------------------
       # Calculate area weighted global mean
       if 'area' in locals() :
@@ -253,6 +265,11 @@ for v in range(num_var):
       #-------------------------------------------------------------------------
       # print stats after time averaging
       if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
+      #-------------------------------------------------------------------------
+      # # count number of negative values
+      # if 'btp' in var[v]:
+      #    neg_count = np.sum(data.values<0)
+      #    print(f'{name[c]:20}  {var[v]:20} after mean => neg_count: {neg_count}')
       #-------------------------------------------------------------------------
       # append to data lists
       data_list.append( data )
@@ -272,40 +289,55 @@ for v in range(num_var):
    if plot_diff:
       tmp_data = copy.deepcopy(data_list)
       for c in range(num_case): tmp_data[c] = data_list[c] - data_list[diff_base]
-      # diff_data_max = np.max([np.nanmax(d) for d in tmp_data])
-      # diff_data_min = np.min([np.nanmin(d) for d in tmp_data])
-      diff_data_max = np.max([np.nanmax(np.absolute(d)) for d in tmp_data])
-      diff_data_min = -1*diff_data_max
+      # diff_max = np.max([np.nanmax(d) for d in tmp_data])
+      # diff_min = np.min([np.nanmin(d) for d in tmp_data])
+      diff_max = np.max([np.nanmax(np.absolute(d)) for d in tmp_data])
+      diff_min = -1*diff_max
       for c in range(num_case):
          if c!=diff_base:
             data_list[c] = data_list[c] - data_list[diff_base]
       print()
-      print(f'  diff_data_max: {diff_data_max}')
-      print(f'  diff_data_min: {diff_data_min}')
+      print(f'  diff_max: {diff_max}')
+      print(f'  diff_min: {diff_min}')
    #----------------------------------------------------------------------------
    # set color bar levels
    clev = None
    if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
-   if var[v]=='T_2m_atm_backtend2'        : clev = np.linspace(-10,10,21)
+   # if var[v]=='T_2m_atm_backtend2'        : clev = np.linspace(-10,10,21)
    # if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
    # if var[v]=='T_2m_atm_backtend2_product': clev = np.linspace(-1,1,31)
-   if var[v]=='T_2m_btp': clev = np.linspace(-1,1,31)
+   # if var[v]=='T_2m_btp':           clev = np.linspace(-1,1,31)
+   # if var[v]=='wind_speed_10m_btp': clev = np.linspace(-1,1,31)
+   # if var[v]=='surf_sens_flux_btp': clev = np.linspace(-1,1,31)*1e2
 
-   if var[v]=='wind_speed_10m_atm_backtend2'        : clev = np.linspace(-10,10,31)
-   if var[v]=='wind_speed_10m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
+   # negative only
+   if var[v]=='T_2m_btp':           clev = np.logspace(-5,1,31)[::-1]*-1
+   # if var[v]=='T_2m_btp':           clev = np.logspace(-2,1,31)[::-1]*-1
+   if var[v]=='wind_speed_10m_btp': clev = np.logspace(-2,1,31)[::-1]*-1
+   if var[v]=='surf_sens_flux_btp': clev = np.logspace( 1,4,31)[::-1]*-1
+
+   # # positive only
+   # if var[v]=='T_2m_btp':           clev = np.logspace(-2,1,31)/1e1
+   # if var[v]=='wind_speed_10m_btp': clev = np.logspace(-2,1,31)/1e1
+   # if var[v]=='surf_sens_flux_btp': clev = np.logspace( 1,4,31)/1e1
+
+   # if var[v]=='wind_speed_10m_atm_backtend2'        : clev = np.linspace(-10,10,31)
+   # if var[v]=='wind_speed_10m_atm_backtend2_product': clev = np.linspace(-1e3,1e3,31)
 
    if 'atm_osc_intermittency' in var[v]: clev = np.arange(0.0,0.25+0.01,0.01)
    #----------------------------------------------------------------------------
    # set color map
    # cmap = 'viridis'
    # cmap = cmocean.cm.rain
-   cmap = cmocean.cm.amp
+   # cmap = cmocean.cm.amp
    # cmap = cmocean.cm.balance
    #----------------------------------------------------------------------------
    if any([x in var[v] for x in ['backtend','_btp']]):
-      cmap = cmocean.cm.balance
+      # cmap = cmocean.cm.balance
+      cmap = cmocean.cm.rain_r
+      # cmap = cmocean.cm.amp
       if clev is None:
-         data_mag_max = max(abs(data_min),abs(data_max))
+         data_mag_max = max(abs(data_min),abs(data_max)) * 0.8
          data_min = data_mag_max*-1
          data_max = data_mag_max
    #----------------------------------------------------------------------------
@@ -318,8 +350,8 @@ for v in range(num_var):
 
       if plot_diff and c!=diff_base:
          img_kwargs['cmap']   = cmocean.cm.balance
-         img_kwargs['vmin']   = diff_data_min
-         img_kwargs['vmax']   = diff_data_max
+         img_kwargs['vmin']   = diff_min
+         img_kwargs['vmax']   = diff_max
          clev = None
       else:
          if clev is None:
@@ -339,6 +371,8 @@ for v in range(num_var):
       ax.set_global()
 
       img = ax.imshow(data_list[c].to_raster(ax=ax), **img_kwargs)
+
+      # ax.set_extent([-180, 180, -60, 60], crs=ccrs.PlateCarree())
 
       # orientation = 'vertical' if var_x_case else 'horizontal'
       # if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation=orientation)

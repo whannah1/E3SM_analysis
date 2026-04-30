@@ -70,8 +70,6 @@ def add_var(var_in,s=None):
 #-------------------------------------------------------------------------------
 
 add_var('U',s='Zonal Wind [m/s]')
-
-# add_var('U',s='Zonal Wind [m/s]') # first variable is always used for contours
 # add_var('OMEGA')
 # add_var('T')
 # add_var('O3')

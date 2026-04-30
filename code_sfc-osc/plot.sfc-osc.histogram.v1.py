@@ -28,22 +28,32 @@ if host=='nersc':
    ### 2026 splitform tests
    tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
    tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',c='red',ls='-')
-   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',c='blue',ls='--')
+   # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',c='red',ls='-')
+   # add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',c='blue',ls='--')
+   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.tms_0.theta_advect_form_1',n='ne256 theta_advect_form_1',p=tmp_scratch,s='run',c='red',ls='-')
+   add_case('E3SM.2026-splitform-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.tms_0.theta_advect_form_2',n='ne256 theta_advect_form_2',p=tmp_scratch,s='run',c='blue',ls='--')
    first_file,num_files = 2,None
-   htype='output.scream.2D.AVERAGE.ndays_x1.'
+   # htype='output.scream.2D.AVERAGE.ndays_x1.'
+   # htype='output.scream.2D.AVERAGE.nhours_x3'
+   htype='output.scream.2D.MAX.nhours_x3'
 
-   add_var('T_2m_btp',            log_bins=True,log_bins_sign='neg')
-   add_var('surf_sens_flux_btp',  log_bins=True,log_bins_sign='neg')
-   add_var('wind_speed_10m_btp',  log_bins=True,log_bins_sign='neg')
-   add_var('qv_at_model_bot_btp', log_bins=True,log_bins_sign='neg')
+   # add_var('ps',          log_bins=True,log_bins_sign='pos')
+   # add_var('LiqWaterPath',log_bins=True,log_bins_sign='pos')
+   # add_var('IceWaterPath',log_bins=True,log_bins_sign='pos')
+   add_var('T_2m',            log_bins=True,log_bins_sign='pos')
+   add_var('wind_speed_10m',  log_bins=True,log_bins_sign='pos')
+
+   # add_var('T_2m_btp',            log_bins=True,log_bins_sign='pos')
+   # add_var('surf_sens_flux_btp',  log_bins=True,log_bins_sign='pos')
+   # add_var('wind_speed_10m_btp',  log_bins=True,log_bins_sign='pos')
+   # add_var('qv_at_model_bot_btp', log_bins=True,log_bins_sign='pos')
 #-------------------------------------------------------------------------------
 if host=='alcf':
 
    tmp_scratch = '/lus/flare/projects/E3SM_Dec/whannah/scratch'
    add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_256',n='ne256 dt_phys=10min',p=tmp_scratch,s='run',c='C0',ls='-')
    # add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_256.NCPL_288',n='ne256 dt_phys=5min',p=tmp_scratch,s='run',c='C1',ls='--')
-   first_file,num_files = 5,0
+   first_file,num_files = 5,None
 
    add_var('T_2m_atm_backtend', s='T2m backtend MAX',     htype='output.scream.2D.MAX.ndays_x1.')
    add_var('T_2m_atm_backtend', s='T2m backtend AVERAGE', htype='output.scream.2D.AVERAGE.ndays_x1.')
