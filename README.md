@@ -9,3 +9,10 @@ Many scripts can be used with the E3SM unified enviroment, but if that is not av
 ```shell
 conda create --name ux_env --channel conda-forge --yes numpy xarray dask netcdf4 cftime cmocean nco ncview uxarray numba dask cftime scipy scikit-learn matplotlib cartopy selenium firefox geckodriver
 ```
+
+# Running python in interactive mode
+
+```shell
+python -i
+exec( open( 'code_clim/plot.clim.map.v1.py' ).read() )
+```

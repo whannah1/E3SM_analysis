@@ -1,8 +1,7 @@
+from time import perf_counter
+timer_start = perf_counter()
 import os, subprocess as sp, numpy as np, xarray as xr, dask, copy, string, cmocean, glob
-import uxarray as ux, cartopy
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
+import uxarray as ux, cartopy.crs as ccrs, matplotlib.pyplot as plt, matplotlib.colors as mcolors
 import hapy
 host = hapy.get_host()
 xr.set_options(use_new_combine_kwarg_defaults=True)
@@ -14,6 +13,7 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
    tmp_name = case_in if n is None else n
    case.append(case_in); name.append(tmp_name); 
    case_dir.append(p); case_sub.append(s);
+   if scrip_file is None: raise ValueError('scrip_file cannot be None')
    scrip_file_list.append(scrip_file)
 #-------------------------------------------------------------------------------
 var,lev_list,var_str = [],[],[]
@@ -65,7 +65,15 @@ if host=='nersc':
 #-------------------------------------------------------------------------------
 if host=='lcrc':
 
-   add_case('E3SM.2025-MF-test-00.ne22pg2.F20TR.NN_2',n='ne22 test',p='/lcrc/group/e3sm/ac.whannah/scratch/chrys/nersc_runs',s='run',scrip_file=f'/home/ac.whannah/E3SM/data_grid/ne22pg2_scrip.nc')
+   # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/ne256pg2_scrip.nc'
+
+   tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+   tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+   add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+   htype,first_file,num_files = 'eam.h1',0,0
+   add_var('PCONVT',htype='eam.h1')
 
 #-------------------------------------------------------------------------------
 if host=='llnl':
@@ -76,8 +84,7 @@ if host=='llnl':
    # add_case('v3.2026-STRONG-ENS-TEST-00.start_2018-07-04.seed_224466',n='00 seed_224466',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
    # add_case('v3.2026-STRONG-ENS-TEST-01.start_2018-07-04.seed_113355',n='01 seed_113355',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
    # add_case('v3.2026-STRONG-ENS-TEST-01.start_2018-07-04.seed_224466',n='01 seed_224466',p='/p/vast1/strong/hannah6',s='run',scrip_file=scrip_file_path)
-   
-   htype,first_file,num_files = 'eam.h1',-1,1
+   htype,first_file,num_files = 'eam.h1',0,0
 
 #-------------------------------------------------------------------------------
 if host=='alcf':
@@ -91,7 +98,7 @@ if host=='alcf':
 #-------------------------------------------------------------------------------
 
 # add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
-add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
+# add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
 
 # add_var('PS')
 
@@ -126,14 +133,14 @@ add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
 
-plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False
+# plot_diff,add_diff = False,False
+plot_diff,add_diff = True,False
 
 print_stats          = True
-var_x_case           = True
+var_x_case           = False
 
 # num_plot_col         = len(case)
-num_plot_col         = 1#len(var)
+# num_plot_col         = 1#len(var)
 
 use_common_label_bar = False
 
@@ -148,11 +155,15 @@ if 'subtitle_font_height' not in locals(): subtitle_font_height = 0.01
 
 diff_base = 0
 
+if 'first_file' in locals(): first_file = 0
+if 'num_files'  in locals(): num_files = 0
+
 #---------------------------------------------------------------------------------------------------
 # set up figure objects
 subplot_kwargs = {}
 # subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
-subplot_kwargs['projection'] = ccrs.PlateCarree()#central_longitude=180)
+subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
+# subplot_kwargs['projection'] = ccrs.PlateCarree()
 (d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
 fdx,fdy=20,10;figsize = (fdx*num_case,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_case)
 title_fontsize,lable_fontsize = 20,18
@@ -179,12 +190,8 @@ for v in range(num_var):
       # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
       file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
       file_list = sorted(glob.glob(file_path))
-      if 'first_file' in locals(): 
-         if first_file!=0:
-            file_list = file_list[first_file:]
-      if 'num_files'  in locals(): 
-         if num_files!=0:
-            file_list = file_list[:num_files]
+      if first_file!=0: file_list = file_list[first_file:]
+      if num_files!=0 : file_list = file_list[:num_files]
       #-------------------------------------------------------------------------
       if file_list==[]: print('ERROR: Empty file list:'); print(); print(file_path); exit()
       #-------------------------------------------------------------------------
@@ -196,21 +203,28 @@ for v in range(num_var):
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
       uxds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
-      uxds = uxds.isel(valid_time=0)
+
+      if 'valid_time' in uxds.dims:
+         if len(uxds['valid_time'])==1:
+            uxds = uxds.isel(valid_time=0)
+
       # hapy.check_invalid_values(uxds, variables=[var[v]], check_range=None)
       # exit()
 
       data = uxds[var[v]]
 
-      # lon_min, lon_max = -180, 180
-      mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
-      # mask.load()
-      data = data.where(mask, drop=True)
+      # # lon_min, lon_max = -180, 180
+      # mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
+      # # mask.load()
+      # data = data.where(mask, drop=True)
 
+      if 'time' in data.dims:
+         # data = data.mean(dim='time')
+         data = data.min(dim='time')
 
-      grid_ds = xr.open_dataset(scrip_file_list[c])
-      grid_ds = grid_ds.where(mask, drop=True)
-      grid_ds_list.append(grid_ds)
+      # grid_ds = xr.open_dataset(scrip_file_list[c])
+      # # grid_ds = grid_ds.where(mask, drop=True)
+      # grid_ds_list.append(grid_ds)
 
       #-------------------------------------------------------------------------
       # # adjust units
@@ -272,12 +286,15 @@ for v in range(num_var):
 
    # if var[v] in ['PS','sp']: clev = np.linspace( 800e2, 1020e2, num=40)
    if var[v] in ['PS','sp']: clev = np.arange(600e2,1040e2+2e2,10e2)
+   if var[v]=='PCONVT': clev = np.arange(100e2,600e2+5e2,5e2)
+   # if var[v]=='PCONVT': clev = np.logspace( np.log10(50e2), np.log10(500e2), num=40)
    #----------------------------------------------------------------------------
    # set color map
    cmap = 'viridis'
    # cmap = cmocean.cm.rain
    # cmap = cmocean.cm.amp
    # cmap = cmocean.cm.balance
+   if var[v]=='PCONVT': cmap = cmocean.cm.rain_r
    #----------------------------------------------------------------------------
    for c in range(num_case):
       #-------------------------------------------------------------------------
@@ -308,10 +325,10 @@ for v in range(num_var):
       ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
       ax.set_global()
 
-      rst = hapy.to_raster(data_list[c], grid_ds_list[c], ax)
-      img = ax.imshow(rst, extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
+      # rst = hapy.to_raster(data_list[c], grid_ds_list[c], ax)
+      # img = ax.imshow(rst, extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
 
-      # img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
+      img = ax.imshow(data_list[c].to_raster(ax=ax), extent=ax.get_xlim() + ax.get_ylim(), **img_kwargs)
 
       # orientation = 'vertical' if var_x_case else 'horizontal'
       # if c==num_case-1: fig.colorbar(img, ax=ax, fraction=0.02, orientation=orientation)
@@ -330,6 +347,13 @@ for v in range(num_var):
 fig.savefig(fig_file, dpi=100, bbox_inches='tight')
 plt.close(fig)
 
-print(f'\n{fig_file}\n')
+print(f'\n{fig_file}')
 
+#---------------------------------------------------------------------------------------------------
+etime = perf_counter()-timer_start
+time_str = f'{etime:10.1f} sec'
+if etime>60       : time_str += f' ({(etime/60):4.1f} min)'
+if etime>(2*3600) : time_str += f' ({(etime/3600):.1f} hr)'
+print(f'\n{hapy.tclr.YELLOW}elapsed time: {time_str} {hapy.tclr.END}')
+print()
 #---------------------------------------------------------------------------------------------------

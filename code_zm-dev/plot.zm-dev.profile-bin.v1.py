@@ -12,22 +12,27 @@ class Stop(Exception): pass
 #-------------------------------------------------------------------------------
 case,case_opts_list = [],[]
 def add_case(case_in,**kwargs):
-   case.append(case_in)
-   case_opts = {}
-   for k, val in kwargs.items(): case_opts[k] = val
-   case_opts_list.append(case_opts)
+    case.append(case_in)
+    case_opts = {}
+    for k, val in kwargs.items(): case_opts[k] = val
+    case_opts_list.append(case_opts)
 #---------------------------------------------------------------------------------------------------
 var,var_opts_list = [],[]
 def add_var(var_name,**kwargs):
-   var.append(var_name)
-   var_opts = {}
-   for k, val in kwargs.items(): var_opts[k] = val
-   if 'str' not in var_opts: var_opts['str'] = var_name
-   var_opts_list.append(var_opts)
+    var.append(var_name)
+    var_opts = {}
+    for k, val in kwargs.items(): var_opts[k] = val
+    if 'str' not in var_opts: var_opts['str'] = var_name
+    var_opts_list.append(var_opts)
 #---------------------------------------------------------------------------------------------------
 
 tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8', n='E3SM', p=tmp_scratch, s='run')
+add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM ncin=1',      p=tmp_scratch, s='run')
+add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',       n='E3SM ncin=5',       p=tmp_scratch, s='run')
+add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20',      n='E3SM ncin=20',       p=tmp_scratch, s='run')
+# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
+# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
+# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
 # first_file,num_files = 8,1
 
 
@@ -54,7 +59,7 @@ recalculate = True
 
 # plot_diff   = False
 # use_height  = False
-print_stats = True
+print_stats = False
 var_x_case = True
 # num_plot_col = 2
 
@@ -66,241 +71,263 @@ if 'first_file' not in globals(): first_file = 0
 if 'num_files'  not in globals(): num_files = 0
 #---------------------------------------------------------------------------------------------------
 # set up figure objects
-fdx,fdy=20,10;figsize = (fdx*num_case,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_case)
-title_fontsize,lable_fontsize = 25,25
-(d1,d2) = (num_var,num_case) if var_x_case else (num_case,num_var)
+
+nrows, ncols = (num_var, num_case) if var_x_case else (num_case, num_var)
 if 'num_plot_col' in locals():
-   (d1,d2) = ( int(np.ceil((num_var*num_case)/float(num_plot_col))), num_plot_col )
-fig, axs = plt.subplots( d1, d2, figsize=figsize, squeeze=False )
+    nrows, ncols = ( int(np.ceil(num_var*num_case/float(num_plot_col))), num_plot_col )
+title_fontsize,lable_fontsize = 30,30
+# Figure size: target ~2048px at 150 dpi → ~13.6 inches per side
+dpi     = 150
+fig_w   = 20*ncols
+fig_h   = 10*nrows
+fig, axs = plt.subplots(nrows, ncols, figsize=(fig_w, fig_h), dpi=dpi, squeeze=False)
+fig.subplots_adjust(wspace=0.15, hspace=0.35)
+#-------------------------------------------------------------------------------
+def get_row_col(c,v):
+    if 'num_plot_col' in globals():
+        ip = v*num_case+c if var_x_case else c*num_var+v
+        row = int(np.floor(ip/num_plot_col))
+        col = int(ip - row*ncols)
+        # print(f'  ip / row / col : {ip} / {row} / {col}')
+    else:
+        row = c if not var_x_case else v
+        col = v if not var_x_case else c
+    return (row,col)
 #---------------------------------------------------------------------------------------------------
 def get_file_list(case,case_opts,var_opts):
-   case_dir = case_opts['p']
-   case_sub = case_opts['s']
-   htype    = var_opts['htype']
-   #----------------------------------------------------------------------------
-   file_path = f'{case_dir}/{case}/{case_sub}/*{htype}*'
-   file_list = sorted(glob.glob(file_path))
-   if first_file>0:file_list = file_list[first_file:]
-   if num_files>0: file_list = file_list[:num_files]
-   #----------------------------------------------------------------------------
-   if file_list==[]:
-      print('ERROR: file list is empty?')
-      print(f'file_path: {file_path}')
-      print(f'file_list: {file_list}'); exit()
-   #----------------------------------------------------------------------------
-   return file_list
+    case_dir = case_opts['p']
+    case_sub = case_opts['s']
+    htype    = var_opts['htype']
+    #----------------------------------------------------------------------------
+    file_path = f'{case_dir}/{case}/{case_sub}/*{htype}*'
+    file_list = sorted(glob.glob(file_path))
+    if first_file>0:file_list = file_list[first_file:]
+    if num_files>0: file_list = file_list[:num_files]
+    #----------------------------------------------------------------------------
+    if file_list==[]:
+        print('ERROR: file list is empty?')
+        print(f'file_path: {file_path}')
+        print(f'file_list: {file_list}'); exit()
+    #----------------------------------------------------------------------------
+    return file_list
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
 data_list_list,lev_list_list = [],[]
 amax_list = [None]*num_case
 for v in range(num_var):
-   var_opts = var_opts_list[v]
-   hapy.print_line()
-   print(' '*2+f'var: {hapy.tclr.GREEN}{var[v]}{hapy.tclr.END}')
-   #----------------------------------------------------------------------------
-   data_list = []
-   bins_list = []
-   lev_list = []
-   #----------------------------------------------------------------------------
-   for c in range(num_case):
-      case_opts = case_opts_list[c]
-      # print(' '*4+f'case: {hapy.tclr.CYAN}{case[c]}{hapy.tclr.END}')
-      tmp_file = f'{tmp_file_head}.{case[c]}.{var[v]}.f0_{first_file}.nf_{num_files}.nc'
-      print(' '*4+f'case: {hapy.tclr.CYAN}{case[c]}{hapy.tclr.END}  =>  {tmp_file}')
-      #-------------------------------------------------------------------------
-      if recalculate:
-      # if True:
-         #----------------------------------------------------------------------
-         file_list = get_file_list(case[c],case_opts,var_opts)
-         ds = xr.open_mfdataset( file_list )
-         # ds = ds.mean(dim='time', skipna=True)
-         #----------------------------------------------------------------------
-         # lat  = get_data(ds,'lat').isel(time=0,missing_dims='ignore')
-         # area = get_data(ds,'area').isel(time=0,missing_dims='ignore')
-         data = ds[var[v]]
-         #----------------------------------------------------------------------
-         # if v==0 and c==0:
-         #    amax = ds['PRECZ'].var(dim='time').argmax(dim='ncol')
-         #    amax_list[c] = amax#+2
-         #    # amax_list[c] = 4651
-         #    lat_loc = ds.lat.isel(ncol=amax_list[c]).values
-         #    lon_loc = ds.lon.isel(ncol=amax_list[c]).values
-         #    print('\n'+' '*4+f'amax ncol/lat/lon : {amax_list[c]} / {lat_loc:5.2f} / {lon_loc:5.2f}\n')
+    var_opts = var_opts_list[v]
+    hapy.print_line()
+    print(' '*2+f'var: {hapy.tclr.GREEN}{var[v]}{hapy.tclr.END}')
+    #----------------------------------------------------------------------------
+    data_list = []
+    bins_list = []
+    lev_list = []
+    #----------------------------------------------------------------------------
+    for c in range(num_case):
+        case_opts = case_opts_list[c]
+        # print(' '*4+f'case: {hapy.tclr.CYAN}{case[c]}{hapy.tclr.END}')
+        tmp_file = f'{tmp_file_head}.{case[c]}.{var[v]}.f0_{first_file}.nf_{num_files}.nc'
+        print(' '*4+f'case: {hapy.tclr.CYAN}{case[c]}{hapy.tclr.END}  =>  {tmp_file}')
+        #-------------------------------------------------------------------------
+        if recalculate:
+        # if True:
+            #----------------------------------------------------------------------
+            file_list = get_file_list(case[c],case_opts,var_opts)
+            ds = xr.open_mfdataset( file_list )
+            # ds = ds.mean(dim='time', skipna=True)
+            #----------------------------------------------------------------------
+            # lat  = get_data(ds,'lat').isel(time=0,missing_dims='ignore')
+            # area = get_data(ds,'area').isel(time=0,missing_dims='ignore')
+            data = ds[var[v]]
+            #----------------------------------------------------------------------
+            # if v==0 and c==0:
+            #    amax = ds['PRECZ'].var(dim='time').argmax(dim='ncol')
+            #    amax_list[c] = amax#+2
+            #    # amax_list[c] = 4651
+            #    lat_loc = ds.lat.isel(ncol=amax_list[c]).values
+            #    lon_loc = ds.lon.isel(ncol=amax_list[c]).values
+            #    print('\n'+' '*4+f'amax ncol/lat/lon : {amax_list[c]} / {lat_loc:5.2f} / {lon_loc:5.2f}\n')
+                
+            #----------------------------------------------------------------------
+            # data = data.isel(ncol=amax_list[c])
+            #----------------------------------------------------------------------
+            prec = ds['PRECZ']#.isel(ncol=amax_list[c])
+            prec = prec *86400.*1e3
+            # hapy.print_stat(prec,compact=True,stat='naxs',fmt='e')
+            # raise Stop()
+            # bin_ds = hapy.bin_YbyX (data,prec,
+            #                         bins=[],bin_min=0,bin_max=1,bin_spc=1,
+            #                         bin_mode="manual",verbose=False,wgt=None,keep_lev=True):
+
+            data.load()
+            prec.load()
+            # data_binned = data.groupby_bins(prec, bins=bins).mean(dim='time')
+
+            data_stacked = data.stack(sample=('time','ncol'))
+            prec_stacked = prec.stack(sample=('time','ncol'))
+
+            # bins = np.arange(0, 200+2, 2)
+            # bins = np.arange(0.2, 20+0.2, 0.2)
+            # bins = np.logspace( np.log10(0.001), np.log10(200), num=100)
             
-         #----------------------------------------------------------------------
-         # data = data.isel(ncol=amax_list[c])
-         #----------------------------------------------------------------------
-         prec = ds['PRECZ']#.isel(ncol=amax_list[c])
-         prec = prec *86400.*1e3
-         # hapy.print_stat(prec,compact=True,stat='naxs',fmt='e')
-         # raise Stop()
-         # bin_ds = hapy.bin_YbyX (data,prec,
-         #                         bins=[],bin_min=0,bin_max=1,bin_spc=1,
-         #                         bin_mode="manual",verbose=False,wgt=None,keep_lev=True):
+            bins = np.logspace( np.log10(2), np.log10(200), num=40)
 
-         data.load()
-         prec.load()
-         # data_binned = data.groupby_bins(prec, bins=bins).mean(dim='time')
+            data_binned = data_stacked.groupby_bins(prec_stacked, bins=bins).mean(dim='sample')
 
-         data_stacked = data.stack(sample=('time','ncol'))
-         prec_stacked = prec.stack(sample=('time','ncol'))
+            # print()
+            # print(data_binned)
+            # print()
+            # hapy.print_stat(data_binned,compact=True,stat='naxs',fmt='e')
+            # print()
+            # raise Stop()
+            #----------------------------------------------------------------------
+            # if 'lat1' in locals() or 'lon1' in locals():
+            #    lat = get_data(ds,'lat').isel(time=0,missing_dims='ignore')
+            #    lon = get_data(ds,'lon').isel(time=0,missing_dims='ignore')
+            #    ncol = ds['ncol']
+            #    mask = xr.DataArray( np.ones([len(ncol)],dtype=bool), coords=[('ncol', ncol.values)], dims='ncol' )
+            #    if 'lat1' in locals(): mask = mask & (lat>=lat1) & (lat<=lat2)
+            #    if 'lon1' in locals(): mask = mask & (lon>=lon1) & (lon<=lon2)
+            #    mask.load()
+            #    data = data.where(mask,drop=True)
+            #    area = area.where(mask,drop=True)
+            #----------------------------------------------------------------------
+            # data = ( (data*area).sum(dim='ncol') / area.sum(dim='ncol') )
+            #----------------------------------------------------------------------
+            # if use_height: 
+            #    hght = ???
+            #    hght = ( (hght*area).sum(dim='ncol') / area.sum(dim='ncol') )
+        # #--------------------------------------------------------------------------
+        #    # Write to file 
+        #    if os.path.isfile(tmp_file) : os.remove(tmp_file)
+        #    tmp_ds = xr.Dataset()
+        #    tmp_ds[var[v]] = data
+        #    tmp_ds.to_netcdf(path=tmp_file,mode='w')
+        # else:
+        #    tmp_ds = xr.open_dataset( tmp_file )
+        #    data = tmp_ds[var[v]]
+        #-------------------------------------------------------------------------
+        # adjust units
+        if 'unit_fac' in var_opts:
+            if var_opts['unit_fac']:
+                data = data*var_opts['unit_fac']
+        #-------------------------------------------------------------------------
+        if print_stats: hapy.print_stat(data,compact=True)
+        #-------------------------------------------------------------------------
+        data_list.append( data_binned.values )
+        bins_list.append( data_binned['PRECZ_bins'].values )
+        lev_list.append( data_binned['lev'].values )
 
-         # bins = np.arange(0, 200+2, 2)
-         # bins = np.arange(0.2, 20+0.2, 0.2)
-         # bins = np.logspace( np.log10(0.001), np.log10(200), num=100)
-         bins = np.logspace( np.log10(10), np.log10(500), num=40)
-         data_binned = data_stacked.groupby_bins(prec_stacked, bins=bins).mean(dim='sample')
+        # lev_list.append( np.arange(len(data_binned['lev'].values)) )
 
-         # print()
-         # print(data_binned)
-         # print()
-         # hapy.print_stat(data_binned,compact=True,stat='naxs',fmt='e')
-         # print()
-         # raise Stop()
-         #----------------------------------------------------------------------
-         # if 'lat1' in locals() or 'lon1' in locals():
-         #    lat = get_data(ds,'lat').isel(time=0,missing_dims='ignore')
-         #    lon = get_data(ds,'lon').isel(time=0,missing_dims='ignore')
-         #    ncol = ds['ncol']
-         #    mask = xr.DataArray( np.ones([len(ncol)],dtype=bool), coords=[('ncol', ncol.values)], dims='ncol' )
-         #    if 'lat1' in locals(): mask = mask & (lat>=lat1) & (lat<=lat2)
-         #    if 'lon1' in locals(): mask = mask & (lon>=lon1) & (lon<=lon2)
-         #    mask.load()
-         #    data = data.where(mask,drop=True)
-         #    area = area.where(mask,drop=True)
-         #----------------------------------------------------------------------
-         # data = ( (data*area).sum(dim='ncol') / area.sum(dim='ncol') )
-         #----------------------------------------------------------------------
-         # if use_height: 
-         #    hght = ???
-         #    hght = ( (hght*area).sum(dim='ncol') / area.sum(dim='ncol') )
-         #----------------------------------------------------------------------
-      #    # Write to file 
-      #    if os.path.isfile(tmp_file) : os.remove(tmp_file)
-      #    tmp_ds = xr.Dataset()
-      #    tmp_ds[var[v]] = data
-      #    tmp_ds.to_netcdf(path=tmp_file,mode='w')
-      # else:
-      #    tmp_ds = xr.open_dataset( tmp_file )
-      #    data = tmp_ds[var[v]]
-      #-------------------------------------------------------------------------
-      # adjust units
-      if 'unit_fac' in var_opts:
-         if var_opts['unit_fac']:
-            data = data*var_opts['unit_fac']
-      #-------------------------------------------------------------------------
-      if print_stats: hapy.print_stat(data,compact=True)
-      #-------------------------------------------------------------------------
-      data_list.append( data_binned.values )
-      bins_list.append( data_binned['PRECZ_bins'].values )
-      # lev_list.append( data_binned['lev'].values )
 
-      lev_list.append( np.arange(len(data_binned['lev'].values)) )
+        # zmid = np.log(data_binned[ 'lev']/1e3) * -6740.
+        # lev_list.append( zmid.values )
 
-      
+        # if not use_height: lev_list.append( data['lev'].values )
+        # if     use_height: lev_list.append( hght.values )
+    #----------------------------------------------------------------------------
+    # Create plot
 
-      # zmid = np.log(data_binned[ 'lev']/1e3) * -6740.
-      # lev_list.append( zmid.values )
+    ip = v
+    
+    # data_min = np.min([np.nanmin(d) for d in data_list])
+    # data_max = np.max([np.nanmax(d) for d in data_list])
 
-      # if not use_height: lev_list.append( data['lev'].values )
-      # if     use_height: lev_list.append( hght.values )
-   #----------------------------------------------------------------------------
-   # Create plot
+    #----------------------------------------------------------------------------
+    # print the profiles
+    # print()
+    # tmp_data = data_list[c][-48,:]
+    # for i,d in enumerate(tmp_data):
+    #    print(f'{i:3}  {d}')
+    # print()
 
-   ip = v
-   
-   # data_min = np.min([np.nanmin(d) for d in data_list])
-   # data_max = np.max([np.nanmax(d) for d in data_list])
+    #----------------------------------------------------------------------------
+    # if plot_diff:
+    #    baseline = copy.deepcopy(data_list[0])
+    #    for c in range(num_case): 
+    #       data_list[c] = data_list[c] - baseline
+    #----------------------------------------------------------------------------
+    # set color bar levels
+    clev = None
+    # if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
+    # if var[v] in ['PS','sp']: clev = np.linspace( 800e2, 1020e2, num=40)
+    # if var[v] in ['PS','sp']: clev = np.arange(600e2,1040e2+2e2,10e2)
 
-   #----------------------------------------------------------------------------
-   # print the profiles
-   # print()
-   # tmp_data = data_list[c][-48,:]
-   # for i,d in enumerate(tmp_data):
-   #    print(f'{i:3}  {d}')
-   # print()
+    if var[v]=='ZM_ENTR_UP': clev = np.logspace( np.log10(0.0001e-3), np.log10(1.0e-3), num=40)
+    if var[v]=='ZM_DETR_UP': clev = np.logspace( np.log10(0.001e-3), np.log10(0.5e-3), num=40)
+    if var[v]=='ZMDT'      : clev = np.linspace( -0.002, 0.002, num=51)
 
-   #----------------------------------------------------------------------------
-   # if plot_diff:
-   #    baseline = copy.deepcopy(data_list[0])
-   #    for c in range(num_case): 
-   #       data_list[c] = data_list[c] - baseline
-   #----------------------------------------------------------------------------
-   # set color bar levels
-   clev = None
-   # if var[v]=='FRONTGF': clev = np.logspace( -5, -1, num=40)
-   # if var[v] in ['PS','sp']: clev = np.linspace( 800e2, 1020e2, num=40)
-   # if var[v] in ['PS','sp']: clev = np.arange(600e2,1040e2+2e2,10e2)
+    #----------------------------------------------------------------------------
+    # if var[v] in ['ZM_ENTR_UP','ZM_DETR_UP']: 
+    #    for c in range(num_case):
+    #       data_list[c] = np.absolute(data_list[c])
+    # if var[v]=='ZMDT':
+    for c in range(num_case):
+        # data_list[c] = np.ma.masked_invalid( data_list[c] )
+        data_list[c] = np.ma.masked_where(data_list[c]==0, data_list[c])
+    #----------------------------------------------------------------------------
+    # set color map
+    cmap = 'viridis'
+    # cmap = cmocean.cm.rain
+    if var[v]=='ZMDT': cmap = cmocean.cm.balance
+    #----------------------------------------------------------------------------
+    for c in range(num_case):
+        #-------------------------------------------------------------------------
+        img_kwargs = {}
+        # img_kwargs['origin'] = 'lower'
+        img_kwargs['cmap']   = cmap
 
-   if var[v]=='ZM_ENTR_UP': clev = np.logspace( np.log10(0.0001e-3), np.log10(1.0e-3), num=40)
-   if var[v]=='ZM_DETR_UP': clev = np.logspace( np.log10(0.001e-3), np.log10(0.5e-3), num=40)
-   if var[v]=='ZMDT'      : clev = np.linspace( -0.002, 0.002, num=51)
+        # if plot_diff and c!=diff_base:
+        #    img_kwargs['cmap']   = cmocean.cm.balance
+        #    img_kwargs['vmin']   = diff_data_min
+        #    img_kwargs['vmax']   = diff_data_max
+        #    clev = None
 
-   #----------------------------------------------------------------------------
-   # if var[v] in ['ZM_ENTR_UP','ZM_DETR_UP']: 
-   #    for c in range(num_case):
-   #       data_list[c] = np.absolute(data_list[c])
-   # if var[v]=='ZMDT':
-   for c in range(num_case):
-      # data_list[c] = np.ma.masked_invalid( data_list[c] )
-      data_list[c] = np.ma.masked_where(data_list[c]==0, data_list[c])
-   #----------------------------------------------------------------------------
-   # set color map
-   cmap = 'viridis'
-   # cmap = cmocean.cm.rain
-   if var[v]=='ZMDT': cmap = cmocean.cm.balance
-   #----------------------------------------------------------------------------
-   for c in range(num_case):
-      #-------------------------------------------------------------------------
-      img_kwargs = {}
-      # img_kwargs['origin'] = 'lower'
-      img_kwargs['cmap']   = cmap
+        if clev is not None: img_kwargs['norm'] = mcolors.BoundaryNorm(clev, ncolors=256)
 
-      # if plot_diff and c!=diff_base:
-      #    img_kwargs['cmap']   = cmocean.cm.balance
-      #    img_kwargs['vmin']   = diff_data_min
-      #    img_kwargs['vmax']   = diff_data_max
-      #    clev = None
+        data = data_list[c]
+        bins = bins_list[c]
+        lev = lev_list[c]
 
-      if clev is not None: img_kwargs['norm'] = mcolors.BoundaryNorm(clev, ncolors=256)
+        bin_centers = np.array([interval.mid for interval in bins])
+        
+        # bin_left  = np.array([interval.left  for interval in data_binned['precip_bins'].values])
+        # bin_right = np.array([interval.right for interval in data_binned['precip_bins'].values])
+        # bin_edges = np.append(bin_left, bin_right[-1])  # N+1 edges for N bins
 
-      data = data_list[c]
-      bins = bins_list[c]
-      lev = lev_list[c]
+        # time_vals   = time_list[c]
+        # time_idx    = np.arange(len(time_vals))
+        # time_labels = [t.strftime('%m/%d %Hz') for t in time_vals]
 
-      bin_centers = np.array([interval.mid for interval in bins])
-      
-      # bin_left  = np.array([interval.left  for interval in data_binned['precip_bins'].values])
-      # bin_right = np.array([interval.right for interval in data_binned['precip_bins'].values])
-      # bin_edges = np.append(bin_left, bin_right[-1])  # N+1 edges for N bins
+        (row,col) = get_row_col(c,v)
+        ax  = axs[row][col]
 
-      # time_vals   = time_list[c]
-      # time_idx    = np.arange(len(time_vals))
-      # time_labels = [t.strftime('%m/%d %Hz') for t in time_vals]
+        ax.set_title(case_opts_list[c]['n'],   fontsize=title_fontsize, loc='left')
+        ax.set_title(var_opts_list[v]['str'],  fontsize=title_fontsize, loc='right')
+        # ax.set_xlabel('Time')
+        ax.set_ylabel('Reference Pressure Level')
+        ax.tick_params(labelsize=lable_fontsize)
+        
+        # ax.set_ylim(lev.max(), lev.min())   # invert: surface at bottom, TOA at top
+        
+        # ax.set_ylim(50, 23)      # ZM top focus - vertical index
+        ax.set_ylim(150, 50)     # ZM top focus - pressure coord
+        # ax.set_ylim(10e3, 30e3)  # ZM top focus - height coord
 
-      ax = axs[v,c] if var_x_case else axs[c,v]
-      ax.set_title(case_opts_list[c]['n'],   fontsize=title_fontsize, loc='left')
-      ax.set_title(var_opts_list[v]['str'],  fontsize=title_fontsize, loc='right')
-      # ax.set_xlabel('Time')
-      ax.set_ylabel('Reference Pressure Level')
-      
-      # ax.set_ylim(lev.max(), lev.min())   # invert: surface at bottom, TOA at top
-      ax.set_ylim(50, 23)
-      # ax.set_ylim(10e3, 30e3)
+        ax.set_xscale('log')
+        
+        img = ax.pcolormesh( bin_centers, lev, data, **img_kwargs)
 
-      ax.set_xscale('log')
-      
-      img = ax.pcolormesh( bin_centers, lev, data, **img_kwargs)
+        # ax.set_xticks(time_idx)
+        # ax.set_xticklabels(time_labels, fontsize=10, rotation=45, ha='right')
 
-      # ax.set_xticks(time_idx)
-      # ax.set_xticklabels(time_labels, fontsize=10, rotation=45, ha='right')
+        # tick_stride = max(1, len(time_idx) // 20)
+        # ax.set_xticks(time_idx[::tick_stride])
+        # ax.set_xticklabels(time_labels[::tick_stride], rotation=45, ha='right')
 
-      # tick_stride = max(1, len(time_idx) // 20)
-      # ax.set_xticks(time_idx[::tick_stride])
-      # ax.set_xticklabels(time_labels[::tick_stride], rotation=45, ha='right')
-
-      cbar = fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
-      cbar.ax.tick_params(labelsize=lable_fontsize)
+        cbar = fig.colorbar(img, ax=ax, fraction=0.02, orientation='vertical')
+        cbar.ax.tick_params(labelsize=lable_fontsize)
 
 #-------------------------------------------------------------------------------
 # Add legend
