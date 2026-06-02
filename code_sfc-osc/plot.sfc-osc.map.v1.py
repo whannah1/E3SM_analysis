@@ -52,7 +52,7 @@ if host=='nersc':
 
    ### oscillation diagnostic tests
    tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/ne30pg2_scrip.nc'   
+   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/ne30pg2_scrip.nc'  
    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_0',n='ne30 imp_flux_0',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1',n='ne30 imp_flux_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    
@@ -61,13 +61,17 @@ if host=='nersc':
    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1.gusty_0.debug', n='ne30 iflux',     p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.imp_flux_1.debug',         n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
 
-   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_0.debug',n='ne30 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_1.debug',n='ne30 gust',      p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_0.debug',n='ne30 iflux',     p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_1.debug',n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_0.debug',n='ne30 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_0.gust_1.debug',n='ne30 gust',      p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_0.debug',n='ne30 iflux',     p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_1.debug',n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+
+   tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_0',n='ne256 w/ implicit flux', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
 
    htype='output.1ma.AVERAGE.nmonths_x1'
-   # first_file,num_files = 2,None
+   first_file,num_files = None,6
    add_var('T_2m_btp',s='T 2m btp')
 
 
@@ -311,8 +315,9 @@ for v in range(num_var):
    # if var[v]=='surf_sens_flux_btp': clev = np.linspace(-1,1,31)*1e2
 
    # negative only
-   if var[v]=='T_2m_btp':           clev = np.logspace(-5,1,31)[::-1]*-1
-   # if var[v]=='T_2m_btp':           clev = np.logspace(-2,1,31)[::-1]*-1
+   # if var[v]=='T_2m_btp':           clev = np.logspace(-8,1,31)[::-1]*-1
+   # if var[v]=='T_2m_btp':           clev = np.logspace(-5,1,31)[::-1]*-1
+   if var[v]=='T_2m_btp':           clev = np.logspace(-3,1,31)[::-1]*-1
    if var[v]=='wind_speed_10m_btp': clev = np.logspace(-2,1,31)[::-1]*-1
    if var[v]=='surf_sens_flux_btp': clev = np.logspace( 1,4,31)[::-1]*-1
 

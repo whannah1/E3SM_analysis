@@ -47,17 +47,56 @@ if host=='nersc':
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_2.5_pm_100', n='a=2.5 pm=100',clr='blue',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_3.0_pm_100', n='a=3.0 pm=100',clr='purple', ls='solid', p=scratch_gpu,s='run')
 
-    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    # # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', p=scratch_gpu,s='run')
 
-    htype='output.scream.2D.1hr.INSTANT.nhours_x1'
+    # htype='output.scream.2D.1hr.INSTANT.nhours_x1'
 
-    # first_file,num_files = -20,None
-    first_file,num_files = 2,None
+    # # first_file,num_files = -20,None
+    # first_file,num_files = 2,None
 
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',         n='',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',        n='',clr='orange', ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',        n='',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',         n='',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_0',        n='',clr='purple', ls='solid', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='',clr='orange', ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_2',  n='',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_2', n='',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_2', n='',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_2',  n='',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_1',  n='',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_1', n='',clr='orange', ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_1', n='',clr='green',  ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_1',  n='',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+    
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='',clr='orange', ls='dashdot', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='',clr='green',  ls='dashdot', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='',clr='blue',   ls='dashdot', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_2.mamsc_8',  n='dx=22 dt=600 mvgr=3 mamsc=8',clr='green',   ls='dashdot', p=scratch_gpu,s='run')
+    add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
+
+    htype = 'output.2D.1hr.INSTANT.nhours_x1'
+    first_file,num_files = 10,None
 
 
 
@@ -91,28 +130,14 @@ if host=='nersc':
     # # first_file,num_files = 2,3
     # first_file,num_files = 10,None
 
-    # add_var(x_var='precip_total_surf_mass_flux', y_var='zm_activity', str='zm_activity vs precip', \
-    #     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-    # add_var(x_var='precip_total_surf_mass_flux', y_var='zm_prec', str='zm_prec vs precip', \
-    #     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-    # add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
-    #     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-    # add_var(x_var='precip_total_surf_mass_flux', y_var='IceWaterPath', str='IWP vs precip', \
-    #     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-    # first_file,num_files = -20,None
-    # first_file,num_files = 2,None
 
 #---------------------------------------------------------------------------------------------------
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_bot', str='OLR vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_10m vs precip', \
-        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+# add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_10m vs precip', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='ps', str='psfc vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
@@ -120,8 +145,8 @@ add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_1
 # add_var(x_var='precip_total_surf_mass_flux', y_var='surf_sens_flux', str='SHF vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
-        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+# add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='RainWaterPath', str='RWP vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
@@ -129,6 +154,11 @@ add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs p
 # add_var(x_var='precip_total_surf_mass_flux', y_var='IceWaterPath', str='IWP vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
+add_var(x_var='precip_total_surf_mass_flux', y_var='zm_activity', str='zm_activity vs precip', \
+    htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+
+add_var(x_var='precip_total_surf_mass_flux', y_var='zm_prec', str='zm_prec (fraction) vs precip', \
+    htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
         htype=htype, xbin_min=20,xbin_max=64,use_log=False)
@@ -164,7 +194,7 @@ recalculate = True
 
 plot_diff   = False
 print_stats = True
-num_plot_col = min(2,len(var_opts_list))
+num_plot_col = min(1,len(var_opts_list))
 
 # ncol_chunk_size = int(100e3)
 

@@ -28,14 +28,33 @@ if host=='nersc':
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_2.5_pm_100', n='a=2.5 pm=100',clr='blue',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_3.0_pm_100', n='a=3.0 pm=100',clr='purple', ls='solid', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', lx=600,ne=67, p=scratch_gpu,s='run')
 
-    htype = 'output.scream.2D.1hr.INSTANT.nhours_x1'
-    first_file,num_files = 2,None
+    # htype = 'output.scream.2D.1hr.INSTANT.nhours_x1'
+    # first_file,num_files = 2,None
+
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_0',           n='RCE 5m control',     clr='black', ls='solid',  p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_100',  n='RCE 5m zm mvgr:100', clr='red',    ls='solid', p=scratch_gpu, s='run')
+    add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_10',   n='RCE 5m zm mvgr: 10', lx=400,ne=10, clr='red',    ls='solid', p=scratch_gpu, s='run')
+    add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_6',    n='RCE 5m zm mvgr:  6', lx=400,ne=10, clr='orange', ls='solid', p=scratch_gpu, s='run')
+    add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_4',    n='RCE 5m zm mvgr:  4', lx=400,ne=10, clr='green',  ls='solid', p=scratch_gpu, s='run')
+    add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_2',    n='RCE 5m zm mvgr:  2', lx=400,ne=10, clr='blue',   ls='solid', p=scratch_gpu, s='run')
+    add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_1',    n='RCE 5m zm mvgr:  1', lx=400,ne=10, clr='purple', ls='solid', p=scratch_gpu, s='run')
+
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_0',            n='RCE 1m control',     clr='black', ls='dashed',  p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_100',   n='RCE 1m zm mvgr:100', clr='red',    ls='dashed', p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_10',    n='RCE 1m zm mvgr: 10', clr='red',    ls='dashed', p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_6',     n='RCE 1m zm mvgr:  6', clr='orange', ls='dashed', p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_4',     n='RCE 1m zm mvgr:  4', clr='green',  ls='dashed', p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_2',     n='RCE 1m zm mvgr:  2', clr='blue',   ls='dashed', p=scratch_gpu, s='run')
+    # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_60.enable_zm_1.mvgr_1',     n='RCE 1m zm mvgr:  1', clr='purple', ls='dashed', p=scratch_gpu, s='run')
+
+    htype = 'output.scream.2D.1hr.AVERAGE.nhours_x1'
+    first_file,num_files = 10,None
 
 #-------------------------------------------------------------------------------
 if host=='olcf':
@@ -45,13 +64,13 @@ if host=='olcf':
     first_file,num_files = 0,5
 #-------------------------------------------------------------------------------
 add_var(var='precip_total_surf_mass_flux', str='precip', htype=htype)
-add_var(var='LiqWaterPath',                str='LiqWP',  htype=htype)
-add_var(var='IceWaterPath',                str='IceWP',  htype=htype)
+# add_var(var='LiqWaterPath',                str='LiqWP',  htype=htype)
+# add_var(var='IceWaterPath',                str='IceWP',  htype=htype)
 
 #-------------------------------------------------------------------------------
 fig_file = 'figs_cluster/cluster-histogram.DP.v1.png'
 
-eps_width    = 0.1
+eps_width    = 0.2 # 0.1
 num_plot_col = 1
 
 #-------------------------------------------------------------------------------
@@ -150,7 +169,7 @@ for v in range(num_var):
             data_tmp.load()
             #-----------------------------------------------------------------------
             threshold_mode,threshold_val = None,None
-            if 'precip' in var_name  : threshold_mode='min'; threshold_val = 5
+            if 'precip' in var_name    : threshold_mode='min'; threshold_val = 5
             if var_name=='LiqWaterPath': threshold_mode='min'; threshold_val = 0.5
             if var_name=='IceWaterPath': threshold_mode='min'; threshold_val = 0.5
             if var_name=='T_mid':        threshold_mode='max'; threshold_val = 298
@@ -161,6 +180,8 @@ for v in range(num_var):
             mask = np.zeros(data_tmp.shape)
             if threshold_mode=='min': mask[ data_tmp.values > threshold_val ] = 1
             if threshold_mode=='max': mask[ data_tmp.values < threshold_val ] = 1
+
+            # hapy.print_stat(data_tmp,name='data_tmp',stat='naxsh',fmt='e')
             #-----------------------------------------------------------------------
             # skip cases with fewer than 4 grid boxes above threshold
             if np.sum(mask)<4: continue
@@ -199,6 +220,11 @@ for v in range(num_var):
                     cluster_yc[t,k] = np.sum(area_label*yc_label)  /np.sum(area_label)
                     cluster_xc[t,k] = np.sum(area_label*xc_label)  /np.sum(area_label)
                     cluster_av[t,k] = np.sum(area_label*data_label)/np.sum(area_label)
+        
+        #-------------------------------------------------------------------------
+        # hapy.print_stat(data,name=var_name,stat='naxsh',fmt='e')
+        # hapy.print_stat(cluster_sz,name='cluster_sz',stat='naxsh',fmt='e')
+        # hapy.print_stat(cluster_av,name='cluster_av',stat='naxsh',fmt='e')
         #-------------------------------------------------------------------------
         chord_len = np.sqrt( cluster_sz / np.pi )
         bin_edges = 2**np.arange(1,10.1,0.4)

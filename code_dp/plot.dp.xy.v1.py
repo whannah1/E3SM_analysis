@@ -8,23 +8,21 @@ import hapy
 host = hapy.get_host()
 htype = None
 #-------------------------------------------------------------------------------
-case_name,case,case_dir,case_sub,case_grid,clr,dsh,mrk = [],[],[],[],[],[],[],[]
-lx_list,ne_list = [],[]
-def add_case(case_in,n=None,p=None,s=None,g=None,d=0,c='black',m=0,lx=None,ne=None,**kwargs):
-    global name,case,case_dir,case_sub,clr,dsh,mrk
-    tmp_name = '' if n is None else n
-    case.append(case_in); case_name.append(tmp_name)
-    case_dir.append(p); case_sub.append(s); case_grid.append(g)
-    dsh.append(d) ; clr.append(c) ; mrk.append(m)
-    lx_list.append(lx); ne_list.append(ne)
+case,case_opts_list = [],[]
+def add_case(case_in,**kwargs):
+    case.append(case_in)
+    case_opts = {}
+    for k, val in kwargs.items(): case_opts[k] = val
+    if 'n' not in case_opts: case_opts['n'] = case_in
+    case_opts_list.append(case_opts)
 #-------------------------------------------------------------------------------
-var, var_str, htype_list = [], [], []
-mlev_list = []
-def add_var(var_name,htype,n=None,mlev=None):
+var,var_opts_list = [],[]
+def add_var(var_name,**kwargs):
     var.append(var_name)
-    htype_list.append(htype)
-    var_str.append(var_name if n is None else n)
-    mlev_list.append(mlev)
+    var_opts = {}
+    for k, val in kwargs.items(): var_opts[k] = val
+    if 'str' not in var_opts: var_opts['str'] = var_name
+    var_opts_list.append(var_opts)
 #-------------------------------------------------------------------------------
 if host=='nersc':
     scratch_cpu = '/pscratch/sd/w/whannah/scream_scratch/pm-cpu'
@@ -68,15 +66,44 @@ if host=='nersc':
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_2.5_pm_100', n='a=2.5 pm=100',clr='blue',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-IDEAL-03.NN_01.ne15.lx_600km.dt_300.L128_v3.1_alpha_3.0_pm_100', n='a=3.0 pm=100',clr='purple', ls='solid', p=scratch_gpu,s='run')
 
-    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    # # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.0_pm_100',  n='a=1.0 pm=100',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_1.5_pm_100',  n='a=1.5 pm=100',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.0_pm_100',  n='a=2.0 pm=100',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_2.5_pm_100',  n='a=2.5 pm=100',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-03.NN_04.ne67.lx_600km.dt_60.L128_v3.1_alpha_3.0_pm_100',  n='a=3.0 pm=100',clr='purple', ls='dashed', p=scratch_gpu,s='run')
 
 
-    htype = 'output.scream.2D.1hr.AVERAGE.nhours_x1'
-    first_file,num_files = -1,None
+    # htype = 'output.scream.2D.1hr.AVERAGE.nhours_x1'
+    # first_file,num_files = -1,None
+    # time_slice = -1
+
+
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',         n='dx=3 dt=75 no-zm',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',        n='dx=6 dt=150 no-zm',clr='orange', ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',        n='dx=12 dt=300 no-zm',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',         n='dx=22 dt=600 no-zm',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_0',        n='dx=40 dt=1200 no-zm',clr='purple', ls='solid', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=3 dt=75 mvgr=3',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='dx=6 dt=150 mvgr=3',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='dx=12 dt=300 mvgr=3',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_1.mvgr_3', n='dx=40 dt=1200 mvgr=3',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=6 dt=75 mvgr=3',clr='orange',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=12 dt=75 mvgr=3',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt=75 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-GATE-ZM-03.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-03.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-GATE-ZM-04.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-04.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
+
+    htype = 'output.2D.1hr.INSTANT.nhours_x1'
+    first_file,num_files = -6,None
+    # first_file,num_files = 10,1
     time_slice = -1
 
 
@@ -108,24 +135,28 @@ if host=='olcf':
     scratch_frontier = '/lustre/orion/cli115/proj-shared/hannah6/scream_scratch'
 
 #-------------------------------------------------------------------------------
-add_var('precip_total_surf_mass_flux', htype=htype, n='precip')
-# add_var('VapWaterPath',                htype, n='VapWP')
-add_var('LiqWaterPath',                htype, n='LiqWP')
-add_var('IceWaterPath',                htype, n='IceWP')
-# add_var('LW_flux_up_at_model_top',     htype, n='LW_flux_up_at_model_top')
-# add_var('surf_evap',                   htype, n='surf_evap')
-add_var('ps',                          htype, n='ps')
 
-# add_var('zm_activity',                   htype)
+add_var('VapWaterPath',                str='VapWP')
+add_var('precip_total_surf_mass_flux', str='precip')
+# add_var('LiqWaterPath',                str='LiqWP')
+# add_var('IceWaterPath',                str='IceWP')
+# add_var('LW_flux_up_at_model_top',     str='LW_flux_up_at_model_top')
+# add_var('surf_evap',                   str='surf_evap')
+# add_var('ps',                          str='ps')
+
+add_var('zm_activity')
+add_var('zm_prec')
+# add_var('zm_cape')
 
 
-# tmp_htype = 'output.scream.3D.1hr.AVERAGE'
-# add_var('T_mid',           htype, n='T_mid @ k=127',  mlev=127)
-# add_var('qv',              htype, n='qv @ k=127',  mlev=127)
+tmp_htype = 'output.3D.1hr.INSTANT'
+add_var('omega',           str='omega @ k=100',  mlev=100, htype=tmp_htype)
+# add_var('T_mid',           str='T_mid @ k=127',  mlev=127)
+# add_var('qv',              str='qv @ k=127',  mlev=127)
 
-# add_var('wind_speed_10m',                 htype, n='wind_speed_10m')
-# add_var('surf_sens_flux',                 htype, n='surf_sens_flux')
-# add_var('surf_evap',                      htype, n='surf_evap')
+# add_var('wind_speed_10m',                 str='wind_speed_10m')
+# add_var('surf_sens_flux',                 str='surf_sens_flux')
+# add_var('surf_evap',                      str='surf_evap')
 
 #-------------------------------------------------------------------------------
 tmp_data_path = 'data_tmp'
@@ -206,14 +237,25 @@ if 'num_files' not in globals(): num_files = None
 #---------------------------------------------------------------------------------------------------
 ip = 0
 for v in range(num_var):
+    var_opts = var_opts_list[v]
     print(' '*2+'var: '+hapy.tclr.GREEN+var[v]+hapy.tclr.END)
     #---------------------------------------------------------------------------
     data_list = []
     #---------------------------------------------------------------------------
     for c in range(num_case):
+        case_opts = case_opts_list[c]
         print(''+' '*4+'case: '+hapy.tclr.CYAN+case[c]+hapy.tclr.END)
 
-        file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_list[v]}*'
+        case_dir = case_opts['p']
+        case_sub = case_opts['s']
+        htype_loc = var_opts.get('htype', None)
+        if htype_loc is None:
+            if 'htype' in globals():
+                htype_loc = htype
+            else:
+                raise ValueError('ERROR: no valid htype identified')
+
+        file_path = f'{case_dir}/{case[c]}/{case_sub}/*{htype_loc}*'
         file_list = sorted(glob.glob(file_path))
 
         if first_file is not None: file_list = file_list[first_file:]
@@ -235,8 +277,9 @@ for v in range(num_var):
             # data = data.var(dim='time')
         #-------------------------------------------------------------------------
         if 'lev' in data.dims:
-            if mlev_list[v] is not None: 
-                data = data.isel(lev=mlev_list[v])
+            mlev = var_opts.get('mlev', None)
+            if mlev is not None:
+                data = data.isel(lev=mlev)
         #-------------------------------------------------------------------------
         # unit conversions    
         if 'precip' in var[v]: data = data*86400.*1e3
@@ -325,9 +368,9 @@ for v in range(num_var):
 
         plt.colorbar(im, ax=ax, pad=0.02, fraction=0.046)
 
-        # Subtitles: left=case_name, right=var_str (mirrors hs.set_subtitles)
-        ax.set_title(var_str[v], loc='right',  fontsize=7)
-        ax.set_title(case_name[c], loc='left', fontsize=7)
+        # Subtitles: left=case name, right=var label (mirrors hs.set_subtitles)
+        ax.set_title(var_opts.get('str'), loc='right',  fontsize=7)
+        ax.set_title(case_opts_list[c]['n'], loc='left', fontsize=7)
 
         ax.set_xlabel('x (km)')
         ax.set_ylabel('y (km)')

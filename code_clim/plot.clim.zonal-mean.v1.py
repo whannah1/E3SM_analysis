@@ -26,16 +26,16 @@ def add_var(var_name, lev=-1, tem=False, s=None):
 #---------------------------------------------------------------------------------------------------
 if host == 'nersc':
 
-    tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch, s='run')
-    add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch, s='run')
-    htype = 'eam.h0'
+    # tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch, s='run')
+    # htype = 'eam.h0'
 
     ### oscillation diagnostic tests
     # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
@@ -50,6 +50,12 @@ if host == 'nersc':
     # add_var('IceWaterPath')
     # add_var('surf_sens_flux')
     # add_var('surface_upward_latent_heat_flux')
+
+    ### EAMxx ZM interface dev
+    tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
+    add_case('E3SM.2025-ZM-DEV-00.CPU.F2010xx-ZM.ne4pg2.NN_1.zm_cxx.debug',n='zm_cxx', p=tmp_scratch, s='run')
+    add_case('E3SM.2025-ZM-DEV-00.CPU.F2010xx-ZM.ne4pg2.NN_1.zm_f90.debug',n='zm_f90', p=tmp_scratch, s='run')
+    htype = 'eam.h0'
 
 #---------------------------------------------------------------------------------------------------
 # target_plev_mb = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,
