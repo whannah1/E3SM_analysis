@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.colors import BoundaryNorm
 import hapy
-# from hapy_setres import set_subtitles  # replaced with matplotlib equivalents
-
+host = hapy.get_host()
 #-------------------------------------------------------------------------------
 case, opts_list = [], []
 def add_case(case_in, **kwargs):
@@ -22,23 +21,44 @@ var_str_list   = []
 var_fac_list   = []
 def add_var(var_name, eam_var=None, eamxx_var=None, var_str=None, lev=None, fac=None, unit=None):
     var_list.append(var_name)
-    eam_var_list.append(eam_var)
-    eamxx_var_list.append(eamxx_var)
+    eam_var_list.append(var_name if eam_var is None else eam_var)
+    eamxx_var_list.append(var_name if eamxx_var is None else eamxx_var)
     unit_list.append(unit)
     var_fac_list.append(fac)
     var_str_list.append(var_name if var_str is None else var_str)
 #-------------------------------------------------------------------------------
 
-tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
-# first_file,num_files = 8,1
+#-------------------------------------------------------------------------------
+if host=='lcrc':
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
+    # first_file,num_files = 8,1
 
 #-------------------------------------------------------------------------------
+if host=='nersc':
+    tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
+    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,1
+    # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,1
+    # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,1
+    add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx', htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90', htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1', n='zm_f90.zm_detr_1',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0', n='zm_cxx.zm_detr_0',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1', n='zm_cxx.zm_detr_1',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   
+
+#-------------------------------------------------------------------------------
+# add_var('zm_detr_liq')
+# add_var('zm_detr_ice')
+add_var('qv')
+
 # add_var('Q', eam_var='Q', eamxx_var='qv', fac=1e3, unit='g/kg', var_str='Sp. Humidity')
 # add_var('U', eam_var='U', eamxx_var='U',     unit='m/s')
 # add_var('T', eam_var='T', eamxx_var='T_mid', unit='K')
@@ -46,7 +66,7 @@ add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  com
 # add_var('ZM_ENTR_UP',eam_var='ZM_ENTR_UP')
 # add_var('ZM_DETR_UP',eam_var='ZM_DETR_UP')
 # add_var('ZM_ENTR_DN',eam_var='ZM_ENTR_DN')
-add_var('ZMMU',      eam_var='ZMMU')
+# add_var('ZMMU',      eam_var='ZMMU')
 # add_var('ZMMD',      eam_var='ZMMD')
 # add_var('ZMDT',      eam_var='ZMDT')
 # add_var('ZMDQ',      eam_var='ZMDQ')
@@ -160,8 +180,10 @@ for v in range(num_var):
                 if case_opts['comp'] == 'eamxx': tvar = eamxx_var_list[v]
                 data = ds[tvar]
 
-                # data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev, ds['ps'],
-                data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev, ds['PS'],
+                ps_var = None
+                if 'ps' in ds: ps_var = 'ps'
+                if 'PS' in ds: ps_var = 'PS'
+                data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev, ds[ps_var],
                                            interp_type='linear', extrapolate=False)
                 if len(data.plev) == 1: data = data.isel(plev=0)
 
@@ -170,6 +192,9 @@ for v in range(num_var):
             data = data * var_fac_list[v]
         #-----------------------------------------------------------------------
         # Zonal mean
+        print()
+        print(data)
+        print()
         data = data.mean(dim='lon')
         data_list.append(data.values)
         lat_list_.append(data['lat'].values / 1e2)   # preserve original scaling

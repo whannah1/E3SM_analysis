@@ -78,16 +78,16 @@ if host=='nersc':
     # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
     # first_file,num_files = 10,None
 
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',         n='dx=3 dt=75 no-zm',clr='red',    ls='solid', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',        n='dx=6 dt=150 no-zm',clr='orange', ls='solid', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',        n='dx=12 dt=300 no-zm',clr='green',  ls='solid', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',         n='dx=22 dt=600 no-zm',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',         n='dx= 3 dt= 75 no-zm',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',        n='dx= 6 dt=150 no-zm',clr='orange', ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',        n='dx=12 dt=300 no-zm',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',         n='dx=22 dt=600 no-zm',clr='blue',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_0',        n='dx=40 dt=1200 no-zm',clr='purple', ls='solid', p=scratch_gpu,s='run')
 
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx= 3 dt= 75 mvgr=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='dx= 6 dt=150 mvgr=3',clr='orange', ls='dashed', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='dx=12 dt=300 mvgr=3',clr='green',  ls='dashed', p=scratch_gpu,s='run')
-    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx= 3 dt= 75 mvgr=3',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='dx= 6 dt=150 mvgr=3',clr='orange', ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='dx=12 dt=300 mvgr=3',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
     
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx= 6 dt= 75 mvgr=3',clr='orange', ls='dashdot', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=12 dt= 75 mvgr=3',clr='green',  ls='dashdot', p=scratch_gpu,s='run')
@@ -124,7 +124,7 @@ if host=='nersc':
     # # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_10',  n='dx=22 dt= 75 mvgr=10' ,clr='purple',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_100', n='dx=22 dt= 75 mvgr=100',clr='cyan',     ls='solid', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-GATE-ZM-06a.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3'  ,clr='red',      ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06a.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3'  ,clr='red',      ls='solid', p=scratch_gpu,s='run')
 
     htype = 'output.1D.1hr.AVERAGE.nhours_x1'
     first_file,num_files = 10,10
@@ -163,22 +163,22 @@ add_var('MSE')
 # add_var('dS/dp',              str='-dS/dp')
 # add_var('qv')
 add_var('RelativeHumidity')
-add_var('qc')
+# add_var('qc')
 # add_var('qr')
-add_var('qi')
+# add_var('qi')
 
 # add_var('total_T_mid_tend')
 # add_var('total_qv_tend')
 
-add_var('zm_T_mid_tend')
+# add_var('zm_T_mid_tend')
 # add_var('zm_qv_tend')
-add_var('shoc_T_mid_tend')
+# add_var('shoc_T_mid_tend')
 # add_var('shoc_qv_tend')
 # add_var('p3_T_mid_tend')
 # add_var('p3_qv_tend')
 
-add_var('zm_qv_tend')
-add_var('zm_dlf')
+# add_var('zm_qv_tend')
+# add_var('zm_dlf')
 
 
 # add_var('T_mid',              str='T_mid variance', method='variance')
@@ -402,6 +402,7 @@ for v in range(num_var):
     ax.xaxis.get_major_formatter().set_useOffset(False)
 
     if num_case > 1:
+        fontsize = 8
         ax.legend(fontsize=fontsize, loc='best', framealpha=0.6)
 
 # Hide unused axes
