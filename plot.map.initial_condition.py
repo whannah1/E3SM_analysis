@@ -34,7 +34,15 @@ if host=='nersc':
    # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_3.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
 
 #-------------------------------------------------------------------------------
-# if host=='olcf':
+if host=='olcf':
+
+   tmp_root = '/lustre/orion/cli115/proj-shared/hannah6/files_init'
+   tmp_scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne256pg2_scrip.nc'
+   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
+   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.5_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.5_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_3.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
 
 #-------------------------------------------------------------------------------
 # if host=='nersc':
@@ -47,7 +55,8 @@ if host=='nersc':
 
 #-------------------------------------------------------------------------------
 
-add_var('T_mid',lev=-80)
+# add_var('T_mid',lev=-80)
+add_var('T_mid',lev=-120)
 
 #-------------------------------------------------------------------------------
 # lat1,lat2 = -30,30
@@ -89,10 +98,16 @@ subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
 (d1,d2) = (num_var,num_file) if var_x_case else (num_file,num_var)
 # dx=10;figsize = (dx*num_var,dx*num_file) if var_x_case else (dx*num_file,dx*num_var)
 
-fdx,fdy=5,10;figsize = (fdx*num_file,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_file)
+fdx,fdy=10,5; figsize = (fdx*num_file,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_file)
 title_fontsize,lable_fontsize = 20,18
 
 # figsize = (30,30); title_fontsize,lable_fontsize = 25,15
+
+print(); print(file_list)
+print(); print(num_file)
+# print(); print(d1)
+# print(); print(d2)
+print()
 
 fig, axs = plt.subplots(d1,d2, subplot_kw=subplot_kwargs, figsize=figsize, squeeze=False )
 
@@ -136,9 +151,10 @@ for v in range(num_var):
             # data = data.isel(lev=0)
             # if requested lev<0 use model levels without interpolation
             if lev_list[v]<0:
-               approx_plev = data.lev.isel(lev=np.absolute(lev_list[v])).values
-               print(' '*4+f'selecting model level ~ approx_plev: {approx_plev}') 
-               data = data.isel(lev=np.absolute(lev_list[v]),drop=True)
+               klev = np.absolute(lev_list[v])
+               approx_plev = data.lev.isel(lev=klev).values
+               print(' '*4+f'selecting model level - klev={klev} ~ approx_plev: {approx_plev}') 
+               data = data.isel(lev=klev,drop=True)
       #-------------------------------------------------------------------------
       data.load()
       data_list.append( data )
@@ -187,6 +203,8 @@ for v in range(num_var):
       for f in range(num_file):
          if f!=0:
             data_list[f] = data_list[f] - data_list[0]
+      diff_data_max = np.max([np.nanmax(np.absolute(d)) for d in data_list[1:]])
+      diff_data_min = -1*diff_data_max
       #    hapy.print_stat(data_list[f],name=var_list[v],stat='naxsh',indent='    ',compact=True)
       # exit()
    #----------------------------------------------------------------------------

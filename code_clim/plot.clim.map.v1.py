@@ -18,7 +18,7 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
 #-------------------------------------------------------------------------------
 var,lev_list,var_str = [],[],[]
 var_opts_list = []
-def add_var(var_name,lev=0,s=None,**kwargs): 
+def add_var(var_name,lev=None,s=None,**kwargs): 
    var.append(var_name); lev_list.append(lev); 
    var_str.append(var_name if s is None else s)
    var_opts = {}
@@ -30,11 +30,32 @@ fig_file = 'figs_clim/clim.map.v1.png'
 #-------------------------------------------------------------------------------
 if host=='olcf':
 
-   scrip_file_path = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   ### ZM F90 vs C++ comparison
+   tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+   scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-ZM-DEV-02.F2010xx-ZM.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 01',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-ZM-DEV-02.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 02',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-ZM-DEV-03.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 03',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
+   # use_snapshot,ss_t = True,4
+   # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
+   
+   # add_case('E3SM.2026-ZM-DEV-04.F2010xx-ZM.ne30pg2.NN_4.zm_f90.ts_output_1',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-ZM-DEV-04.F2010xx-ZM.ne30pg2.NN_4.zm_cxx.ts_output_1',n='zm_cxx',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'output.debug.INSTANT.nsteps_x1',0,1
+   # use_snapshot,ss_t = True,1
 
-   ### 2023 coriolis test
-   # add_case('E3SM.2023-coriolis-test.GNUGPU.ne30pg2_oECv3.F2010-MMF1.coriolis-off',n='MMF 2D')
-   # add_case('E3SM.2023-coriolis-test.GNUGPU.ne30pg2_oECv3.F2010-MMF1.NXY_32_1.coriolis-on',n='MMF 2D + non-trad cor')
+   # ### vert grid hybrid coeff test
+   # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+   # # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne256pg2_scrip.nc'
+   # # add_case('SCREAM.2026-vert-test-01.ne256pg2.L128v31a10',n='L128v31a10',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # # add_case('SCREAM.2026-vert-test-01.ne256pg2.L128v31a15',n='L128v31a15',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   # add_case('SCREAM.2026-vert-test-01.ne30pg2.L128v31a10',n='L128v31a10',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('SCREAM.2026-vert-test-01.ne30pg2.L128v31a15',n='L128v31a15',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -121,23 +142,25 @@ if host=='alcf':
 # add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
 # add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
 
-add_var('zm_activity')
-add_var('zm_cape')
-# add_var('zm_dcape')
-add_var('precip_total_surf_mass_flux')
-# add_var('zm_prec_frac')
-# add_var('zm_prec')
-add_var('LW_flux_up_at_model_top')
-# add_var('zm_detr_liq')
-# add_var('zm_detr_ice')
+# add_var('precip_total_surf_mass_flux')
+# add_var('ps')
 
-add_var('VapWaterPath')
-add_var('LiqWaterPath')
+# add_var('LW_flux_up_at_model_top')
+# add_var('VapWaterPath')
+# add_var('LiqWaterPath')
 # add_var('IceWaterPath')
 # add_var('RainWaterPath')
-# add_var('T_2m')
-# add_var('zm_cape')
 
+# add_var('T_2m')
+# add_var('SeaLevelPressure')
+
+add_var('zm_activity')
+add_var('zm_cape')
+add_var('zm_prec')
+# add_var('zm_prec_frac')
+# add_var('zm_dcape')
+# add_var('zm_detr_liq')
+# add_var('zm_detr_ice')
 
 # add_var('TS')
 # add_var('PRECT',s='Precipitation')
@@ -149,6 +172,12 @@ add_var('LiqWaterPath')
 # add_var('FSNT'); add_var('FLNT')
 # add_var('LWCF'); add_var('SWCF')
 # add_var('U10')
+
+# add_var('T_mid', s='T_mid mlev=95 (~500mb)',  lev=-95)
+# add_var('T_mid', s='T_mid plev=500', lev=500)
+
+# add_var('z_mid', s='z_mid mlev=95 (~500mb)',  lev=-95)
+# add_var('z_mid', s='z_mid plev=500', lev=500)
 
 # add_var('T',     lev=500)
 # add_var('U',     lev=500)
@@ -171,11 +200,11 @@ add_var('LiqWaterPath')
 #-------------------------------------------------------------------------------
 
 # plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False
-plot_diff,add_diff = True,True
+plot_diff,add_diff = True,False
+# plot_diff,add_diff = True,True
 
 print_stats          = True
-var_x_case           = False
+var_x_case           = True
 
 # num_plot_col         = len(case)
 # num_plot_col         = 1#len(var)
@@ -220,9 +249,10 @@ subplot_kwargs = {}
 subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
 # subplot_kwargs['projection'] = ccrs.PlateCarree()
 (d1,d2) = (num_var,num_panel) if var_x_case else (num_panel,num_var)
-fdx,fdy=20,10;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
-# title_fontsize,lable_fontsize = 20,18
-title_fontsize,lable_fontsize = 30,25
+fdx,fdy=10,5;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
+title_fontsize,lable_fontsize = 20,18
+# fdx,fdy=20,10;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
+# title_fontsize,lable_fontsize = 30,25
 
 fig, axs = plt.subplots(d1,d2, subplot_kw=subplot_kwargs, figsize=figsize, squeeze=False )
 
@@ -235,7 +265,6 @@ for v in range(num_var):
    data_list = []
    glb_avg_list = []
    grid_ds_list = []
-   if 'lev_list' in locals(): lev = lev_list[v]
    for c in range(num_case):
       print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
       #-------------------------------------------------------------------------
@@ -258,22 +287,22 @@ for v in range(num_var):
       # ds = xr.open_mfdataset( file_list )
       # data = ds[var[v]]
       #-------------------------------------------------------------------------
-      uxds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
+      ds = ux.open_mfdataset(scrip_file_list[c], file_list, data_vars='minimal')
 
-      # if 'valid_time' in uxds.dims:
-      #    if len(uxds['valid_time'])==1:
-      #       uxds = uxds.isel(valid_time=0)
+      # if 'valid_time' in ds.dims:
+      #    if len(ds['valid_time'])==1:
+      #       ds = ds.isel(valid_time=0)
 
-      # hapy.check_invalid_values(uxds, variables=[var[v]], check_range=None)
+      # hapy.check_invalid_values(ds, variables=[var[v]], check_range=None)
       # exit()
 
       if var[v]=='zm_prec_frac':
-         data = uxds['zm_prec'] / uxds['precip_total_surf_mass_flux']
+         data = ds['zm_prec'] / ds['precip_total_surf_mass_flux']
       else:
-         data = uxds[var[v]]
+         data = ds[var[v]]
 
       # # lon_min, lon_max = -180, 180
-      # mask = ((uxds['lat'] >= lat_min) & (uxds['lat'] <= lat_max))
+      # mask = ((ds['lat'] >= lat_min) & (ds['lat'] <= lat_max))
       # # mask.load()
       # data = data.where(mask, drop=True)
 
@@ -288,15 +317,25 @@ for v in range(num_var):
       # grid_ds_list.append(grid_ds)
 
       #-------------------------------------------------------------------------
-      # if 'lev' in data.dims:
-      #    # data = data.isel(lev=0)
-      #    # if requested lev<0 use model levels without interpolation
-      #    if lev_list[v]<0: data = data.isel(lev=np.absolute(lev_list),drop=True)
-      #-------------------------------------------------------------------------
-      # integrate over levels
       if 'lev' in data.dims:
-         print(' '*4+f'{hapy.tclr.RED}WARNING - summing over lev dimension{hapy.tclr.END}')
-         data = data.sum(dim='lev')
+         if lev_list[v] is None:
+            raise ValueError('lev_list[v] is None - not sure what to do...')
+         if lev_list[v]>0:
+            ps_var = next((v for v in ['ps', 'PS'] if v in ds), None)
+            if ps_var is None: raise ValueError('No sfc pressure variable found in dataset?')
+            data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev_list[v], ds[ps_var],
+                                       interp_type='log', extrapolate=False)
+         if lev_list[v]<0:
+            # if requested lev<0 use model levels without interpolation
+            klev_tmp = np.absolute(lev_list[v])
+            plev_tmp = data['lev'].values[klev_tmp]
+            print(' '*4+f'{hapy.tclr.YELLOW}selecting model level {klev_tmp} (plev~{plev_tmp}mb){hapy.tclr.END}')
+            data = data.isel(lev=klev_tmp,drop=True)
+      #-------------------------------------------------------------------------
+      # # integrate over levels
+      # if 'lev' in data.dims:
+      #    print(' '*4+f'{hapy.tclr.RED}WARNING - summing over lev dimension{hapy.tclr.END}')
+      #    data = data.sum(dim='lev')
       #-------------------------------------------------------------------------
       # adjust units
       if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
