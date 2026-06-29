@@ -27,11 +27,11 @@ if host=='nersc':
    ### IC files for vertical grid test
    tmp_root = '/global/cfs/cdirs/e3sm/whannah/files_init'
    tmp_scrip_file = '/global/cfs/cdirs/e3sm/mapping/grids/ne256np4_scrip_c20190127.nc'
-   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
-   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.5_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
-   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
-   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.5_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
-   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_3.0_pm_100.nc', n='alpha_1.0_pm_100', scrip_file=tmp_scrip_file)
+   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.0_pm_100.nc', n='a=1.0 pm=100', scrip_file=tmp_scrip_file)
+   add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_1.5_pm_100.nc', n='a=1.5 pm=100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.0_pm_100.nc', n='a=2.0 pm=100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_2.5_pm_100.nc', n='a=2.5 pm=100', scrip_file=tmp_scrip_file)
+   # add_case(f'{tmp_root}/screami_ne256np4L128_ifs-20200120_20220914.L128v3.1_alpha_3.0_pm_100.nc', n='a=3.0 pm=100', scrip_file=tmp_scrip_file)
 
 #-------------------------------------------------------------------------------
 if host=='olcf':
@@ -55,6 +55,7 @@ if host=='olcf':
 
 #-------------------------------------------------------------------------------
 
+# add_var('ps')
 # add_var('T_mid',lev=-80)
 add_var('T_mid',lev=-120)
 
@@ -196,8 +197,8 @@ for v in range(num_var):
    if plot_diff:
       # tmp_data = copy.deepcopy(data_list)
       # for c in range(num_file): tmp_data[c] = data_list[c] - data_list[0]
-      # # diff_data_max = np.max([np.nanmax(d) for d in tmp_data])
-      # # diff_data_min = np.min([np.nanmin(d) for d in tmp_data])
+      # diff_data_max = np.max([np.nanmax(d) for d in tmp_data])
+      # diff_data_min = np.min([np.nanmin(d) for d in tmp_data])
       # diff_data_max = np.max([np.nanmax(np.absolute(d)) for d in tmp_data])
       # diff_data_min = -1*diff_data_max
       for f in range(num_file):
@@ -230,8 +231,8 @@ for v in range(num_var):
 
       if plot_diff and f!=0:
          img_kwargs['cmap']   = cmocean.cm.balance
-         # img_kwargs['vmin']   = diff_data_min
-         # img_kwargs['vmax']   = diff_data_max
+         img_kwargs['vmin']   = diff_data_min
+         img_kwargs['vmax']   = diff_data_max
          clev = None
 
       if clev is not None: img_kwargs['norm'] = mcolors.BoundaryNorm(clev, ncolors=256)

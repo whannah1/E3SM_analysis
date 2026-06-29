@@ -1,534 +1,360 @@
-#---------------------------------------------------------------------------------------------------
-# Plot the zonal mean of the specified variables
-# Rewritten from PyNGL to matplotlib
-#---------------------------------------------------------------------------------------------------
-import copy, cftime, warnings, os, xarray as xr, numpy as np, cmocean, glob, pandas as pd
-import matplotlib; matplotlib.use('Agg')
+import os, glob, subprocess as sp, numpy as np, xarray as xr, copy, string, sys, cmocean, warnings
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import matplotlib.colors as mcolors
-from matplotlib.gridspec import GridSpec
-import hapy; host = hapy.get_host()
-#---------------------------------------------------------------------------------------------------
-name, case, case_dir, case_sub, case_grid = [], [], [], [], []
-def add_case(case_in, n=None, p=None, s=None, g=None, d=None, c=None, **kwargs):
-    global name, case, case_dir, case_sub
-    tmp_name = '' if n is None else n
-    case.append(case_in); name.append(tmp_name); case_dir.append(p)
-    case_sub.append(s); case_grid.append(g)
-#---------------------------------------------------------------------------------------------------
-var, var_str, lev_list_var, tem_list = [], [], [], []
-var_opts_list = []
-def add_var(var_name, lev=-1, tem=False, s=None, **kwargs):
-    if lev == -1: lev = np.array([0])
-    var.append(var_name); lev_list_var.append(lev)
-    tem_list.append(tem)
-    var_str.append(var_name if s is None else s)
-    var_opts = {}
-    for k, val in kwargs.items(): var_opts[k] = val
-    var_opts_list.append(var_opts)
-#---------------------------------------------------------------------------------------------------
-if host == 'nersc':
+from matplotlib.colors import BoundaryNorm
+import hapy
+host = hapy.get_host()
+#-------------------------------------------------------------------------------
+case, opts_list = [], []
+def add_case(case_in, **kwargs):
+    case.append(case_in)
+    case_opts = {}
+    for k, val in kwargs.items(): case_opts[k] = val
+    opts_list.append(case_opts)
 
-    # tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch, s='run')
-    # htype = 'eam.h0'
+#-------------------------------------------------------------------------------
+var_list       = []
+eam_var_list   = []
+eamxx_var_list = []
+unit_list      = []
+var_str_list   = []
+var_fac_list   = []
+def add_var(var_name, eam_var=None, eamxx_var=None, var_str=None, lev=None, fac=None, unit=None):
+    var_list.append(var_name)
+    eam_var_list.append(var_name if eam_var is None else eam_var)
+    eamxx_var_list.append(var_name if eamxx_var is None else eamxx_var)
+    unit_list.append(unit)
+    var_fac_list.append(fac)
+    var_str_list.append(var_name if var_str is None else var_str)
+#-------------------------------------------------------------------------------
 
-    ### oscillation diagnostic tests
-    # tmp_scratch = '/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
-    # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-    # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'   
-    # add_case('E3SM.2026-osc-test-01.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',           n='ne256 control',   p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-osc-test-03.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.imp_flux_1',n='ne256 imp_flux_1',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-    # first_file,num_files = 2,None
-    # htype = 'output.scream.2D.AVERAGE.ndays_x1.'
-    # add_var('precip_total_surf_mass_flux')
-    # add_var('LiqWaterPath')
-    # add_var('IceWaterPath')
-    # add_var('surf_sens_flux')
-    # add_var('surface_upward_latent_heat_flux')
+#-------------------------------------------------------------------------------
+if host=='lcrc':
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', comp='eam', htype='eam.h1', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
+    # first_file,num_files = 8,1
 
-    ### EAMxx ZM interface dev
-    # tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu'
-    # add_case('E3SM.2025-ZM-DEV-00.CPU.F2010xx-ZM.ne4pg2.NN_1.zm_cxx.debug',n='zm_cxx', p=tmp_scratch, s='run')
-    # add_case('E3SM.2025-ZM-DEV-00.CPU.F2010xx-ZM.ne4pg2.NN_1.zm_f90.debug',n='zm_f90', p=tmp_scratch, s='run')
-    # htype = 'eam.h0'
+#-------------------------------------------------------------------------------
+if host=='nersc':
+    # tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,1
+    # # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,1
+    # # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,1
+    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx', htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90', htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1', n='zm_f90.zm_detr_1',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0', n='zm_cxx.zm_detr_0',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1', n='zm_cxx.zm_detr_1',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
 
-    tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
-    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6
-    htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
-    # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,1
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',n='zm_cxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90', htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1', n='zm_f90.zm_detr_1',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('ERA5','ERA5')
-    add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0', n='no-cld-detr',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1', n='w/-cld-detr',htype=htype,comp='eamxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1.mcsp_mod_1',n='zm_cxx.zm_detr_1.mcsp_mod_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    tmp_path_gpu = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+    tmp_path_cpu = '/pscratch/sd/w/whannah/scream_scratch/pm-cpu'
+    scrip_file_ne30 = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    add_case('E3SM.2025-GW-DEV-01.CPU.F2010.ne30pg2.NN_8', n='EAM w/ gw', comp='eam',
+                p=tmp_path_cpu,s='run',scrip_file=scrip_file_ne30,htype='eam.h0')
+    # add_case('E3SM.2025-GW-DEV-01.GPU.F2010-SCREAMv1.ne30pg2.NN_4.use_gw_1',n='EAMxx w/ gw', comp='eamxx',
+    #             p=tmp_path_gpu,s='run',scrip_file=scrip_file_ne30,htype='output.monthly.AVERAGE.nmonths_x1')
+    add_case('E3SM.2025-GW-DEV-02.GPU.F2010-SCREAMv1.ne30pg2.NN_4.use_gw_1',n='EAMxx w/ gw', comp='eamxx',
+                p=tmp_path_gpu,s='run',scrip_file=scrip_file_ne30,htype='output.monthly.AVERAGE.nmonths_x1')
+    first_file,num_files = 0,1
+    add_var('GWORO', eam_var='UTGWORO', eamxx_var='gw_horiz_winds_tend', fac=86400, unit='m/s/day', var_str='Oro GW U tend')
 
-#---------------------------------------------------------------------------------------------------
-# target_plev_mb = np.array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
-#                             450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
-#                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
-target_plev_mb = np.array([ 100., 200., 300., 400., 500.,  600.,  700.,  750.,  775.,  800.,  825.,
+#-------------------------------------------------------------------------------
+# add_var('zm_detr_liq')
+# add_var('zm_detr_ice')
+# add_var('qv')
+
+# add_var('Q', eam_var='Q', eamxx_var='qv', fac=1e3, unit='g/kg', var_str='Sp. Humidity')
+# add_var('U', eam_var='U', eamxx_var='U',     unit='m/s')
+# add_var('T', eam_var='T', eamxx_var='T_mid', unit='K')
+
+# add_var('ZM_ENTR_UP',eam_var='ZM_ENTR_UP')
+# add_var('ZM_DETR_UP',eam_var='ZM_DETR_UP')
+# add_var('ZM_ENTR_DN',eam_var='ZM_ENTR_DN')
+# add_var('ZMMU',      eam_var='ZMMU')
+# add_var('ZMMD',      eam_var='ZMMD')
+# add_var('ZMDT',      eam_var='ZMDT')
+# add_var('ZMDQ',      eam_var='ZMDQ')
+
+#-------------------------------------------------------------------------------
+target_plev_mb = np.array([ 50.,  70., 100., 125., 150., 175., 200., 225., 250., 300., 350., 400.,
+                450., 500., 550., 600., 650., 700., 750., 775., 800., 825.,
+                850., 875., 900., 925., 950., 975., 1000.])
+target_plev_mb = np.array([ 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,
+                            100., 200., 300., 400., 500.,  600.,  700.,  750.,  775.,  800.,  825.,
                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
-# target_plev_mb = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])
-# target_plev_mb = np.array([0.1, 0.2, 0.5, 1., 2., 3., 5., 7., 10., 20., 30., 50., 70., 100., 125., 150.])
+# lev = lev * 1e2   # Pa
 
-# add_var('U',s='Zonal Wind [m/s]')
-# add_var('V',s='Meridional Wind [m/s]')
-# add_var('OMEGA',s='Omega [Pa/s]')
-# add_var('T',s='Temperature [K]')
-
-# add_var('T_mid',s='T_mid [K]')
-add_var('qv',s='qv [g/kg]', unit_fac=1e3)
-# add_var('qc',s='qc [g/kg]', unit_fac=1e3)
-# add_var('qi',s='qi [g/kg]', unit_fac=1e3)
-
-# add_var('qv',s='Water Vapor [g/kg]',   unit_fac=1e3)
-# add_var('qc',s='Cloud Liquid [g/kg]',  unit_fac=1e3)
-# add_var('qi',s='Cloud Ice [g/kg]',     unit_fac=1e3)
-
-month_list = None
-# month_list = [1]
-# month_list = [7]
-# month_list = [6, 7, 8]   # JJA
-
-#---------------------------------------------------------------------------------------------------
-month_names = {1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',
-               7:'Jul',8:'Aug',9:'Sep',10:'Oct',11:'Nov',12:'Dec'}
-month_str = ('(' + ','.join(month_names[m] for m in month_list) + ')'
-             if month_list is not None else '')
-#---------------------------------------------------------------------------------------------------
-recalculate = True
-
-plot_diff            = True
-add_diff             = False
-
-var_x_case           = False
-use_common_label_bar = False
-print_stats          = True
-
-num_plot_col = 2
-
-yr1, yr2 = None, None
-# yr1, yr2 = 2005, 2014
-# yr1, yr2 = 1995, 1995
-# yr1, yr2 = 1995, 1999
-
-fig_file       = 'figs_clim/clim.zonal-mean.v1.png'
-tmp_file_head  = 'clim.zonal-mean.v1'
+#-------------------------------------------------------------------------------
+fig_file = f'figs_clim/clim.zonal-mean.v1'
 
 lat1, lat2, dlat = -88., 88., 2
+# lat1, lat2 = -15, 15
+yr1, yr2   = 1995, 2004
 
-#---------------------------------------------------------------------------------------------------
-# Utility: mimic ngl.nice_cntr_levels
-#---------------------------------------------------------------------------------------------------
-def nice_cntr_levels(data_min, data_max, max_steps=11, aboutZero=False):
-    """Return (cmin, cmax, cint) with 'nice' round numbers, optionally symmetric."""
-    if aboutZero:
-        mag = max(abs(data_min), abs(data_max))
-        raw_int = 2 * mag / (max_steps - 1)
+plot_diff = False
+
+recalculate      = True
+var_x_case       = False
+num_plot_col     = 2
+use_common_label_bar = False
+
+#-------------------------------------------------------------------------------
+def run_cmd(cmd, verbose=True, indent='  '):
+    cmd_str = indent + hapy.tclr.GREEN + cmd + hapy.tclr.END
+    if verbose: print('\n' + cmd_str)
+    proc = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, shell=True, universal_newlines=True)
+    (msg, err) = proc.communicate()
+    if verbose and msg != '': print(f'  msg: {msg}')
+    if err != '' and not verbose: print(cmd_str)
+    if err != '': print(f'err: {err}'); exit()
+    return msg
+
+#-------------------------------------------------------------------------------
+num_case, num_var = len(case), len(var_list)
+
+# Panel layout: [num_case rows, num_var cols] when var_x_case=False
+nrows, ncols = (num_var, num_case) if var_x_case else (num_case, num_var)
+
+if 'num_plot_col' in locals():
+    nrows, ncols = ( int(np.ceil(num_var*num_case/float(num_plot_col))), num_plot_col )
+
+# Figure size: target ~2048px at 150 dpi → ~13.6 inches per side
+dpi     = 150
+fig_w   = 10*ncols # max(5 * ncols, 8)
+fig_h   =  6*nrows # max(4 * nrows, 6)
+fig, axes = plt.subplots(nrows, ncols, figsize=(fig_w, fig_h), dpi=dpi, squeeze=False)
+fig.subplots_adjust(wspace=0.15, hspace=0.35)
+
+plots   = [[None] * ncols for _ in range(nrows)]
+cfs     = [[None] * ncols for _ in range(nrows)]   # contourf handles for colorbars
+
+#-------------------------------------------------------------------------------
+def get_row_col(c,v):
+    if 'num_plot_col' in globals():
+        ip = v*num_case+c if var_x_case else c*num_var+v
+        row = int(np.floor(ip/num_plot_col))
+        col = int(ip - row*ncols)
+        # print(f'  ip / row / col : {ip} / {row} / {col}')
     else:
-        raw_int = (data_max - data_min) / (max_steps - 1)
-
-    # Round to a nice number
-    exp   = np.floor(np.log10(raw_int)) if raw_int > 0 else 0
-    frac  = raw_int / 10**exp
-    nice  = np.array([1, 2, 2.5, 5, 10])
-    cint  = nice[np.argmin(np.abs(nice - frac))] * 10**exp
-
-    if aboutZero:
-        n    = int(np.ceil(mag / cint))
-        cmin = -n * cint
-        cmax =  n * cint
-    else:
-        cmin = np.floor(data_min / cint) * cint
-        cmax = np.ceil(data_max  / cint) * cint
-
-    return cmin, cmax, cint
-
-#---------------------------------------------------------------------------------------------------
-# Ensure contour levels are strictly increasing (guard against degenerate data)
-#---------------------------------------------------------------------------------------------------
-def ensure_increasing(levels):
-    levels = np.asarray(levels, dtype=float)
-    if levels.size < 2 or not np.all(np.diff(levels) > 0):
-        center = float(levels.flat[0]) if levels.size else 0.0
-        span   = abs(center) if center != 0 else 1.0
-        levels = np.linspace(center - span, center + span, 21)
-    return levels
-
-#---------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------
-def get_tmp_file_name(case_in, var_in):
-    tmp_file = f'data_temp/{tmp_file_head}.{case_in}.{var_in}.{yr1}-{yr2}'
-    if month_list is not None:
-        tmp_file += '.m' + '-'.join(str(m) for m in month_list)
-    return tmp_file + '.nc'
-
-#---------------------------------------------------------------------------------------------------
-# Main data loading / calculation loop (unchanged logic)
-#---------------------------------------------------------------------------------------------------
-num_var  = len(var)
-num_case = len(case)
-
-all_data = {}   # keyed by (v, c) -> data_zonal.values
-all_lat  = {}
-all_lev  = {}
-
+        row = c if not var_x_case else v
+        col = v if not var_x_case else c
+    return (row,col)
+#-------------------------------------------------------------------------------
 for v in range(num_var):
-    var_opts = var_opts_list[v]
     print()
-    print(f'  var: {hapy.tclr.MAGENTA}{var[v]}{hapy.tclr.END}')
+    print(f'  var: {hapy.tclr.MAGENTA}{var_list[v]}{hapy.tclr.END}')
+
     data_list = []
-    lat_list  = []
-    lev_list  = []
+    lat_list_  = []
+    lev_list_  = []
 
     for c in range(num_case):
+        case_opts = opts_list[c]
         print('    case: ' + hapy.tclr.GREEN + case[c] + hapy.tclr.END)
-        #-----------------------------------------------------------------------
+
         if recalculate:
 
             if case[c] == 'ERA5':
-                lat_name, lon_name = 'lat', 'lon'
-                xy_dims = (lon_name, lat_name)
-                obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series/ERA5'
-                if var[v] == 'U' : obs_var, input_file_name = 'ua',   f'{obs_root}/ua_197901_201912.nc'
-                if var[v] == 'V' : obs_var, input_file_name = 'va',   f'{obs_root}/va_197901_201912.nc'
-                if var[v] == 'T' : obs_var, input_file_name = 'ta',   f'{obs_root}/ta_197901_201912.nc'
-                if var[v] == 'Q' : obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
-                if var[v] == 'qv': obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
-                if var[v] == 'O3': obs_var, input_file_name = 'tro3', f'{obs_root}/tro3_197901_201912.nc'
-
-
-                input_file_name = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/climatology_1985-2014/ERA5/ERA5_ANN_198501_201412_climo.nc'
+                obs_root = '/pscratch/sd/w/whannah/Obs/ERA5/e3sm_diags_remap'
+                if var_list[v] == 'U': obs_var, input_file_name = 'ua',  f'{obs_root}/ua_197901_201912.remap_180x360.nc'
+                if var_list[v] == 'V': obs_var, input_file_name = 'va',  f'{obs_root}/va_197901_201912.remap_180x360.nc'
+                if var_list[v] == 'T': obs_var, input_file_name = 'ta',  f'{obs_root}/ta_197901_201912.remap_180x360.nc'
+                if var_list[v] == 'Q': obs_var, input_file_name = 'hus', f'{obs_root}/hus_197901_201912.remap_180x360.nc'
+                if var_list[v] == 'O3': obs_var, input_file_name = 'tro3', f'{obs_root}/tro3_197901_201912.remap_180x360.nc'
 
                 ds   = xr.open_dataset(input_file_name)
-                # if yr1 is not None: ds = ds.where(ds['time.year'] >= yr1, drop=True)
-                # if yr2 is not None: ds = ds.where(ds['time.year'] <= yr2, drop=True)
-                #---------------------------------------------------------------
-                if month_list is not None:
-                    ds = ds.sel(time=ds['time.month'].isin(month_list))
-                #---------------------------------------------------------------
-                lat  = ds['lat']
-                area = hapy.calculate_area_from_latlon(ds['lon'].values, ds['lat'].values,
-                                                       ds['lon_bnds'].values, ds['lat_bnds'].values)
-                area = xr.DataArray(area, coords=[ds['lat'], ds['lon']])
-                data = ds[obs_var]
-                # data = data.rename({'plev': 'lev'})
-                # data['lev'] = data['lev'] / 1e2
+                ds   = ds.where(ds['time.year'] >= yr1, drop=True)
+                ds   = ds.where(ds['time.year'] <= yr2, drop=True)
+                data = ds[obs_var].mean(dim='time')
                 data = data.sel(plev=target_plev_mb*1e2)
-                data = data.mean(dim='time')
-                # data_zonal = data.mean(dim='lon')
+
             else:
-                htype_tmp = None
-                if 'htype' in globals(): htype_tmp = htype
-                tmp_sub = case_sub[c]
-                if tem_list[v]: htype,tmp_sub = 'tem','h0-tem'
-                #---------------------------------------------------------------
-                if 'eam.h' in htype:
-                    file_path = f'{case_dir[c]}/{case[c]}/{tmp_sub}/{case[c]}*{htype}*'
-                else:
-                    file_path = f'{case_dir[c]}/{case[c]}/{tmp_sub}/*{htype}*'
-                #---------------------------------------------------------------
+                case_dir = case_opts['p']
+                case_sub = case_opts['s']
+                htype    = case_opts['htype']
+
+                file_path = f'{case_dir}/{case[c]}/{case_sub}/*{htype}*'
                 file_list = sorted(glob.glob(file_path))
-                # file_list_all = file_list; file_list = []
-                # for f in range(len(file_list_all)):
-                #     yr = int(file_list_all[f][-10:-10+4])
-                #     if yr >= yr1 and yr <= yr2:
-                #         file_list.append(file_list_all[f])
-                if 'first_file' in locals(): file_list = file_list[first_file:]
-                if 'num_files'  in locals(): file_list = file_list[:num_files]
-                if file_list == []: raise ValueError(f'No files found for path: {file_path}')
-                #---------------------------------------------------------------
+
                 ds = xr.open_mfdataset(file_list)
-                # if yr1 is not None: ds = ds.where(ds['time.year'] >= yr1, drop=True)
-                # if yr2 is not None: ds = ds.where(ds['time.year'] <= yr2, drop=True)
+                if 'time' in ds.dims:
+                    if len(ds.time)==1:
+                        ds = ds.isel(time=0, drop=True)
+                    else:
+                        ds = ds.mean(dim='time')
                 #---------------------------------------------------------------
-                if month_list is not None:
-                    ds = ds.sel(time=ds['time.month'].isin(month_list))
+                tvar = None
+                if case_opts['comp'] == 'eam':   tvar = eam_var_list[v]
+                if case_opts['comp'] == 'eamxx': tvar = eamxx_var_list[v]
+                data = ds[tvar]
+                #---------------------------------------------------------------
+                hapy.print_stat(data,name=tvar,stat='nax',indent='    ',compact=True)
+                #---------------------------------------------------------------
+                if 'dim2' in data.dims: data = data.isel(dim2=0)
+                #---------------------------------------------------------------
+                # # interpolate to pressure levels
+                # ps_var = None
+                # if 'ps' in ds: ps_var = 'ps'
+                # if 'PS' in ds: ps_var = 'PS'
+                # data = hapy.vinth2p_simple( data, ds['hyam'], ds['hybm'], 
+                #                             target_plev_mb*1e2, ds[ps_var],
+                #                             interp_type='linear', extrapolate=False)
+                # if len(data.plev) == 1: data = data.isel(plev=0)
                 #---------------------------------------------------------------
                 if 'ncol' in ds.dims:
                     area = ds['area']
                     lat  = ds['lat']
+                    # interpolate to pressure levels
                     ps_var = None
                     if 'ps' in ds: ps_var = 'ps'
                     if 'PS' in ds: ps_var = 'PS'
-
-                    data = hapy.vinth2p_simple( ds[var[v]], ds['hyam'], ds['hybm'], 
+                    data = hapy.vinth2p_simple( data, ds['hyam'], ds['hybm'], 
                                                 target_plev_mb*1e2, ds[ps_var],
                                                 interp_type='linear', extrapolate=False)
                 else:
                     lat  = ds['lat']
-                    data = ds[var[v]].mean(dim='time')
+                    data = data.mean(dim='time')
                     data = data.sel(lev=target_plev_mb)
-                #---------------------------------------------------------------
-                # adjust units
 
-                # if 'unit_fac' in var_opts: data = data*var_opts['unit_fac']
-                # if var[v] == 'O3': data = data * 1e6
-                # if var[v] in ['PUTEND', 'UTGWSPEC', 'FUTGWSPEC', 'BUTGWSPEC', 'UTGWORO']:
-                #     data = data * 86400.
-                # if tem_list[v]: data = data * 86400.
-            #-------------------------------------------------------------------
-            # adjust units
-            if 'unit_fac' in var_opts: data = data*var_opts['unit_fac']
-            #-------------------------------------------------------------------
-            if print_stats: hapy.print_stat(data,name=var[v],stat='naxs',indent='    ',compact=True)
-            #-------------------------------------------------------------------
-            # if 'ncol' in ds.dims:
-            if True:
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", category=RuntimeWarning)
-                    bin_ds = hapy.bin_YbyX(data, lat,
-                                         bin_min=lat1, bin_max=lat2, bin_spc=dlat,
-                                         wgt=area, keep_lev=True, verbose=False)
-                # lat_bins   = bin_ds['bin'].values
-                data_zonal = bin_ds['bin_val'].transpose()
-            #-------------------------------------------------------------------
-        #     tmp_file = get_tmp_file_name(case[c], var[v])
-        #     print(' '*6 + f'writing to file: {tmp_file}')
-        #     ds_tmp = xr.Dataset()
-        #     ds_tmp[var[v]] = data_zonal
-        #     ds_tmp.to_netcdf(path=tmp_file, mode='w')
-        # else:
-        #     tmp_file = get_tmp_file_name(case[c], var[v])
-        #     print(' '*6 + f'reading from file: {tmp_file}')
-        #     ds_tmp      = xr.open_dataset(tmp_file)
-        #     data_zonal = ds_tmp[var[v]]
         #-----------------------------------------------------------------------
-        # print()
-        # print(data_zonal)
-        # print()
-        data_list.append(data_zonal)
-        # lat_list.append(data_zonal['lat'].values)
-        # lev_list.append(data_zonal['lev'].values)
-    #---------------------------------------------------------------------------
-    for c in range(num_case):
-        all_data[(v, c)] = data_list[c]
-        # all_lat[(v, c)]  = lat_list[c]
-        # all_lev[(v, c)]  = lev_list[c]
+        if var_fac_list[v] is not None:
+            data = data * var_fac_list[v]
+        #-------------------------------------------------------------------
+        # compute zonal mean
+        # if 'ncol' in ds.dims:
+        if True:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=RuntimeWarning)
+                bin_ds = hapy.bin_YbyX(data, lat,
+                                     bin_min=lat1, bin_max=lat2, bin_spc=dlat,
+                                     wgt=area, keep_lev=True, verbose=False)
+            # lat_bins   = bin_ds['bin'].values
+            data_zonal = bin_ds['bin_val'].transpose()
+        # else:
+        #     data = data.mean(dim='lon')
+        #-----------------------------------------------------------------------
+        data_list.append(data_zonal.values)
+        lat_list_.append(data_zonal['bin'].values)
+        lev_list_.append(data_zonal['plev'].values / 1e2)  # Pa → hPa for display
 
     #---------------------------------------------------------------------------
-    # Stash per-variable data_list for diff calcs below
-    all_data[('list', v)] = data_list
-    # all_lat[('list', v)]  = lat_list
-    # all_lev[('list', v)]  = lev_list
+    # Contour levels (common across cases for this variable)
+    data_min = np.nanmin([np.nanmin(d) for d in data_list])
+    data_max = np.nanmax([np.nanmax(d) for d in data_list])
+    if data_min == data_max:
+        raise ValueError(hapy.tclr.RED + 'WARNING: Difference is zero!' + hapy.tclr.END)
 
+    clev_main = np.linspace(data_min, data_max, 11)
+    # norm_main = BoundaryNorm(clev_main, ncolors=256, clip=False)
 
-#---------------------------------------------------------------------------------------------------
-# Build figure layout
-#---------------------------------------------------------------------------------------------------
-lat_ticks  = np.array([-90, -60, -30, 0, 30, 60, 90])
-FONT_SMALL = 7
-FONT_MED   = 8
-
-if plot_diff and add_diff:
-    num_cols = num_case * 2 - 1
-else:
-    num_cols = num_case
-
-num_rows = num_var
-
-fig_width  = 4 * num_cols
-fig_height = 2 * num_rows
-fig, axes  = plt.subplots(num_rows, num_cols,
-                           figsize=(fig_width, fig_height),
-                           squeeze=False)
-fig.subplots_adjust(hspace=0.4, wspace=0.35)
-
-#---------------------------------------------------------------------------------------------------
-# Plotting loop
-#---------------------------------------------------------------------------------------------------
-for v in range(num_var):
-    var_opts = var_opts_list[v]
-    data_list = all_data[('list', v)]
-    # lat_list  = all_lat[('list', v)]
-    # lev_list  = all_lev[('list', v)]
-
-    # ------------------------------------------------------------------
-    # Pre-compute diff range if needed
-    # ------------------------------------------------------------------
-    if plot_diff:
-        tmp_data = [data_list[c] - data_list[0] for c in range(num_case)]
-        diff_data_min = np.nanmin([np.nanmin(np.ma.masked_invalid(d)) for d in tmp_data])
-        diff_data_max = np.nanmax([np.nanmax(np.ma.masked_invalid(d)) for d in tmp_data])
-
-        if diff_data_min < (-1e3 * diff_data_max): diff_data_min = -diff_data_max
-        if diff_data_max > (-1e3 * diff_data_min): diff_data_max = -diff_data_min
-
-        if var[v] == 'qv': diff_data_min,diff_data_max = -2,2
-
-    # ------------------------------------------------------------------
-    # Build contour levels for the absolute panels
-    # ------------------------------------------------------------------
-    if var[v] == 'OMEGA':
-        abs_levels = np.linspace(-1, 1, 21) * 0.002
-    elif var[v] == 'U':
-        abs_levels = np.linspace(-50, 50, 41)
-    elif tem_list[v]:
-        abs_levels = np.linspace(-4, 4, 21)
-    else:
-        data_min = np.nanmin([np.nanmin(d) for d in data_list])
-        data_max = np.nanmax([np.nanmax(d) for d in data_list])
-        cmin, cmax, _ = nice_cntr_levels(data_min, data_max, max_steps=11, aboutZero=False)
-        abs_levels = np.linspace(cmin, cmax, 21)
-
+    tvar = None
+    if case_opts['comp'] == 'eam':   tvar = eam_var_list[v]
+    if case_opts['comp'] == 'eamxx': tvar = eamxx_var_list[v]
     # Override for GW tendency variables (log-style levels)
-    if var[v] in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO']:
+    if tvar in ['UTGWSPEC', 'BUTGWSPEC', 'UTGWORO','gw_horiz_winds_tend']:
         cn_lev2  = np.array([0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4])
         cn_lev1  = cn_lev2[::-1] * -1
-        abs_levels = np.concatenate([cn_lev1, [0], cn_lev2])
+        clev_main = np.concatenate([cn_lev1, [0], cn_lev2])
 
-    abs_levels = ensure_increasing(abs_levels)
+    clev_main = hapy.ensure_increasing(clev_main)
 
+    cmap = 'viridis'
+    # cmap = cmocean.cm.rain
     #---------------------------------------------------------------------------
-    # Build contour levels for difference panels
-
-    if plot_diff:
-        if var[v] in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO']:
-            cn_lev2  = np.array([0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4])
-            cn_lev1  = cn_lev2[::-1] * -1
-            diff_levels = np.concatenate([cn_lev1, [0], cn_lev2])
-        else:
-            cmin, cmax, _ = nice_cntr_levels(diff_data_min, diff_data_max,
-                                              max_steps=11, aboutZero=True)
-            diff_levels = np.linspace(cmin, cmax, 21)
-
-        diff_levels = ensure_increasing(diff_levels)
-
-    #---------------------------------------------------------------------------
-    # Colormaps
-
-    # cmap_abs  = plt.cm.RdYlBu_r      # same feel as NGL default for filled contours
-    cmap_abs  = 'viridis'
-    cmap_diff = cmocean.cm.balance
-
-    if var[v]=='OMEGA': cmap_abs = cmocean.cm.balance
-    
-    # Norm helpers
-    def make_norm(levels):
-        return mcolors.BoundaryNorm(levels, ncolors=256, clip=True)
-    #---------------------------------------------------------------------------
-    # Panel loop
-    
-    num_grp = 2 if plot_diff else 1
-
-    for i in range(num_grp):          # i=0 → absolute,  i=1 → difference
+    if plot_diff and num_case>1:
         for c in range(num_case):
-            if plot_diff and i > 0 and c == 0:
-                continue              # no diff panel for the reference case
-            if plot_diff and not add_diff and i == 0 and c > 0:
-                continue              # diffs replace full-field panels (except baseline)
+            if c!=0: data_list[c] = data_list[c] - data_list[0]
+        # diff_data_min = np.min([np.nanmin(d) for d in data_list[1:]])
+        # diff_data_max = np.max([np.nanmax(d) for d in data_list[1:]])
+        diff_data_max = np.max([np.nanmax(np.absolute(d)) for d in data_list[1:]])
+        diff_data_min = -1*diff_data_max
+        clev_diff = np.linspace(diff_data_min, diff_data_max, 11)
+        # norm_diff = BoundaryNorm(clev_diff, ncolors=256, clip=False)
+    #---------------------------------------------------------------------------
+    # Draw panels
+    for c in range(num_case):
+        case_opts = opts_list[c]
+        # row = c if not var_x_case else v
+        # col = v if not var_x_case else c
+        (row,col) = get_row_col(c,v)
+        ax  = axes[row][col]
 
-            # Map (i,c) to column index to match panel ordering:
-            #   add_diff=True : [ctrl | full1 | ... | diff1 | ... | diffN]
-            #   add_diff=False: [ctrl | diff1 | diff2 | ... | diffN]
-            if plot_diff:
-                if add_diff:
-                    col = c if i == 0 else num_case + (c - 1)
-                else:
-                    col = c       # baseline full field at col 0, diffs at col c
-            else:
-                col = c if var_x_case else c
-            row = v
+        img_kwargs = {}
+        img_kwargs['cmap']      = cmap
+        img_kwargs['levels']    = clev_main
+        img_kwargs['norm']      = mcolors.BoundaryNorm(clev_main, ncolors=256, clip=True)
+        # img_kwargs['vmin'] = data_min
+        # img_kwargs['vmax'] = data_max
 
-            ax = axes[row, col]
+        if plot_diff and c!=0:
+            img_kwargs['cmap']     = cmocean.cm.balance
+            img_kwargs['levels']   = clev_diff
+            # img_kwargs['norm']      = norm_diff
+            # img_kwargs['vmin']   = diff_data_min
+            # img_kwargs['vmax']   = diff_data_max
 
-            LAT = None
-            if 'bin' in data_list[c].dims:
-                LAT = data_list[c]['bin'].values
-                LEV = data_list[c]['plev'].values/1e2
-            if 'lat' in data_list[c].dims:
-                LAT = data_list[c]['lat'].values
-                LEV = data_list[c]['plev'].values/1e2
-            if LAT is None: raise ValueError('Something went wrong?')
+        lats = lat_list_[c]
+        levs = lev_list_[c]
+        dat  = np.ma.masked_invalid(data_list[c])
 
-            # LAT = lat_list[c]
-            # LEV = lev_list[c]
+        cf = ax.contourf(lats, levs, dat, extend='both', **img_kwargs)
+        cfs[row][col] = cf
 
-            #-------------------------------------------------------------------
-            # mask where interpolated data is exactly zero
-            data_c = np.ma.masked_where(data_list[c]==0, data_list[c])
-            data_0 = np.ma.masked_where(data_list[0]==0, data_list[0])
-            #-------------------------------------------------------------------
-            if plot_diff and i > 0:
-                Z      = np.ma.masked_invalid(data_c - data_0)
-                levels = diff_levels
-                cmap   = cmap_diff
-                title_left  = f'{name[c]} - {name[0]}'
-                title_right = var_str[v]
-                # title_right = f'{var[v]} (diff)' + (' ' + month_str if month_str else '')
-            else:
-                Z      = np.ma.masked_invalid(data_c)
-                levels = abs_levels
-                cmap   = cmap_abs
-                title_left  = name[c]
-                title_right = var_str[v] + (' ' + month_str if month_str else '')
+        ax.set_ylim(levs.max(), levs.min())   # pressure increases downward
+        ax.set_xlabel('Latitude',       fontsize=15)
+        ax.set_ylabel('Pressure [hPa]', fontsize=15)
+        ax.tick_params(labelsize=12)
+        ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
 
-            norm = make_norm(levels)
-            cf   = ax.contourf(LAT, LEV, Z, levels=levels,
-                               cmap=cmap, norm=norm, extend='both')
-            # # enable contour lines
-            # ax.contour(LAT, LEV, Z, levels=levels, colors='k',
-            #            linewidths=0.2, alpha=0.4)
+        lstr = var_str_list[v]
+        if unit_list[v] is not None: lstr = f'{lstr} [{unit_list[v]}]'
 
-            # Axes formatting
-            # ax.set_yscale('log')
-            ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
-            ax.yaxis.set_minor_formatter(mticker.NullFormatter())
-            ax.set_ylim(max(LEV), min(LEV))   # pressure decreasing upward
-            ax.set_xlim(lat1, lat2)
-            ax.set_xticks(lat_ticks)
-            ax.set_xticklabels([f'{t}°' for t in lat_ticks], fontsize=FONT_SMALL)
-            ax.tick_params(axis='y', labelsize=FONT_SMALL)
-            ax.set_xlabel('Latitude', fontsize=FONT_SMALL)
-            if col == 0:
-                ax.set_ylabel('Pressure [hPa]', fontsize=FONT_SMALL)
+        if plot_diff and c!=0: lstr = f'{lstr} (diff)'
 
-            # Subtitles: left / right above panel (mimics hs.set_subtitles)
-            ax.set_title(title_left,  loc='left',  fontsize=FONT_MED, pad=3)
-            ax.set_title(title_right, loc='right', fontsize=FONT_MED, pad=3)
+        # Subtitles: left = case name, right = variable name (replaces set_subtitles)
+        ax.set_title(case_opts['n'], loc='left',  fontsize=20, pad=3)
+        ax.set_title(lstr,           loc='right', fontsize=20, pad=3)
 
-            # Colorbar (per-panel, unless using a common bar)
-            if not use_common_label_bar:
-                cb = fig.colorbar(cf, ax=ax, pad=0.18, fraction=0.04, aspect=30)
-                cb.ax.tick_params(labelsize=FONT_SMALL)
-                cb.set_ticks(levels[::max(1, len(levels)//10)])
+        # Panel letter label (a), b), …)
+        panel_idx = row * ncols + col
+        ax.text(0.02, 0.90, string.ascii_lowercase[panel_idx] + '',
+            transform=ax.transAxes, fontsize=20, va='top', ha='left', #fontweight='bold',
+            bbox=dict(facecolor='white', edgecolor='black', pad=3))
 
-    # ------------------------------------------------------------------
-    # Hide any unused axes in this row
-    # ------------------------------------------------------------------
-    for col in range(num_cols):
-        if not axes[row, col].collections and not axes[row, col].has_data():
-            axes[row, col].set_visible(False)
+    # -------------------------------------------------------------------------
+    # Colorbar: one per variable column (or per row when var_x_case)
+    if use_common_label_bar:
+        # Attach colorbar below the bottom panel in this variable's column/row
+        ref_ax = axes[-1][v] if not var_x_case else axes[v][-1]
+        cbar = fig.colorbar(cfs[nrows - 1 if not var_x_case else v]
+                            [v if not var_x_case else ncols - 1],
+                            ax=axes[:, v] if not var_x_case else axes[v, :],
+                            # orientation='horizontal',
+                            pad=0.09, fraction=0.04,
+                            aspect=30)
+        cbar.ax.tick_params(labelsize=7)
+        cbar.set_label(f'{var_list[v]} [{unit_list[v]}]', fontsize=8)
+    else:
+        for c in range(num_case):
+            (row,col) = get_row_col(c,v)
+            ax = axes[row][col]
+            cbar = fig.colorbar(cfs[row][col], ax=ax,
+                                # orientation='horizontal',
+                                pad=0.2, fraction=0.07)
+            cbar.ax.tick_params(labelsize=10)
 
-# ------------------------------------------------------------------
-# Common label bar (optional)
-# ------------------------------------------------------------------
-if use_common_label_bar:
-    # Attach a single colorbar to the right of the whole figure
-    fig.subplots_adjust(right=0.88)
-    cbar_ax = fig.add_axes([0.90, 0.15, 0.02, 0.7])
-    sm = plt.cm.ScalarMappable(cmap=cmap_abs, norm=make_norm(abs_levels))
-    sm.set_array([])
-    fig.colorbar(sm, cax=cbar_ax)
-
-#---------------------------------------------------------------------------------------------------
-# Save
-#---------------------------------------------------------------------------------------------------
-os.makedirs(os.path.dirname(fig_file), exist_ok=True)
-fig.savefig(fig_file, dpi=300, bbox_inches='tight')
+# -------------------------------------------------------------------------
+# os.makedirs('figs', exist_ok=True)
+fig.savefig(f'{fig_file}.png', dpi=dpi, bbox_inches='tight')
+# fig.savefig(f'{fig_file}.png', dpi=dpi)
+print(f'\n{fig_file}.png')
+# hapy.trim_png(fig_file)
 plt.close(fig)
-print(f'\nFigure saved to: {fig_file}')
-#---------------------------------------------------------------------------------------------------

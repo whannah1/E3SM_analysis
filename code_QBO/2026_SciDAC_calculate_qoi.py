@@ -5,7 +5,46 @@ import hapy
 salloc --nodes 1 --qos interactive --time 04:00:00 --constraint cpu --account=m4310
 source activate ux_env
 time python code_QBO/2026_SciDAC_calculate_qoi.py
+
+sbatch -A m4310 -C cpu -q regular -t 00:30:00 -N 1 --wrap="python my_script.py"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b1 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=1"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b2 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=2"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b3 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=3"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b4 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=4"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b5 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=5"
+
+sbatch --account=m4310 --constraint=cpu --qos=regular --nodes=1 --time=06:00:00 \
+       --mail-user=hannah6@llnl.gov --mail-type=END,FAIL \
+       --job-name=calc_qoi_b6 \
+       --wrap="conda activate ux_env && python /global/homes/w/whannah/E3SM_analysis/code_QBO/2026_SciDAC_calculate_qoi.py  --block=6"
+
 '''
+#-------------------------------------------------------------------------------
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--block", type=int, required=True)
+args = parser.parse_args()
+block = args.block
 #-------------------------------------------------------------------------------
 case_list = []
 opts_list = []
@@ -43,9 +82,46 @@ plev_target_clm = plev_target_clm*1e2
 calc_hov = True
 calc_clm = True
 
-add_case('v3.LR.historical_0301',
-         src_root='/global/cfs/cdirs/m4310/data/sims/v3.LR.historical_0301/remap_90x180_aave',
-         dst_root='/global/cfs/cdirs/m4310/data/sims/v3.LR.historical_0301')
+ens_root = '/global/cfs/cdirs/m4310/data/sims/'
+
+ens_num_list = []
+if block==1:
+   ens_num_list.append('0051')
+   ens_num_list.append('0091')
+   ens_num_list.append('0101')
+   ens_num_list.append('0111')
+if block==2:
+   ens_num_list.append('0121')
+   ens_num_list.append('0131')
+   ens_num_list.append('0141')
+   ens_num_list.append('0151')
+if block==3:
+   ens_num_list.append('0161')
+   ens_num_list.append('0171')
+   ens_num_list.append('0181')
+   ens_num_list.append('0191')
+if block==4:
+   ens_num_list.append('0201')
+   ens_num_list.append('0211')
+   ens_num_list.append('0221')
+   ens_num_list.append('0231')
+if block==5:
+   ens_num_list.append('0241')
+   ens_num_list.append('0251')
+   ens_num_list.append('0261')
+   ens_num_list.append('0271')
+if block==6:
+   ens_num_list.append('0281')
+   ens_num_list.append('0291')
+   ens_num_list.append('0311')
+   ens_num_list.append('0321')
+
+# ens_num_list.append('0301')
+
+for ens_num in ens_num_list:
+   add_case(f'v3.LR.historical_{ens_num}',
+            src_root=f'{ens_root}/v3.LR.historical_{ens_num}/remap_90x180_aave',
+            dst_root=f'{ens_root}/v3.LR.historical_{ens_num}')
 
 #---------------------------------------------------------------------------------------------------
 print()
