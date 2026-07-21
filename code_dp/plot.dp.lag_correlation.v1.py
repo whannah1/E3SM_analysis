@@ -46,15 +46,32 @@ if host=='nersc':
     scratch_cpu = '/pscratch/sd/w/whannah/scream_scratch/pm-cpu'
     scratch_gpu = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
 
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3'  ,clr='red',      ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_10', n='dx=22 dt=600 mvgr=10' ,clr='orange',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_100',n='dx=22 dt=600 mvgr=100',clr='magenta',  ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3'  ,clr='blue',     ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_10',  n='dx=22 dt= 75 mvgr=10' ,clr='purple',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_100', n='dx=22 dt= 75 mvgr=100',clr='cyan',     ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3'  ,clr='red',      ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_10', n='dx=22 dt=600 mvgr=10' ,clr='orange',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_100',n='dx=22 dt=600 mvgr=100',clr='magenta',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3'  ,clr='blue',     ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_10',  n='dx=22 dt= 75 mvgr=10' ,clr='purple',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-06.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_100', n='dx=22 dt= 75 mvgr=100',clr='cyan',     ls='solid', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',        n='dx= 3 km no-zm', clr='red',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',       n='dx= 6 km no-zm', clr='green',  ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',       n='dx=12 km no-zm', clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',        n='dx=22 km no-zm', clr='purple', ls='solid', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1',        n='dx= 3 km zm-ctl',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1',       n='dx= 6 km zm-ctl',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km zm mcta=3',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km zm mcta=3',clr='green',  ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km zm mcta=3',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km zm mcta=3',clr='purple', ls='dotted', p=scratch_gpu,s='run')
+
 
     htype = 'output.2D.1hr.INSTANT.nhours_x1'
-    first_file,num_files = 10,10
+    htype = 'output.1D.1hr.AVERAGE.nhours_x1'
+    first_file,num_files = 20,20
 
 #-------------------------------------------------------------------------------
 # Variable pairs. Each call adds one panel.
@@ -65,9 +82,16 @@ if host=='nersc':
 #   str                          -> override the panel title
 #-------------------------------------------------------------------------------
 
-add_var('zm_cape','zm_prec')
-add_var('zm_prec','zm_activity')
-add_var('zm_prec')
+add_var('CAPE','precip_total_surf_mass_flux')
+
+# add_var('VapWaterPath','precip_total_surf_mass_flux')
+# add_var('LiqWaterPath','precip_total_surf_mass_flux')
+# add_var('IceWaterPath','precip_total_surf_mass_flux')
+# add_var('LiqWaterPath','IceWaterPath')
+
+# add_var('zm_cape','zm_prec')
+# add_var('zm_prec','zm_activity')
+# add_var('zm_prec')
 
 #-------------------------------------------------------------------------------
 fig_file = 'figs_dp/dp.lag_correlation.v1.png'
@@ -87,8 +111,8 @@ convert_to_daily_mean = False
 num_plot_col = 1
 
 # Global default lag window in hours (used when not set per-panel)
-lag_min = -48
-lag_max = +96
+# lag_min,lag_max = -48,+96
+lag_min,lag_max = -8,+8
 
 #---------------------------------------------------------------------------------------------------
 num_var  = len(var_opts_list)
@@ -124,6 +148,11 @@ def get_var_data(ds, vname):
         data = ds['precip_liq_surf_mass_flux'] + ds['precip_ice_surf_mass_flux']
     elif vname in ['shoc_T_mid_tend']:
         data = ds[vname].sum(dim='lev')
+    elif vname == 'CAPE':
+        data = hapy.calc_cape( ds['T_mid'], ds['qv'], pressure=None, 
+                               ps=ds['ps'], hyam=ds['hyam'], hybm=ds['hybm'], p0=1e5,
+                               lev_dim='lev', humidity_type='specific', virtual=True,
+                               return_cin=False, n_substeps=20)
     else:
         data = ds[vname]
     #---------------------------------------------------------------------------
@@ -248,7 +277,16 @@ for v in range(num_var):
         # Determine the sampling interval (hours) from the time coordinate
         #-----------------------------------------------------------------------
         time = data_x['time']
-        def fix_time(t): return (t - t[0]).astype('float') / 86400e6
+        #-----------------------------------------------------------------------
+        # Convert a time coordinate to days elapsed since the first sample.
+        # Handles numpy datetime64 as well as object arrays of datetime /
+        # cftime values (whose differences are timedelta objects).
+        #-----------------------------------------------------------------------
+        def fix_time(t):
+            dt = np.asarray(t) - np.asarray(t)[0]
+            if np.issubdtype(dt.dtype, np.timedelta64):
+                return dt / np.timedelta64(1, 'D')
+            return np.array([d.total_seconds() for d in dt]) / 86400.
         if 'units' in time.attrs:
             if 'days' not in time.units:
                 time_days = fix_time(time.values)

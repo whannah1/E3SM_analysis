@@ -88,21 +88,40 @@ if host=='nersc':
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=3 dt=75 mvgr=3',clr='red',    ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mvgr_3', n='dx=6 dt=150 mvgr=3',clr='orange', ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mvgr_3', n='dx=12 dt=300 mvgr=3',clr='green',  ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_1.mvgr_3', n='dx=40 dt=1200 mvgr=3',clr='purple', ls='dashed', p=scratch_gpu,s='run')
     
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_02.ne34.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=6 dt=75 mvgr=3',clr='orange',  ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='dx=12 dt=75 mvgr=3',clr='green',  ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt=75 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-GATE-ZM-03.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-03.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-03.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-GATE-ZM-04.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-04.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-04.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
 
+
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',        n='dx= 3 km no-zm', clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',       n='dx= 6 km no-zm', clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',       n='dx=12 km no-zm', clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',        n='dx=22 km no-zm', clr='purple', ls='solid', p=scratch_gpu,s='run')
+    
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1',        n='dx=3 km zm-ctl',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1',       n='dx= 6 km zm-ctl',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx=3 km zm mcta=3',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km zm mcta=3',clr='green',  ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km zm mcta=3',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km zm mcta=3',clr='purple', ls='dotted', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_2', n='dx=2 km zm mcta=3',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_2',n='dx=12 km zm mcta=2',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+
     htype = 'output.2D.1hr.INSTANT.nhours_x1'
-    first_file,num_files = -6,None
+    first_file,num_files = -1,None
     # first_file,num_files = 10,1
     time_slice = -1
 
@@ -136,21 +155,26 @@ if host=='olcf':
 
 #-------------------------------------------------------------------------------
 
-add_var('VapWaterPath',                str='VapWP')
-add_var('precip_total_surf_mass_flux', str='precip')
+# add_var('VapWaterPath',                str='VapWP')
+
+# add_var('precip_total_surf_mass_flux', str='precip')
+# add_var('LW_flux_up_at_model_top',     str='LW_flux_up_at_model_top')
 # add_var('LiqWaterPath',                str='LiqWP')
 # add_var('IceWaterPath',                str='IceWP')
-# add_var('LW_flux_up_at_model_top',     str='LW_flux_up_at_model_top')
+
 # add_var('surf_evap',                   str='surf_evap')
 # add_var('ps',                          str='ps')
 
-add_var('zm_activity')
+
 add_var('zm_prec')
-# add_var('zm_cape')
+add_var('zm_cape')
+add_var('zm_activity')
+
+# add_var('CAPE')
 
 
-tmp_htype = 'output.3D.1hr.INSTANT'
-add_var('omega',           str='omega @ k=100',  mlev=100, htype=tmp_htype)
+# tmp_htype = 'output.3D.1hr.INSTANT'
+# add_var('omega',           str='omega @ k=100',  mlev=100, htype=tmp_htype)
 # add_var('T_mid',           str='T_mid @ k=127',  mlev=127)
 # add_var('qv',              str='qv @ k=127',  mlev=127)
 
@@ -268,8 +292,14 @@ for v in range(num_var):
         if 'time_slice' in globals():
             if time_slice is not None:
                 ds = ds.isel(time=time_slice)
-
-        data = ds[var[v]].load()
+        #-------------------------------------------------------------------------
+        if var=='CAPE':
+            data = hapy.calc_cape( ds['T_mid'], ds['qv'], pressure=None,
+                               ps=ds['ps'], hyam=ds['hyam'], hybm=ds['hybm'], p0=1e5,
+                               lev_dim='lev', humidity_type='specific', virtual=True,
+                               return_cin=False, n_substeps=20)
+        else:
+            data = ds[var[v]].load()
 
         #-------------------------------------------------------------------------
         if 'time' in data.dims:
@@ -282,7 +312,8 @@ for v in range(num_var):
                 data = data.isel(lev=mlev)
         #-------------------------------------------------------------------------
         # unit conversions    
-        if 'precip' in var[v]: data = data*86400.*1e3
+        if 'precip' in var[v]:  data = data*86400.*1e3
+        if var[v]=='zm_prec':   data = data*86400.*1e3
         #-------------------------------------------------------------------------
         if print_stat: hapy.print_stat(data,name=var[v],stat='naxsh',indent=' '*4,compact=True)
         #-------------------------------------------------------------------------
@@ -335,7 +366,8 @@ for v in range(num_var):
     cmap   = 'viridis'
 
     # if 'precip' in var[v]:     levels = np.arange(3, 60+3, 3)
-    if 'precip' in var[v]:     levels = np.logspace(np.log10(0.1), np.log10(500), 40)
+    if 'precip' in var[v] or var[v] in ['zm_prec']:
+        levels = np.logspace(np.log10(0.1), np.log10(500), 40)
     if var[v]=='VapWaterPath': levels = np.arange(8, 48+2, 2)
     if var[v]=='LiqWaterPath': levels = np.arange(0.1, 3.1+0.1, 0.1)
     if var[v]=='IceWaterPath': levels = np.arange(0.5, 15.5+1, 1)
@@ -369,8 +401,8 @@ for v in range(num_var):
         plt.colorbar(im, ax=ax, pad=0.02, fraction=0.046)
 
         # Subtitles: left=case name, right=var label (mirrors hs.set_subtitles)
-        ax.set_title(var_opts.get('str'), loc='right',  fontsize=7)
-        ax.set_title(case_opts_list[c]['n'], loc='left', fontsize=7)
+        ax.set_title(var_opts.get('str'),    loc='right', fontsize=10)
+        ax.set_title(case_opts_list[c]['n'], loc='left',  fontsize=10)
 
         ax.set_xlabel('x (km)')
         ax.set_ylabel('y (km)')

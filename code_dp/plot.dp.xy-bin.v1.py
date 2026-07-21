@@ -89,14 +89,34 @@ if host=='nersc':
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne17.lx_600km.dt_75.enable_zm_1.mvgr_3',  n='',clr='green',  ls='dashdot', p=scratch_gpu,s='run')
     # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='',clr='blue',   ls='dashdot', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_2.mamsc_8',  n='dx=22 dt=600 mvgr=3 mamsc=8',clr='green',   ls='dashdot', p=scratch_gpu,s='run')
-    add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
-    add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-ZM-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_2.mamsc_8',  n='dx=22 dt=600 mvgr=3 mamsc=8',clr='green',   ls='dashdot', p=scratch_gpu,s='run')
+    # add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mvgr_3',  n='dx=22 dt=600 mvgr=3',clr='magenta',ls='dashed', p=scratch_gpu,s='run')
+    # add_case('arch_GPU.DP.2026-GATE-ZM-01.NN_01.ne9.lx_600km.dt_75.enable_zm_1.mvgr_3',   n='dx=22 dt= 75 mvgr=3',clr='cyan',   ls='dashed', p=scratch_gpu,s='run')
+
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',        n='dx= 3 km no-zm', clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',       n='dx= 6 km no-zm', clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',       n='dx=12 km no-zm', clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',        n='dx=22 km no-zm', clr='purple', ls='solid', p=scratch_gpu,s='run')
+    
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1',        n='dx= 3 km zm-ctl',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1',       n='dx= 6 km zm-ctl',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='solid', p=scratch_gpu,s='run')
+    
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km mcta=3',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km mcta=3',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km mcta=3',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km mcta=3',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_2', n='dx= 3 km mcta=2',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_2',n='dx= 6 km mcta=2',clr='green',  ls='dotted', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_2',n='dx=12 km mcta=2',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_2', n='dx=22 km mcta=2',clr='purple', ls='dotted', p=scratch_gpu,s='run')
 
     htype = 'output.2D.1hr.INSTANT.nhours_x1'
-    first_file,num_files = 10,None
+    first_file,num_files = 20,None
 
 
 
@@ -133,7 +153,10 @@ if host=='nersc':
 
 #---------------------------------------------------------------------------------------------------
 
-# add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_bot', str='OLR vs precip', \
+# add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
+#         htype=htype, xbin_min=20,xbin_max=64,use_log=False)
+
+# add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_top', str='OLR vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_10m vs precip', \
@@ -148,20 +171,17 @@ if host=='nersc':
 # add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-# add_var(x_var='precip_total_surf_mass_flux', y_var='RainWaterPath', str='RWP vs precip', \
-#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
 # add_var(x_var='precip_total_surf_mass_flux', y_var='IceWaterPath', str='IWP vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-add_var(x_var='precip_total_surf_mass_flux', y_var='zm_activity', str='zm_activity vs precip', \
-    htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+# add_var(x_var='precip_total_surf_mass_flux', y_var='RainWaterPath', str='RWP vs precip', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+
+# add_var(x_var='precip_total_surf_mass_flux', y_var='zm_activity', str='zm_activity vs precip', \
+#     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 add_var(x_var='precip_total_surf_mass_flux', y_var='zm_prec', str='zm_prec (fraction) vs precip', \
     htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
-        htype=htype, xbin_min=20,xbin_max=64,use_log=False)
 
 # add_var(x_var='LiqWaterPath', y_var='wind_speed_10m', str='wspd_10m vs LWP', \
 #         htype=htype, xbin_min=0.01,xbin_max=8,use_log=True)
@@ -194,7 +214,9 @@ recalculate = True
 
 plot_diff   = False
 print_stats = True
+
 num_plot_col = min(1,len(var_opts_list))
+# num_plot_col = 2
 
 # ncol_chunk_size = int(100e3)
 
@@ -205,7 +227,7 @@ if 'num_files'  not in globals(): num_files = None
 #---------------------------------------------------------------------------------------------------
 # set up figure objects - one panel per var pair, all cases overlaid
 fdx,fdy=20,10
-title_fontsize,lable_fontsize = 25,25
+title_fontsize,legend_fontsize = 25,15
 if 'num_plot_col' in locals():
     num_plot_row = int(np.ceil(num_var/float(num_plot_col)))
     figsize = (fdx*num_plot_col, fdy*num_plot_row)
@@ -311,7 +333,7 @@ for v in range(num_var):
             if 'use_log' in var_opts and var_opts['use_log']==True:
                 bins = np.logspace(np.log10(xbin_min), np.log10(xbin_max), 40)
             else:
-                bins = np.linspace(xbin_min, xbin_max, 20)
+                bins = np.linspace(xbin_min, xbin_max, 40)
 
             y_da_binned = y_da.groupby_bins(x_da, bins=bins).mean(dim=mean_dim)
             # y_da_binned = x_da.groupby_bins(x_da, bins=bins).count() / x_da.count() # just for a test
@@ -381,10 +403,7 @@ for v in range(num_var):
         label = case_opts_list[c]['n'] if (not plot_diff or c==0) else f"{case_opts_list[c]['n']} (diff)"
         ax.plot( bin_centers, data, color=clr, label=label, linestyle=linestyle )
 
-    ax.legend(fontsize=lable_fontsize)
-
-#-------------------------------------------------------------------------------
-# Add legend
+    ax.legend(fontsize=legend_fontsize)
 
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
