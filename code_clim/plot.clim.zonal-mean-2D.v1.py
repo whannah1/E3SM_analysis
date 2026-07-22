@@ -22,43 +22,24 @@ def add_var(var_name, **kwargs):
     var_opts_list.append(var_opts)
 #---------------------------------------------------------------------------------------------------
 if host == 'nersc':
-
-    # tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8',           n='E3SM control',   clr='black',   p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_55', n='E3SM top_km_55', clr='red',     p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_50', n='E3SM top_km_50', clr='orange',  p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_45', n='E3SM top_km_45', clr='yellow',  p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_40', n='E3SM top_km_40', clr='green',   p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_35', n='E3SM top_km_35', clr='blue',    p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_30', n='E3SM top_km_30', clr='purple',  p=tmp_scratch, s='run')
-    # # add_case('E3SM.2026-model-top-test-00.ne30pg2.F20TR.NN_8.top_km_25', n='E3SM top_km_25', p=tmp_scratch, s='run')
-    # htype = 'eam.h0'
-    # yr1, yr2 = 1995, 1999
-    # month_list = [1] # 1 / 7
-    # add_var('U',str='U 10mb [m/s]',plev=10.0)
-
     tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
     scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1',n='zm_f90.zm_detr_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0',n='zm_cxx.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1',n='zm_cxx.zm_detr_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1.mcsp_mod_1',n='zm_cxx.zm_detr_1.mcsp_mod_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    # tmp_scratch   = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+    # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+#---------------------------------------------------------------------------------------------------
+if host == 'olcf':
+
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_0',   n='MCSP control',clr='black',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_0.3', n='MCSP mom-UG', clr='red',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_-0.3',n='MCSP mom-DG', clr='blue', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,1
     htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
     # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,6
 
-    # tmp_scratch   = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-    # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-
-    # add_case('E3SM.2026-osc-test-01.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32',            n='ne256 control', p=tmp_scratch, s='run')
-    # add_case('E3SM.2026-osc-test-03.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_32.imp_flux_1', n='ne256 imp_flux_1', p=tmp_scratch, s='run')
-    # first_file,num_files = 2,None
-    # htype = 'output.scream.2D.AVERAGE.ndays_x1.'
-
-    # # add_var('precip_total_surf_mass_flux', unit_fac=86400*1e3, str='Precip [mm/day]')
+    add_var('precip_total_surf_mass_flux', unit_fac=86400*1e3, str='Precip [mm/day]')
     # add_var('LiqWaterPath')
     # add_var('IceWaterPath')
     # add_var('surf_sens_flux')
@@ -76,7 +57,8 @@ tmp_file_head = 'clim.zonal-mean-2D.v1'
 recalculate   = True
 overlay_cases = True
 plot_diff     = False
-num_plot_col  = 2
+# num_plot_col  = len()
+num_plot_col  = 1
 
 if 'month_list' not in locals(): month_list = None
 # month_list = [12, 1, 2]  # DJF
@@ -233,7 +215,7 @@ axes_flat = axes.flatten()
 fig.subplots_adjust(hspace=0.4, wspace=0.35)
 
 clr = [case_opts_list[c].get('clr', None) for c in range(num_case)]
-clr = hapy.fill_color_list(clr)
+# clr = hapy.fill_color_list(clr)
 
 #---------------------------------------------------------------------------------------------------
 # Plotting loop

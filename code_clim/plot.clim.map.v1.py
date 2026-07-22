@@ -16,15 +16,6 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
    if scrip_file is None: raise ValueError('scrip_file cannot be None')
    scrip_file_list.append(scrip_file)
 #-------------------------------------------------------------------------------
-var,lev_list,var_str = [],[],[]
-var_opts_list = []
-def add_var(var_name,lev=None,s=None,**kwargs): 
-   var.append(var_name); lev_list.append(lev); 
-   var_str.append(var_name if s is None else s)
-   var_opts = {}
-   for k, val in kwargs.items(): var_opts[k] = val
-   var_opts_list.append(var_opts)
-#-------------------------------------------------------------------------------
 # fig_file = os.getenv('HOME')+'/E3SM_analysis/figs_clim/clim.map.v1.png'
 fig_file = 'figs_clim/clim.map.v1.png'
 #-------------------------------------------------------------------------------
@@ -33,11 +24,15 @@ if host=='olcf':
    ### ZM F90 vs C++ comparison
    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-   # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('E3SM.2026-ZM-DEV-02.F2010xx-ZM.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 01',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   # add_case('E3SM.2026-ZM-DEV-02.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 02',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('E3SM.2026-ZM-DEV-03.F2010xx-ZM.ne30pg2.NN_4.zm_cxx',n='zm_cxx 03',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_f90.ufs_0.muc_0',  n='zm_f90 control',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_f90.ufs_1.muc_0',  n='zm_f90 MCSP ufs',     p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_f90.ufs_1.muc_0.3',n='zm_f90 MCSP ufs+muc', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_0.muc_0',  n='zm_cxx control',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_0.muc_0',   n='MCSP old shear',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_0',   n='MCSP control',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_0.3', n='MCSP mom-UG', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-MCSP-DEV-00.F2010xx-ZM.ne30pg2.NN_8.zm_cxx.ufs_1.muc_-0.3',n='MCSP mom-DG',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
    htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
    # use_snapshot,ss_t = True,4
    # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
@@ -137,12 +132,21 @@ if host=='alcf':
    # add_case('E3SM.2026-osc-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_256.NCPL_288',n='ne256 dt_phys=5min', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
    first_file,num_files = 5,0
 
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
+var,lev_list,var_str = [],[],[]
+var_opts_list = []
+def add_var(var_name,lev=None,s=None,**kwargs): 
+   var.append(var_name); lev_list.append(lev); 
+   var_str.append(var_name if s is None else s)
+   var_opts = {}
+   for k, val in kwargs.items(): var_opts[k] = val
+   var_opts_list.append(var_opts)
+#---------------------------------------------------------------------------------------------------
 
 # add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
 # add_var('sp',s='moab',   htype='erasfc.mb.sp.20250630_00.nc')
 
-# add_var('precip_total_surf_mass_flux')
+# add_var('precip_total_surf_mass_flux',s='precip')
 # add_var('ps')
 
 # add_var('LW_flux_up_at_model_top')
@@ -152,11 +156,11 @@ if host=='alcf':
 # add_var('RainWaterPath')
 
 # add_var('T_2m')
-# add_var('SeaLevelPressure')
+# add_var('SeaLevelPressure',s='PSL')
 
-add_var('zm_activity')
-add_var('zm_cape')
-add_var('zm_prec')
+# add_var('zm_activity')
+# add_var('zm_cape')
+# add_var('zm_prec')
 # add_var('zm_prec_frac')
 # add_var('zm_dcape')
 # add_var('zm_detr_liq')
@@ -179,8 +183,12 @@ add_var('zm_prec')
 # add_var('z_mid', s='z_mid mlev=95 (~500mb)',  lev=-95)
 # add_var('z_mid', s='z_mid plev=500', lev=500)
 
+add_var('U', s='100mb U', lev=100e2)
+add_var('U', s='500mb U', lev=500e2)
+add_var('U', s='850mb U', lev=850e2)
+
 # add_var('T',     lev=500)
-# add_var('U',     lev=500)
+
 # add_var('CLDLIQ',lev=500)
 # add_var('CLDICE',lev=500)
 # add_var('Q',     lev=900)
@@ -200,8 +208,8 @@ add_var('zm_prec')
 #-------------------------------------------------------------------------------
 
 # plot_diff,add_diff = False,False
-plot_diff,add_diff = True,False
-# plot_diff,add_diff = True,True
+# plot_diff,add_diff = True,False
+plot_diff,add_diff = True,True
 
 print_stats          = True
 var_x_case           = True
