@@ -16,3 +16,13 @@ conda create --name ux_env --channel conda-forge --yes numpy xarray dask netcdf4
 python -i
 exec( open( 'code_clim/plot.clim.map.v1.py' ).read() )
 ```
+
+# Interactive Batch Job Commands
+
+```shell
+# NERSC
+salloc --nodes 1 --qos interactive --time 04:00:00 --constraint cpu --account=????
+# OLCF Andes
+salloc --time 4:00:00 --account=cli115 --nodes=1
+micromamba activate taos_env
+```

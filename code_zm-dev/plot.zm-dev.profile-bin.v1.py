@@ -1,7 +1,7 @@
 import os, glob, copy, xarray as xr, numpy as np, cmocean
 import matplotlib.pyplot as plt, matplotlib.colors as mcolors
 import hapy
-# host = hapy.get_host()
+host = hapy.get_host()
 xr.set_options(use_new_combine_kwarg_defaults=True)
 #-------------------------------------------------------------------------------
 '''
@@ -25,18 +25,32 @@ def add_var(var_name,**kwargs):
     if 'str' not in var_opts: var_opts['str'] = var_name
     var_opts_list.append(var_opts)
 #---------------------------------------------------------------------------------------------------
+if host=='olcf':
 
-tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM ncin=1',      p=tmp_scratch, s='run')
-add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',       n='E3SM ncin=5',       p=tmp_scratch, s='run')
-add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20',      n='E3SM ncin=20',       p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
-# add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
-# first_file,num_files = 8,1
+   ### ZM F90 vs C++ comparison
+   tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+   # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+   scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
+   add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+   # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
+   htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
+   # use_snapshot,ss_t = True,4
+   # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
+
+#---------------------------------------------------------------------------------------------------
+if host=='lcrc':
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM ncin=1',      p=tmp_scratch, s='run')
+    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',       n='E3SM ncin=5',       p=tmp_scratch, s='run')
+    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20',      n='E3SM ncin=20',       p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',              n='E3SM control',      p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-0.0002', n='E3SM dmdz=-0.20e-3', p=tmp_scratch, s='run')
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.dmdz_-1e-05',  n='E3SM dmdz=-0.01e-3', p=tmp_scratch, s='run')
+    # first_file,num_files = 8,1
 
 
-# /lcrc/group/e3sm/ac.whannah/scratch/chrys/E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8
+    # /lcrc/group/e3sm/ac.whannah/scratch/chrys/E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8
 #---------------------------------------------------------------------------------------------------
 
 htype_tmp = 'eam.h1'
