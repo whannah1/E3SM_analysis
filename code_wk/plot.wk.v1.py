@@ -55,14 +55,20 @@ if host=='olcf':
     add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
 
+    # add_var('LW_flux_up_at_model_top')
     # add_var('precip_total_surf_mass_flux',s='precip')
-    add_var('LW_flux_up_at_model_top')
+    
+    add_var('LW_flux_up_at_model_top',    s='OLR',   normalize=False)
+    # add_var('LW_flux_up_at_model_top',    s='OLR',   normalize=True)
+    add_var('precip_total_surf_mass_flux',s='precip',normalize=False)
+    # add_var('precip_total_surf_mass_flux',s='precip',normalize=True)
+    
 
 #---------------------------------------------------------------------------------------------------
 lat1,lat2 = -15,15
 
-# segsize,noverlap = 96,60 # e3sm_diags
-segsize,noverlap = 192,120
+segsize,noverlap = 96,60 # e3sm_diags
+# segsize,noverlap = 192,120
 # segsize,noverlap = 96,32
 # segsize,noverlap = 180,30
 
@@ -70,10 +76,10 @@ segsize,noverlap = 192,120
 fig_file      = 'figs_wk/wk.v1.png'
 tmp_file_head = 'data_temp/wk.v1'
 
-recalculate = True
+recalculate = False
 
 use_daily   = True
-normalize   = False
+normalize   = True
 var_x_case  = False
 
 plot_diff,add_diff = False,False
@@ -182,6 +188,12 @@ for v in range(num_var):
     hapy.print_line()
     print(' '*2+f'var: {hapy.tclr.MAGENTA}{var[v]}{hapy.tclr.END}')
     spec_list, freq_list, wvnm_list = [],[],[]
+    #-----------------------------------------------------------------------
+    if var_opts.get('normalize',None) is not None:
+        normalize_var = var_opts['normalize']
+    else:
+        normalize_var = normalize
+    #-----------------------------------------------------------------------
     for c in range(num_case):
         case_opts = case_opts_list[c]
         print(' '*4+f'case: {hapy.tclr.GREEN}{case[c]}{hapy.tclr.END}')
@@ -275,7 +287,7 @@ for v in range(num_var):
         print(' '*6+f'num_days: {num_days}')
         #-----------------------------------------------------------------------
         # normalize by the background
-        if normalize:
+        if normalize_var:
             spec = rspec_sym / bkgd_sym
             # spec = rspec_asy / bkgd_asm
         else:
@@ -306,14 +318,14 @@ for v in range(num_var):
     print()
     #---------------------------------------------------------------------------
     # contour levels for the full spectra panels
-    if normalize:
+    if normalize_var:
         # clev = np.arange(4,44+4,4)/1e1
         # clev = np.arange(1.0,3.0,0.2)
         clev = np.array([0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.7,1.9,2.1,2.4,2.7,3.0]) # e3sm_diags
     else:
         cmin,cmax,_ = nice_cntr_levels(data_min*1.1, data_max*0.9, max_steps=21)
         clev = np.linspace(cmin,cmax,num=21)
-        if var[v]=='LW_flux_up_at_model_top': clev = np.arange(2,34,2)
+        # if var[v]=='LW_flux_up_at_model_top': clev = np.arange(2,34,2)
     #---------------------------------------------------------------------------
     # contour levels for the difference panels
     if plot_diff:
@@ -343,12 +355,15 @@ for v in range(num_var):
             spec_data   = diff_list[c]
             levels,cmap = dlev,cmap_diff
             title_left  = f'{case_opts_list[c]["n"]} - {case_opts_list[diff_base]["n"]}'
-            title_right = f'{var_opts["str"]} (diff)'
+            # title_right = f'{var_opts["str"]} (diff)'
         else:
             spec_data   = spec_list[c]
             levels,cmap = clev,cmap_full
             title_left  = case_opts_list[c]['n']
-            title_right = var_opts['str']
+            # title_right = var_opts['str']
+        title_right = var_opts['str']
+        if normalize_var: title_right += ' (normalized)'
+        if kind=='diff' : title_right += ' (diff)'
         #-----------------------------------------------------------------------
         ax = axs[v,p] if var_x_case else axs[p,v]
 
