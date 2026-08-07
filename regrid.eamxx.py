@@ -31,15 +31,30 @@ DATA_ROOT=/pscratch/sd/w/whannah/e3sm_scratch/pm-gpu
 
 MAP_FILE=~/maps/map_ne30pg2_to_90x180_traave.nc
 DATA_ROOT=/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch
+REGRID_ARGS="--map=${MAP_FILE} --root=${DATA_ROOT} --sub=run --prefix=output.daily.AVERAGE.nhours_x24"
 
-python regrid.eamxx.py --map=${MAP_FILE} --root=${DATA_ROOT} --sub=run --prefix=output.daily.AVERAGE.nhours_x24 --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0
-python regrid.eamxx.py --map=${MAP_FILE} --root=${DATA_ROOT} --sub=run --prefix=output.daily.AVERAGE.nhours_x24 --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1
+
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0
+
+
+
+MAP_FILE=/lustre/orion/cli115/proj-shared/hannah6/files_map/map_ne256pg2_to_180x360_traave.nc
+DATA_ROOT=/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch
+REGRID_ARGS="--map=${MAP_FILE} --root=${DATA_ROOT} --sub=archive/atm/hist --prefix=output.daily.AVERAGE.nhours_x24"
+
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE
+
 
 '''
 #---------------------------------------------------------------------------------------------------
 parser = argparse.ArgumentParser()
 # parser.add_argument("-f", "--file", required=True, help="Path to input file")
-parser.add_argument('--map',    required=True, dest='map_file', default=None,  help='subfolder for data (default=run)')
+parser.add_argument('--map',    required=True, dest='map_file', default=None,  help='map file')
 parser.add_argument('--case',   required=True, dest='case',     default=None,  help='simulation name')
 parser.add_argument('--root',   required=True, dest='case_root',default=None,  help='root directory for case')
 parser.add_argument('--sub',    required=False,dest='case_sub', default='run', help='subfolder for data (default=run)')

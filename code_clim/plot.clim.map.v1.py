@@ -5,7 +5,7 @@ import cartopy.crs as ccrs, matplotlib.pyplot as plt, matplotlib.colors as mcolo
 import hapy
 host = hapy.get_host()
 xr.set_options(use_new_combine_kwarg_defaults=True)
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 name,case,case_dir,case_sub = [],[],[],[]
 scrip_file_list = []
 def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
@@ -15,24 +15,78 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
     case_dir.append(p); case_sub.append(s);
     if scrip_file is None: raise ValueError('scrip_file cannot be None')
     scrip_file_list.append(scrip_file)
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
+var,lev_list,var_str = [],[],[]
+var_opts_list = []
+def add_var(var_name,lev=None,s=None,**kwargs): 
+    var.append(var_name); lev_list.append(lev); 
+    var_str.append(var_name if s is None else s)
+    var_opts = {}
+    for k, val in kwargs.items(): var_opts[k] = val
+    var_opts_list.append(var_opts)
+#---------------------------------------------------------------------------------------------------
 # fig_file = os.getenv('HOME')+'/E3SM_analysis/figs_clim/clim.map.v1.png'
 fig_file = 'figs_clim/clim.map.v1.png'
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    # ZM in-cloud water test
+    # check for grids here:
+    # /lustre/orion/cli115/proj-shared/hannah6/files_grid/*pg2_scrip.nc
+
+    ### ZM in-cloud water test
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
     # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
     # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
     htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,5*12
     # use_snapshot,ss_t = True,4
     # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
+    add_var('precip_total_surf_mass_flux',s='precip')
+    add_var('LW_flux_up_at_model_top',s='OLR')
+    add_var('VapWaterPath',s='VWP')
+    add_var('LiqWaterPath',s='LWP')
+    add_var('IceWaterPath',s='IWP')
+
+
+    # ### INITE 2026 CONUS
+    # # salloc --time 4:00:00 --account=cli115 --nodes=1 -p gpu
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/brhillman/e3sm_scratch','run'
+    # scrip_file = '/lustre/orion/cli115/world-shared/e3sm/2026-INCITE-CONUS-RRM/files_grid/2025-scream-conus-1024x2-pg2_scrip.cdf5.nc'
+    # add_case('conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.20260803c', n='CONUS x2 20260803c', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_var('precip_total_surf_mass_flux',htype='eamxx.precip_total_surf_mass_flux.INSTANT.nmins_x5')
+    # # add_var('precip_ice_surf_mass_flux',htype='eamxx.precip_ice_surf_mass_flux.INSTANT.nmins_x5')
+    # # add_var('precip_liq_surf_mass_flux',htype='eamxx.precip_liq_surf_mass_flux.INSTANT.nmins_x5')
+    # # add_var('VapWaterPath',htype='eamxx.VapWaterPath.INSTANT.nmins_x5')
+    # # add_var('LiqWaterPath',htype='eamxx.LiqWaterPath.INSTANT.nmins_x5')
+    # # add_var('RainWaterPath',htype='eamxx.RainWaterPath.INSTANT.nmins_x5')
+    # # add_var('IceWaterPath',htype='eamxx.IceWaterPath.INSTANT.nmins_x5')
+    # # add_var('T_2m',htype='eamxx.T_2m.INSTANT.nmins_x5')
+    # # add_var('wind_speed_10m',htype='eamxx.wind_speed_10m.INSTANT.nmins_x5')
+    # # add_var('LW_flux_dn_at_model_bot',htype='eamxx.LW_flux_dn_at_model_bot.INSTANT.nmins_x5')
+    # # add_var('LW_flux_up_at_model_bot',htype='eamxx.LW_flux_up_at_model_bot.INSTANT.nmins_x5')
+    # # add_var('LW_flux_up_at_model_top',htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x5')
+    # # add_var('SW_flux_dn_at_model_bot',htype='eamxx.SW_flux_dn_at_model_bot.INSTANT.nmins_x5')
+    # # add_var('SW_flux_dn_at_model_top',htype='eamxx.SW_flux_dn_at_model_top.INSTANT.nmins_x5')
+    # # add_var('SW_flux_up_at_model_bot',htype='eamxx.SW_flux_up_at_model_bot.INSTANT.nmins_x5')
+    # # add_var('SW_flux_up_at_model_top',htype='eamxx.SW_flux_up_at_model_top.INSTANT.nmins_x5')
+    # # add_var('surface_upward_latent_heat_flux',htype='eamxx.surface_upward_latent_heat_flux.INSTANT.nmins_x5')
+    # # add_var('surf_evap',htype='eamxx.surf_evap.INSTANT.nmins_x5')
+    # # add_var('surf_mom_flux',htype='eamxx.surf_mom_flux.INSTANT.nmins_x5')
+    # add_var('surf_sens_flux',htype='eamxx.surf_sens_flux.INSTANT.nmins_x5')
+    # # add_var('SeaLevelPressure',htype='eamxx.SeaLevelPressure.INSTANT.nmins_x5')
+    # # add_var('ps',htype='eamxx.ps.INSTANT.nmins_x30')
+    # # first_file,num_files = None,None
+
+
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -115,14 +169,6 @@ if host=='alcf':
     first_file,num_files = 5,0
 
 #---------------------------------------------------------------------------------------------------
-var,lev_list,var_str = [],[],[]
-var_opts_list = []
-def add_var(var_name,lev=None,s=None,**kwargs): 
-    var.append(var_name); lev_list.append(lev); 
-    var_str.append(var_name if s is None else s)
-    var_opts = {}
-    for k, val in kwargs.items(): var_opts[k] = val
-    var_opts_list.append(var_opts)
 #---------------------------------------------------------------------------------------------------
 
 # add_var('sp',s='ncremap',htype='erasfc.tr.sp.20250630_00.nc')
@@ -130,8 +176,8 @@ def add_var(var_name,lev=None,s=None,**kwargs):
 
 # add_var('ps')
 
-add_var('precip_total_surf_mass_flux',s='precip')
-add_var('LW_flux_up_at_model_top')
+# add_var('precip_total_surf_mass_flux',s='precip')
+# add_var('LW_flux_up_at_model_top')
 
 # add_var('VapWaterPath')
 # add_var('LiqWaterPath')
@@ -195,8 +241,8 @@ add_var('LW_flux_up_at_model_top')
 #-------------------------------------------------------------------------------
 
 # plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False
-plot_diff,add_diff = True,True
+plot_diff,add_diff = True,False
+# plot_diff,add_diff = True,True
 
 print_stats          = True
 var_x_case           = False
@@ -353,6 +399,10 @@ for v in range(num_var):
             #    print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
             if not use_snapshot:
                 data = data.mean(dim='time')
+        #-------------------------------------------------------------------------
+        # load into memory once - otherwise the min/max, the difference, and
+        # to_raster each trigger a separate re-read of the input files
+        data.load()
         #-------------------------------------------------------------------------
         # # Calculate area weighted global mean
         # if 'area' in locals() :

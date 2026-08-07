@@ -22,14 +22,20 @@ def add_var(**kwargs):
 #-------------------------------------------------------------------------------
 if host=='olcf':
 
-   ### ZM F90 vs C++ comparison
-   tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-   # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-   scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
-   add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', clr='red', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', clr='blue', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-   htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
-   # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
+    ### ZM F90 vs C++ comparison
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', clr='red', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', clr='blue', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      clr='black',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', clr='red',     p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', clr='blue',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', clr='cyan',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    clr='green',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
+    # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
+    lat1,lat2 = -30,30
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -41,14 +47,14 @@ if host=='nersc':
 
 #---------------------------------------------------------------------------------------------------
 
-# add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
-#         htype=htype, xbin_min=20,xbin_max=64,use_log=False)
+add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
+        htype=htype, xbin_min=20,xbin_max=64,use_log=False)
 
-add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_top', str='OLR vs precip_total', \
-        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+# add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_top', str='OLR vs precip_total', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-add_var(x_var='zm_prec', y_var='LW_flux_up_at_model_top', str='OLR vs zm_prec', \
-        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+# add_var(x_var='zm_prec', y_var='LW_flux_up_at_model_top', str='OLR vs zm_prec', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_10m vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
@@ -196,6 +202,18 @@ for v in range(num_var):
             #-------------------------------------------------------------------
             def avg_wgt(da,wgt,dim='ncol'):
                 return ( (da*wgt).sum(dim=dim,drop=True) / wgt.sum(dim=dim,drop=True) )
+            #----------------------------------------------------------------------
+            if 'lat1' in locals() or 'lon1' in locals():
+               lat = ds['lat'].isel(time=0,missing_dims='ignore')
+               lon = ds['lon'].isel(time=0,missing_dims='ignore')
+               ncol = ds['ncol']
+               mask = xr.DataArray( np.ones([len(ncol)],dtype=bool), coords=[('ncol', ncol.values)], dims='ncol' )
+               if 'lat1' in locals(): mask = mask & (lat>=lat1) & (lat<=lat2)
+               if 'lon1' in locals(): mask = mask & (lon>=lon1) & (lon<=lon2)
+               mask.load()
+               x_da = x_da.where(mask,drop=True)
+               y_da = y_da.where(mask,drop=True)
+               # area = area.where(mask,drop=True)
             #-------------------------------------------------------------------
             x_da.load()
             y_da.load()

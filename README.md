@@ -23,6 +23,7 @@ exec( open( 'code_clim/plot.clim.map.v1.py' ).read() )
 # NERSC
 salloc --nodes 1 --qos interactive --time 04:00:00 --constraint cpu --account=????
 # OLCF Andes
-salloc --time 4:00:00 --account=cli115 --nodes=1
+salloc --time 4:00:00 --account=cli115 --nodes=1 # -p gpu
 micromamba activate taos_env
+micromamba activate ux_env
 ```

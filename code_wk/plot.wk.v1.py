@@ -51,8 +51,12 @@ if host=='olcf':
     # ZM in-cloud water test
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
     scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
 
     # add_var('LW_flux_up_at_model_top')
