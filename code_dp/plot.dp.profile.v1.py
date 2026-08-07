@@ -136,10 +136,10 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='solid', p=scratch_gpu,s='run')
     
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km mcta=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km mcta=3',clr='green',  ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km mcta=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km mcta=3',clr='purple', ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km mcta=3',clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km mcta=3',clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km mcta=3',clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km mcta=3',clr='purple', ls='solid', p=scratch_gpu,s='run')
 
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_2', n='dx= 3 km mcta=2',clr='red',    ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_2',n='dx= 6 km mcta=2',clr='green',  ls='dotted', p=scratch_gpu,s='run')
@@ -147,8 +147,8 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_2', n='dx=22 km mcta=2',clr='purple', ls='dotted', p=scratch_gpu,s='run')
 
 
-    htype = 'output.1D.1hr.AVERAGE.nhours_x1'
-    first_file,num_files = 20,20
+    # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
+    # first_file,num_files = 20,20
 
 
 
@@ -173,6 +173,30 @@ if host=='nersc':
     # first_file,num_files = 20,None
     # # first_file,num_files = 1,4
 
+    ### prototype v4 vertical grid testing
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60',           n='GATE control', clr='black',  p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.4',  n='GATE L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.5',  n='GATE L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.6',  n='GATE L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    htype = 'output.scream.1D.1hr.AVERAGE.nhours_x1'
+    first_file,num_files = 20,20
+
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100',         n='DYCOMS control', clr='black',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='DYCOMS L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='DYCOMS L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='DYCOMS L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    # htype = 'output.scream.1D.1hr.AVERAGE.nhours_x1'
+
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100',         n='MAGIC control', clr='black',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='MAGIC L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='MAGIC L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='MAGIC L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
+    # # first_file,num_files = 0,1; title = 'MAGIC day 1'
+    # # first_file,num_files = 1,1; title = 'MAGIC day 2'
+    # first_file,num_files = 2,1; title = 'MAGIC day 3'
+    
+
 #-------------------------------------------------------------------------------
 
 # add_var('dz_mid',             str='dz')
@@ -182,18 +206,20 @@ if host=='nersc':
 # add_var('z_mid')
 # add_var('omega')
 # add_var('dS/dp',              str='-dS/dp')
+add_var('RelativeHumidity')
 # add_var('qv')
-# add_var('RelativeHumidity')
-# add_var('qc')
+add_var('qc')
 # add_var('qr')
-# add_var('qi')
+add_var('qi')
+
+# add_var('cldfrac_liq')
 
 # add_var('total_T_mid_tend')
 # add_var('total_qv_tend')
 
-add_var('zm_T_mid_tend')
-add_var('shoc_T_mid_tend')
-add_var('p3_T_mid_tend')
+# add_var('zm_T_mid_tend')
+# add_var('shoc_T_mid_tend')
+# add_var('p3_T_mid_tend')
 
 # add_var('zm_qv_tend')
 # add_var('shoc_qv_tend')
@@ -217,7 +243,10 @@ add_var('p3_T_mid_tend')
 fig_file = 'figs_dp/dp.profile.v1.png'
 
 print_stat = False
-use_height_coord = False
+use_height_coord = True
+height_interp_mx_km,height_interp_dz_km = 18, 100e-3
+# height_interp_mx_km, height_interp_dz_km = 5,10e-3
+# height_interp_mx_km, height_interp_dz_km = 2,10e-3
 # skip_first_twelve_hours = False
 
 num_plot_col = len(var)
@@ -386,9 +415,12 @@ for v in range(num_var):
         #-------------------------------------------------------------------------
         if use_height_coord:
             hght = get_data(ds,'z_mid')
+            if 'time' in hght.dims: hght = hght.mean(dim='time')
+            if 'ncol' in hght.dims and len(hght.ncol)==1: hght = hght.isel(ncol=0,drop=True)
             if var[v] == 'dz_mid': hght = hght[1:]
             data['lev'] = hght/1e3
-            dz = 100e-3 ; data = data.interp(lev=np.arange(dz,18+dz,dz))
+            dz = height_interp_dz_km
+            data = data.interp(lev=np.arange(dz,height_interp_mx_km+dz,dz))
         #-------------------------------------------------------------------------
         data_list.append(data.values)
         hght_list.append(data['lev'].values)
@@ -400,7 +432,7 @@ for v in range(num_var):
     data_max = np.max([np.nanmax(d) for d in data_list])
 
     # Per-variable x-axis overrides
-    if var[v] == 'dS/dp': data_max = 0.1
+    # if var[v] == 'dS/dp': data_max = 0.1
     if var[v] == 'MSE':   data_max = 330.0
 
     for c in range(num_case):
@@ -454,7 +486,8 @@ for i in range(num_var, len(axes_flat)):
 #    fig_lgd.savefig(legend_file, dpi=150, bbox_inches='tight')
 #    plt.close(fig_lgd)
 #    print(f'Saved legend: {legend_file}')
-
+#---------------------------------------------------------------------------------------------------
+if 'title' in locals(): fig.suptitle(title)
 #---------------------------------------------------------------------------------------------------
 plt.tight_layout(w_pad=2, h_pad=3)
 os.makedirs(os.path.dirname(fig_file) or '.', exist_ok=True)

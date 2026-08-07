@@ -143,25 +143,25 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-00.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3',  n='dx=22 km',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-00.arch_GPU.NN_01.ne5.lx_600km.dt_1200.enable_zm_1.mcta_3', n='dx=40 km',clr='purple', ls='dotted', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',        n='dx= 3 km no-zm', clr='red',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',       n='dx= 6 km no-zm', clr='green',  ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',       n='dx=12 km no-zm', clr='blue',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',        n='dx=22 km no-zm', clr='purple', ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_0',        n='dx= 3 km no-zm', clr='red',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_0',       n='dx= 6 km no-zm', clr='green',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',       n='dx=12 km no-zm', clr='blue',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_0',        n='dx=22 km no-zm', clr='purple', ls='solid', p=scratch_gpu,s='run')
     
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1',        n='dx= 3 km zm-ctl',clr='red',    ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1',       n='dx= 6 km zm-ctl',clr='green',  ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1',        n='dx= 3 km zm-ctl',clr='red',    ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1',       n='dx= 6 km zm-ctl',clr='green',  ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='dashed', p=scratch_gpu,s='run')
     
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km zm-mod',clr='red',    ls='dotted', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km zm-mod',clr='green',  ls='dotted', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km zm-mod',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km zm-mod',clr='purple', ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx= 3 km zm-mod',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km zm-mod',clr='green',  ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km zm-mod',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km zm-mod',clr='purple', ls='dotted', p=scratch_gpu,s='run')
 
-    htype = 'output.2D.1hr.INSTANT.nhours_x1'
-    # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
-    first_file,num_files = 0,None
-    # num_files = 4
+    # htype = 'output.2D.1hr.INSTANT.nhours_x1'
+    # # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
+    # first_file,num_files = 0,None
+    # # num_files = 4
 
     # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_0',           n='RCE 5m control',     clr='black', ls='solid',  p=scratch_gpu, s='run')
     # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_100',  n='RCE 5m zm mvgr:100', clr='red',    ls='solid', p=scratch_gpu, s='run')
@@ -185,6 +185,28 @@ if host=='nersc':
     # add_var('zm_activity')
     # add_var('zm_prec')
 
+    
+    ### prototype v4 vertical grid testing
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60',           n='GATE control', clr='black',  p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.4',  n='GATE L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.5',  n='GATE L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.6',  n='GATE L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    htype = 'output.scream.2D.1hr.AVERAGE.nhours_x1'
+    # first_file,num_files = 20,20
+
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100',         n='DYCOMS control', clr='black',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='DYCOMS L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='DYCOMS L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='DYCOMS L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    # htype = 'output.scream.2D.1hr.AVERAGE.nhours_x1'
+
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100',         n='MAGIC control', clr='black',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='MAGIC L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='MAGIC L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='MAGIC L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    # htype = 'output.2D.1hr.AVERAGE.nhours_x1'
+    # # first_file,num_files = 1,1
+
 #-------------------------------------------------------------------------------
 
 # add_var('precip_total_surf_mass_flux',method='std')
@@ -193,8 +215,8 @@ if host=='nersc':
 
 # add_var('precip_total_surf_mass_flux')#, htype=htype, n=None)
 add_var('VapWaterPath')#,                htype=htype, n=None)
-# add_var('LiqWaterPath')#,                htype=htype, n='LiqWP')
-# add_var('IceWaterPath')#,                htype=htype, n='IceWP')
+add_var('LiqWaterPath')#,                htype=htype, n='LiqWP')
+add_var('IceWaterPath')#,                htype=htype, n='IceWP')
 # add_var('RainWaterPath')#,               htype=htype, n='RainWP')
 
 # add_var('wind_speed_10m',              htype)
