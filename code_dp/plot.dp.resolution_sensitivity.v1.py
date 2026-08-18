@@ -113,6 +113,17 @@ if host=='nersc':
     add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne7.lx_600km.dt_720.enable_zm_1.mcta_3.mit_3600',  group='zm mcta=3 mit=3600', lx=600, ne= 7, clr='darkblue', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
     add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne5.lx_600km.dt_900.enable_zm_1.mcta_3.mit_3600',  group='zm mcta=3 mit=3600', lx=600, ne= 5, clr='darkblue', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
 
+    # mcta_2 + mit_3600 group
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_2.mit_3600',  group='zm mcta=2 mit=3600', lx=600, ne=67, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_03.ne50.lx_600km.dt_100.enable_zm_1.mcta_2.mit_3600', group='zm mcta=2 mit=3600', lx=600, ne=50, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_2.mit_3600', group='zm mcta=2 mit=3600', lx=600, ne=34, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne25.lx_600km.dt_225.enable_zm_1.mcta_2.mit_3600', group='zm mcta=2 mit=3600', lx=600, ne=25, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_2.mit_3600', group='zm mcta=2 mit=3600', lx=600, ne=17, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne13.lx_600km.dt_360.enable_zm_1.mcta_2.mit_3600', group='zm mcta=2 mit=3600', lx=600, ne=13, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_2.mit_3600',  group='zm mcta=2 mit=3600', lx=600, ne= 9, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne7.lx_600km.dt_720.enable_zm_1.mcta_2.mit_3600',  group='zm mcta=2 mit=3600', lx=600, ne= 7, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne5.lx_600km.dt_900.enable_zm_1.mcta_2.mit_3600',  group='zm mcta=2 mit=3600', lx=600, ne= 5, clr='darkgreen', p=scratch_gpu,s='run', group_name='zm mcta=3  mit=3600')
+
     htype = 'output.1D.1hr.AVERAGE.nhours_x1'
     first_file,num_files = 20,None
 

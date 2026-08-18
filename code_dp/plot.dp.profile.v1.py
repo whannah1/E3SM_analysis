@@ -146,9 +146,35 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_2',n='dx=12 km mcta=2',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_2', n='dx=22 km mcta=2',clr='purple', ls='dotted', p=scratch_gpu,s='run')
 
+    ### DCAPE / CAPE threshold sensitivity runs
+    
+    # # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_0',                n='dx=12km no-zm',             clr='black',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0',    n='dx=12km cape=0 dcape=0.0',  clr='red',     ls='solid', p=scratch_gpu,s='run')
+    # # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.001',n='dx=12km cape=0 dcape=0.001',clr='orange',  ls='solid', p=scratch_gpu,s='run')
+    # # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.005',n='dx=12km cape=0 dcape=0.005',clr='green',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.01', n='dx=12km cape=0 dcape=0.01', clr='orange',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.05', n='dx=12km cape=0 dcape=0.05', clr='green',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.1',  n='dx=12km cape=0 dcape=0.1',  clr='blue',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.5',  n='dx=12km cape=0 dcape=0.5',  clr='purple',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_1',    n='dx=12km cape=0 dcape=1.0',  clr='magenta', ls='solid', p=scratch_gpu,s='run')
 
-    # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
-    # first_file,num_files = 20,20
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0',    n='dx=12km cape=0',    clr='black',     ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_10.dct_0',   n='dx=12km cape=10',   clr='darkred',   ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_50.dct_0',   n='dx=12km cape=50',   clr='red',       ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_100.dct_0',  n='dx=12km cape=100',  clr='orange',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_200.dct_0',  n='dx=12km cape=200',  clr='yellow',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_300.dct_0',  n='dx=12km cape=300',  clr='lightgreen',ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_400.dct_0',  n='dx=12km cape=400',  clr='green',     ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_500.dct_0',  n='dx=12km cape=500',  clr='cyan',      ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_600.dct_0',  n='dx=12km cape=600',  clr='blue',      ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_700.dct_0',  n='dx=12km cape=700',  clr='purple',    ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_800.dct_0',  n='dx=12km cape=800',  clr='pink',      ls='solid', p=scratch_gpu,s='run')
+    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_900.dct_0',  n='dx=12km cape=900',  clr='magenta',   ls='solid', p=scratch_gpu,s='run')
+
+    
+
+    htype = 'output.1D.1hr.AVERAGE.nhours_x1'
+    first_file,num_files = 20,20
 
 
 
@@ -173,20 +199,45 @@ if host=='nersc':
     # first_file,num_files = 20,None
     # # first_file,num_files = 1,4
 
-    ### prototype v4 vertical grid testing
-    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60',           n='GATE control', clr='black',  p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.4',  n='GATE L128v3.4',clr='magenta',p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.5',  n='GATE L128v3.5',clr='green',  p=scratch_gpu,s='run')
-    add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.6',  n='GATE L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
-    htype = 'output.scream.1D.1hr.AVERAGE.nhours_x1'
-    first_file,num_files = 20,20
+    # ### prototype v4 vertical grid testing
+    # add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60',           n='GATE control', clr='black',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.4',  n='GATE L128v3.4',clr='magenta',p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.5',  n='GATE L128v3.5',clr='green',  p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-IDEAL-04.NN_04.ne67.lx_600km.dt_60.L128v3.6',  n='GATE L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
+    # htype = 'output.scream.1D.1hr.AVERAGE.nhours_x1'
+    # first_file,num_files = 20,20
 
+    # ### prototype v4 vertical grid testing
     # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100',         n='DYCOMS control', clr='black',  p=scratch_gpu,s='run')
     # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='DYCOMS L128v3.4',clr='magenta',p=scratch_gpu,s='run')
     # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='DYCOMS L128v3.5',clr='green',  p=scratch_gpu,s='run')
     # add_case('DP.2026-DYCOMS-SRF1-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='DYCOMS L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
     # htype = 'output.scream.1D.1hr.AVERAGE.nhours_x1'
+    # height_interp_mx_km, height_interp_dz_km = 2,10e-3
+    # pressure_min = 800.
+    # # add_var('sgs_buoy_flux')
+    # # add_var('pbl_height')
+    # # add_var('inv_qc_relvar')
+    # # add_var('eddy_diff_heat')
+    # # add_var('w_variance')
+    # # add_var('cldfrac_liq_prev')
+    # # add_var('ustar')
+    # # add_var('obklen')
+    # # add_var('tau_est')
+    # # add_var('shoc_mix')
+    # add_var('shoc_cond')
+    # add_var('shoc_evap')
+    # # add_var('wthl_sec')
+    # # add_var('wqw_sec')
+    # # add_var('qw_sec')
+    # # add_var('uw_sec')
+    # # add_var('vw_sec')
+    # # add_var('w3')
+    # # add_var('vapor_flux')
+    # # add_var('water_flux')
+    # # add_var('heat_flux')
 
+    # ### prototype v4 vertical grid testing
     # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100',         n='MAGIC control', clr='black',  p=scratch_gpu,s='run')
     # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.4',n='MAGIC L128v3.4',clr='magenta',p=scratch_gpu,s='run')
     # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.5',n='MAGIC L128v3.5',clr='green',  p=scratch_gpu,s='run')
@@ -206,20 +257,20 @@ if host=='nersc':
 # add_var('z_mid')
 # add_var('omega')
 # add_var('dS/dp',              str='-dS/dp')
-add_var('RelativeHumidity')
+# add_var('RelativeHumidity')
 # add_var('qv')
-add_var('qc')
+# add_var('qc')
 # add_var('qr')
-add_var('qi')
+# add_var('qi')
 
 # add_var('cldfrac_liq')
 
 # add_var('total_T_mid_tend')
 # add_var('total_qv_tend')
 
-# add_var('zm_T_mid_tend')
-# add_var('shoc_T_mid_tend')
-# add_var('p3_T_mid_tend')
+add_var('zm_T_mid_tend')
+add_var('shoc_T_mid_tend')
+add_var('p3_T_mid_tend')
 
 # add_var('zm_qv_tend')
 # add_var('shoc_qv_tend')
@@ -243,11 +294,15 @@ add_var('qi')
 fig_file = 'figs_dp/dp.profile.v1.png'
 
 print_stat = False
-use_height_coord = True
-height_interp_mx_km,height_interp_dz_km = 18, 100e-3
-# height_interp_mx_km, height_interp_dz_km = 5,10e-3
-# height_interp_mx_km, height_interp_dz_km = 2,10e-3
 # skip_first_twelve_hours = False
+use_height_coord = False
+if 'height_interp_mx_km' not in locals():
+    height_interp_mx_km,height_interp_dz_km = 18, 100e-3
+    # height_interp_mx_km, height_interp_dz_km = 5,10e-3
+    # height_interp_mx_km, height_interp_dz_km = 2,10e-3
+if 'pressure_min' not in locals():
+    pressure_min = 100.
+
 
 num_plot_col = len(var)
 # num_plot_col = 2
@@ -261,6 +316,19 @@ if 'num_files'  not in globals(): num_files = None
 clr = [None]*num_case
 for c in range(num_case): clr[c] = case_opts_list[c].get('clr', None)
 clr = hapy.fill_color_list(clr)
+#---------------------------------------------------------------------------------------------------
+def get_lev_dim(da):
+    # check for lev dimension
+    valid_lev_dims = ['lev','ilev']
+    if not any([d in da.dims for d in valid_lev_dims]):
+        print(); print(da); print()
+        raise ValueError(f'variable {tvar} does not appear to have a valid vertical dimension?')
+    else:
+        lev_dim_name = None
+        for d in valid_lev_dims:
+            if d in da.dims:
+                lev_dim_name = d
+    return lev_dim_name
 #---------------------------------------------------------------------------------------------------
 def get_data(ds,var):
     tvar = var
@@ -278,6 +346,7 @@ def get_data(ds,var):
     if var=='total_qv_tend'   : tvar = 'shoc_qv_tend'
     #---------------------------------------------------------------------------
     data = ds[tvar]
+    lev_dim_name = get_lev_dim(data)
     #---------------------------------------------------------------------------
     if var=='horiz_winds_u': data = data.isel(dim2=0)
     if var=='horiz_winds_v': data = data.isel(dim2=1)
@@ -286,9 +355,9 @@ def get_data(ds,var):
     if var=='qci'          : data = data + ds['qi']
     if var=='nci'          : data = data + ds['ni']
     if var=='S'            : data = data + ds['z_mid']*g/cp
-    if var=='dS/dp'        : data = data + ds['z_mid']*g/cp; data = data.differentiate(coord='lev')*-1
+    if var=='dS/dp'        : data = data + ds['z_mid']*g/cp; data = data.differentiate(coord=lev_dim_name)*-1
     if var=='MSE'          : data = data + ds['z_mid']*g/cp + ds['qv']*Lv/cp
-    if var=='dz_mid'       : data = data.diff(dim='lev')*-1
+    if var=='dz_mid'       : data = data.diff(dim=lev_dim_name)*-1
     if var=='total_T_mid_tend':
         data = data + ds['p3_T_mid_tend']
         data = data + ds['rrtmgp_T_mid_tend']
@@ -413,17 +482,21 @@ for v in range(num_var):
             if len(data.time)==1: raise ValueError('no valid time dimension - variance_time is not a valid operator')
             data = ( (data*area).sum(dim='ncol') / area.sum(dim='ncol') ).var(dim='time')
         #-------------------------------------------------------------------------
+        lev_dim_name = get_lev_dim(data)
+        #-------------------------------------------------------------------------
         if use_height_coord:
-            hght = get_data(ds,'z_mid')
+            hght = None
+            if lev_dim_name=='lev' : hght = get_data(ds,'z_mid')
+            if lev_dim_name=='ilev': hght = get_data(ds,'z_int')
             if 'time' in hght.dims: hght = hght.mean(dim='time')
             if 'ncol' in hght.dims and len(hght.ncol)==1: hght = hght.isel(ncol=0,drop=True)
             if var[v] == 'dz_mid': hght = hght[1:]
-            data['lev'] = hght/1e3
+            data[lev_dim_name] = hght/1e3
             dz = height_interp_dz_km
             data = data.interp(lev=np.arange(dz,height_interp_mx_km+dz,dz))
         #-------------------------------------------------------------------------
         data_list.append(data.values)
-        hght_list.append(data['lev'].values)
+        hght_list.append(data[lev_dim_name].values)
 
     #----------------------------------------------------------------------------
     ax = axes_flat[v]
@@ -458,6 +531,7 @@ for v in range(num_var):
     else:
         ax.set_ylabel('Pressure [hPa]', fontsize=fontsize)
         ax.invert_yaxis()
+        if 'pressure_min' in globals(): ax.set_ylim(top=pressure_min)
 
     ax.set_title(var_opts.get('str'), loc='right', fontsize=fontsize)
     ax.tick_params(labelsize=fontsize)

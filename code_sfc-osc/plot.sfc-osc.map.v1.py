@@ -67,12 +67,16 @@ if host=='nersc':
    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne30pg2_ne30pg2.NN_8.iflx_1.gust_1.debug',n='ne30 iflux+gust',p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
 
    tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-   # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_0',n='ne256 w/ implicit flux', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 ctrl - old', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+   add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',     n='ne256 ctrl - new', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+   # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_1',n='ne256 w/ implicit flux', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
 
    htype='output.1ma.AVERAGE.nmonths_x1'
-   first_file,num_files = None,6
-   add_var('T_2m_btp',s='T 2m btp')
+   first_file,num_files = None,12
+   add_var('T_2m_btp',          s='T2m btp')
+   add_var('surf_sens_flux_btp',s='shf btp')
+   add_var('wind_speed_10m_btp',s='wsp btp')
 
 
    ### 2026 splitform tests
@@ -160,8 +164,8 @@ if host=='alcf':
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
 
-# plot_diff,add_diff = False,False
 plot_diff,add_diff = False,False
+# plot_diff,add_diff = True,True
 
 print_stats          = True
 var_x_case           = False
@@ -342,7 +346,8 @@ for v in range(num_var):
       cmap = cmocean.cm.rain_r
       # cmap = cmocean.cm.amp
       if clev is None:
-         data_mag_max = max(abs(data_min),abs(data_max)) * 0.8
+         # data_mag_max = max(abs(data_min),abs(data_max)) * 0.8
+         data_mag_max = max(abs(data_min),abs(data_max)) * 0.1 # focus on smallest values
          data_min = data_mag_max*-1
          data_max = data_mag_max
    #----------------------------------------------------------------------------
@@ -355,8 +360,8 @@ for v in range(num_var):
 
       if plot_diff and c!=diff_base:
          img_kwargs['cmap']   = cmocean.cm.balance
-         img_kwargs['vmin']   = diff_min
-         img_kwargs['vmax']   = diff_max
+         img_kwargs['vmin']   = diff_min*0.1
+         img_kwargs['vmax']   = diff_max*0.1
          clev = None
       else:
          if clev is None:

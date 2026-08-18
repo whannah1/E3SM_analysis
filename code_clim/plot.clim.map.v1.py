@@ -140,26 +140,34 @@ if host=='nersc':
     # # htype,first_file,num_files = 'eam.h0',0,1
 
 
-    tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
-    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne4pg2.NN_1.zm_cxx.debug', n='zm_cxx',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne4pg2.NN_1.zm_f90.debug', n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1',n='ZM-F90',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0',n='zm_cxx.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1',n='ZM-C++.',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1.mcsp_mod_1',n='zm_cxx.zm_detr_1.mcsp_mod_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',n='zm_cxx',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
+    # tmp_path,tmp_sub = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu','run'
+    # # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne4pg2.NN_1.zm_cxx.debug', n='zm_cxx',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne4pg2.NN_1.zm_f90.debug', n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_0',n='zm_f90.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90.zm_detr_1',n='ZM-F90',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_0',n='zm_cxx.zm_detr_0',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1',n='ZM-C++.',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-DEV-00.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx.zm_detr_1.mcsp_mod_1',n='zm_cxx.zm_detr_1.mcsp_mod_1',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_f90',n='zm_f90',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM.GPU.ne30pg2.NN_4.zm_cxx',n='zm_cxx',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # use_snapshot,ss_t = True,4
     # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
     # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,1
     # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
-    htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,0
+    # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,0
+
+    ### implicit flux tests
+    tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 ctrl - old', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',     n='ne256 ctrl - new', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_1',n='ne256 w/ implicit flux', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    htype='output.1ma.AVERAGE.nmonths_x1'
+    first_file,num_files = None,12
 
 #-------------------------------------------------------------------------------
 if host=='lcrc':
