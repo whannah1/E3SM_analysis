@@ -33,28 +33,54 @@ if host=='olcf':
     # check for grids here:
     # /lustre/orion/cli115/proj-shared/hannah6/files_grid/*pg2_scrip.nc
 
-    ### ZM in-cloud water test
-    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
-    htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,5*12
-    # use_snapshot,ss_t = True,4
-    # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
-    add_var('precip_total_surf_mass_flux',s='precip')
-    add_var('LW_flux_up_at_model_top',s='OLR')
-    add_var('VapWaterPath',s='VWP')
-    add_var('LiqWaterPath',s='LWP')
-    add_var('IceWaterPath',s='IWP')
+    # ### ZM in-cloud water test
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    # # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1',n='alt-ZM-order',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
+    # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,5*12
+    # # use_snapshot,ss_t = True,4
+    # # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
+    # # add_var('precip_total_surf_mass_flux',s='precip')
+    # # add_var('LW_flux_up_at_model_top',s='OLR')
+    # # add_var('VapWaterPath',s='VWP')
+    # # add_var('LiqWaterPath',s='LWP')
+    # # add_var('IceWaterPath',s='IWP')
+    # # add_var('zm_activity')
+    # # add_var('zm_prec')
+    # add_var('RESTOM',s='RESTOM')
+
+    ### ZM baseline simulations
+    tmp_path = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch'
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # add_var('precip_total_surf_mass_flux',s='precip')
+    # add_var('VapWaterPath',s='VWP')
+    # add_var('LiqWaterPath',s='LWP')
+    # add_var('IceWaterPath',s='IWP')
+    # add_var('RESTOM',s='RESTOM')
+    # add_var('ShortwaveCloudForcing',s='SWCF')
+    # add_var('LongwaveCloudForcing', s='LWCF')
+    # add_var('U', s='850mb U', lev=850e2)
+    # add_var('U', s='200mb U', lev=200e2)
+
+    # add_var('zm_activity')
+    # add_var('zm_prec')
 
 
     # ### INITE 2026 CONUS
@@ -240,9 +266,10 @@ if host=='alcf':
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
 
+
 # plot_diff,add_diff = False,False
-plot_diff,add_diff = True,False
-# plot_diff,add_diff = True,True
+# plot_diff,add_diff = True,False
+plot_diff,add_diff = True,True
 
 print_stats          = True
 var_x_case           = False
@@ -257,8 +284,8 @@ if 'use_snapshot' not in locals(): use_snapshot,ss_t = False,-1
 #---------------------------------------------------------------------------------------------------
 # Set up plot resources
 if case==[]: raise ValueError('ERROR - case list is empty!')
+if var==[]: raise ValueError('ERROR - var list is empty!')
 num_var,num_case = len(var),len(case)
-
 
 diff_base = 0
 
@@ -337,6 +364,10 @@ for v in range(num_var):
 
         if var[v]=='zm_prec_frac':
             data = ds['zm_prec'] / ds['precip_total_surf_mass_flux']
+        if var[v]=='RESTOM':
+            data = ds['SW_flux_dn_at_model_top'] \
+                  -ds['SW_flux_up_at_model_top'] \
+                  -ds['LW_flux_up_at_model_top']
         else:
             data = ds[var[v]]
 
@@ -362,7 +393,7 @@ for v in range(num_var):
             if isinstance(lev_list[v], str):
                 if lev_list[v]=='sum':
                     data = data.sum(dim='lev')
-            elif isinstance(item, (int, float)):
+            elif isinstance(lev_list[v], (int, float)):
                 if lev_list[v]>0:
                     ps_var = next((v for v in ['ps', 'PS'] if v in ds), None)
                     if ps_var is None: raise ValueError('No sfc pressure variable found in dataset?')
@@ -485,6 +516,17 @@ for v in range(num_var):
         else:
             ax.set_title(name[c],fontsize=title_fontsize, loc='left')
         ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
+        
+        # add global mean value
+        # print(grid_ds_list[c].grid_area)
+        area = grid_ds_list[c].grid_area.values#rename('grid_size':'ncol')
+        if kind=='diff':
+            gbl_mean = ( (diff_list[c]*area).sum() / area.sum() ).values 
+        else:
+            gbl_mean = ( (data_list[c]*area).sum() / area.sum() ).values 
+        ax.set_title(f'mean: {gbl_mean:8.2f}', fontsize=int(title_fontsize*0.5), \
+                     loc='center', y=0.9, backgroundcolor='white')
+
         ax.set_global()
 
         rst = hapy.to_raster(plot_data, grid_ds_list[c], ax)

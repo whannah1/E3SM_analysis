@@ -39,15 +39,25 @@ python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30
 python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001
 python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001
 python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1
 
 
 
-MAP_FILE=/lustre/orion/cli115/proj-shared/hannah6/files_map/map_ne256pg2_to_180x360_traave.nc
+#MAP_FILE=/lustre/orion/cli115/proj-shared/hannah6/files_map/map_ne256pg2_to_180x360_traave.nc
+MAP_FILE=~/maps/map_ne30pg2_to_90x180_traave.nc
 DATA_ROOT=/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch
-REGRID_ARGS="--map=${MAP_FILE} --root=${DATA_ROOT} --sub=archive/atm/hist --prefix=output.daily.AVERAGE.nhours_x24"
+REGRID_ARGS="--map=${MAP_FILE} --root=${DATA_ROOT} --sub=archive/atm/hist_ne30 --prefix=output.ne30pg2.1da.AVERAGE.nhours_x24"
 
 python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1
 python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE
+python regrid.eamxx.py ${REGRID_ARGS} --case=E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6
+
+# command to move files around
+cd <case_root>
+mv run/*rhist* archive/rest/rhist/
+mkdir archive/atm/hist_ne30
+mv run/output.ne30pg2* archive/atm/hist_ne30/
+mv run/output.* archive/atm/hist/
 
 
 '''
@@ -110,12 +120,14 @@ for src_file in file_list :
 
     dst_file = src_file.replace('.nc',f'.remap_{dst_nlat}x{dst_nlon}.nc')
 
-    if overwrite and os.path.isfile(dst_file) : os.remove(dst_file)
+    # if overwrite and os.path.isfile(dst_file): os.remove(dst_file)
 
     # Change sub-directory
     dst_file = dst_file.replace(f'/{src_sub}/',f'/{dst_sub}/')
 
     cmd = f'ncremap -m {map_file} -i {src_file} -o {dst_file}'
+
+    if overwrite: cmd += ' -O'
 
     # if opts.vert_pressure_remap:
     #     cmd += ' --vrt_fl=$HOME/E3SM/vert_grid_files/vrt_prs_CMIP6.nc'

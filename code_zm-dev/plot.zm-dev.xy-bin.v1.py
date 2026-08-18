@@ -29,10 +29,11 @@ if host=='olcf':
     # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', clr='red', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', clr='blue', ls='solid', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      clr='black',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', clr='red',     p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', clr='blue',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', clr='cyan',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    clr='green',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', clr='red',     p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', clr='blue',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', clr='cyan',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    clr='green',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1',n='alt-ZM-order', clr='magenta', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
     # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12
     lat1,lat2 = -30,30
@@ -47,13 +48,16 @@ if host=='nersc':
 
 #---------------------------------------------------------------------------------------------------
 
-add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
-        htype=htype, xbin_min=20,xbin_max=64,use_log=False)
+# add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip vs VWP', \
+#         htype=htype, xbin_min=20,xbin_max=64,use_log=False)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_top', str='OLR vs precip_total', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='zm_prec', y_var='LW_flux_up_at_model_top', str='OLR vs zm_prec', \
+#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+
+# add_var(x_var='zm_prec', y_var='SW_flux_up_at_model_top', str='TOA SW up vs zm_prec', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='wind_speed_10m', str='wspd_10m vs precip', \
@@ -65,11 +69,10 @@ add_var(x_var='VapWaterPath', y_var='precip_total_surf_mass_flux', str='precip v
 # add_var(x_var='precip_total_surf_mass_flux', y_var='surf_sens_flux', str='SHF vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-# add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
-#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
-
-# add_var(x_var='precip_total_surf_mass_flux', y_var='IceWaterPath', str='IWP vs precip', \
-#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+add_var(x_var='precip_total_surf_mass_flux', y_var='LiqWaterPath', str='LWP vs precip', \
+        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+add_var(x_var='precip_total_surf_mass_flux', y_var='IceWaterPath', str='IWP vs precip', \
+        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='precip_total_surf_mass_flux', y_var='RainWaterPath', str='RWP vs precip', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)

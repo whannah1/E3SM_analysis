@@ -46,26 +46,43 @@ if host=='nersc':
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    # add_case('NOAA',n='NOAA',yr1=1990,yr2=1995)
+    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019)
 
-    # ZM in-cloud water test
+    # # ZM in-cloud water test
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',              n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',              n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001',     n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',    n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',         n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1',n='alt-ZM-order',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None#73*5
+
+    # ZM baseline simulations
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
     scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 w/ZM L128v3.6', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # htype,first_file,num_files = 'output.ne30pg2.1da.AVERAGE.nhours_x24',32,73*5 # 5 years - skip year 1
+    htype,first_file,num_files = 'output.ne30pg2.1da.AVERAGE.nhours_x24',0,73*5 # 5 years - make sure year 1 files are not present
 
     # add_var('LW_flux_up_at_model_top')
     # add_var('precip_total_surf_mass_flux',s='precip')
     
-    add_var('LW_flux_up_at_model_top',    s='OLR',   normalize=False)
-    # add_var('LW_flux_up_at_model_top',    s='OLR',   normalize=True)
-    add_var('precip_total_surf_mass_flux',s='precip',normalize=False)
-    # add_var('precip_total_surf_mass_flux',s='precip',normalize=True)
+    fig_title = 'Un-normalized Spectra'
+    add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
+    add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
+
+    # fig_title = 'Normalized Spectra'
+    # add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
+    # add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
+
+
+    add_var('LW_flux_up_at_model_top',    str='raw OLR',   normalize=False)
+    add_var('LW_flux_up_at_model_top',    str='norm OLR',   normalize=True)
     
 
 #---------------------------------------------------------------------------------------------------
@@ -80,11 +97,11 @@ segsize,noverlap = 96,60 # e3sm_diags
 fig_file      = 'figs_wk/wk.v1.png'
 tmp_file_head = 'data_temp/wk.v1'
 
-recalculate = False
+recalculate = True
 
 use_daily   = True
 normalize   = True
-var_x_case  = False
+var_x_case  = True
 
 plot_diff,add_diff = False,False
 # plot_diff,add_diff = True,False   # diff panels replace the full field for non-baseline cases
@@ -106,7 +123,7 @@ FONT_MED   = 8
 #---------------------------------------------------------------------------------------------------
 def get_tmp_file_name(case_in,var_in,case_opts):
     tmp_file = f'{tmp_file_head}.{case_in}.{var_in}'
-    if case_opts.get('yr1',None) is not None: tmp_file += f'.{yr1}-{yr2}'
+    if case_opts.get('yr1',None) is not None: tmp_file += f'.{case_opts["yr1"]}-{case_opts["yr2"]}'
     tmp_file += f'.ss_{segsize}.ol_{noverlap}.lat_{lat1}_{lat2}'
     if use_daily: tmp_file += '.daily'
     return tmp_file + '.nc'
@@ -208,20 +225,25 @@ for v in range(num_var):
             print(' '*6+'loading data...')
 
             if case[c]=='NOAA':
-                # obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.daily.1974-2021.nc'
-                obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.day.mean.nc'
+                obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.daily.1974-2021.nc'
+                # obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.day.mean.nc'
                 ds = xr.open_dataset(obs_file)
                 var_name = 'olr'
             else:
                 file_path = f'{case_opts["p"]}/{case[c]}/{case_opts["s"]}/*{htype}*'
                 file_list = sorted(glob.glob(file_path))
+                #---------------------------------------------------------------
+                # print()
+                # for f in file_list: print(f)
+                # print()
+                #---------------------------------------------------------------
                 if file_list==[]: raise ValueError(f'No files found for path: {file_path}')
                 print(' '*6+f'num files: {len(file_list)}')
                 ds = xr.open_mfdataset( file_list )
                 var_name = var[v]
 
-            if case_opts.get('yr1',None) is not None: ds = ds.where( ds['time.year']>=yr1, drop=True)
-            if case_opts.get('yr2',None) is not None: ds = ds.where( ds['time.year']<=yr2, drop=True)
+            if case_opts.get('yr1',None) is not None: ds = ds.where( ds['time.year']>=case_opts['yr1'], drop=True)
+            if case_opts.get('yr2',None) is not None: ds = ds.where( ds['time.year']<=case_opts['yr2'], drop=True)
             data = ds[var_name]
             #-------------------------------------------------------------------
             if 'ncol' in data.dims: exit('\n  ncol in data dimension - you need to remap!\n  see => regrid.eamxx.py')
@@ -387,7 +409,8 @@ for v in range(num_var):
         ax.tick_params(axis='x', labelsize=FONT_SMALL)
         #-----------------------------------------------------------------------
         # axis limits
-        ax.set_xlim(-10,10) ; ax.set_ylim(0,0.2)
+        # ax.set_xlim(-10,10) ; ax.set_ylim(0,0.2)
+        ax.set_xlim(-12,12) ; ax.set_ylim(0,0.3)
         # ax.set_xlim(-30,30) ; ax.set_ylim(0,0.5)
         # ax.set_xlim(-15,15) ; ax.set_ylim(0,0.5)
         # ax.set_xlim(-20,20) ; ax.set_ylim(0,0.3)
@@ -400,10 +423,13 @@ for v in range(num_var):
         ax.set_title(title_left,  loc='left',  fontsize=FONT_MED, pad=3)
         ax.set_title(title_right, loc='right', fontsize=FONT_MED, pad=3)
         #-----------------------------------------------------------------------
-        cb = fig.colorbar(cf, ax=ax, pad=0.02, fraction=0.04, aspect=30)
+        cb = fig.colorbar(cf, ax=ax, pad=0.02, fraction=0.04, aspect=30, shrink=0.8)
         cb.ax.tick_params(labelsize=FONT_SMALL)
         cb.set_ticks(levels[::max(1, len(levels)//10)])
 
+#---------------------------------------------------------------------------------------------------
+if 'fig_title' in locals():
+    fig.suptitle(fig_title, fontsize=16, fontweight='bold', y=0.98)
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
 os.makedirs(os.path.dirname(fig_file), exist_ok=True)

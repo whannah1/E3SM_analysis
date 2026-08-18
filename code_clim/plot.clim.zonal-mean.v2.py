@@ -28,6 +28,38 @@ def add_var(var_name, lev=-1, tem=False, s=None, **kwargs):
     for k, val in kwargs.items(): var_opts[k] = val
     var_opts_list.append(var_opts)
 #---------------------------------------------------------------------------------------------------
+if host == 'olcf':
+
+    # ### ZM in-cloud water test
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1',n='alt-ZM-order',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
+    # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12#5*12
+
+    ### ZM baseline simulations
+    tmp_path = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch'
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 L128v3.6 w/ZM', p=tmp_path,s='run',scrip_file=scrip_file)
+    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',6,3
+
+    add_var('qv',s='qv [g/kg]', unit_fac=1e3)
+    add_var('qc',s='qc [g/kg]', unit_fac=1e3)
+    add_var('qi',s='qi [g/kg]', unit_fac=1e3)
+    # add_var('T_mid')
+    # add_var('U')
+    # add_var('cldfrac_liq')
+    # add_var('cldfrac_ice_for_analysis')
+
+#---------------------------------------------------------------------------------------------------
 if host == 'nersc':
 
     # tmp_scratch = f'/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu'
@@ -132,7 +164,7 @@ month_str = ('(' + ','.join(month_names[m] for m in month_list) + ')'
 recalculate = True
 
 plot_diff            = True
-add_diff             = False
+add_diff             = True
 
 var_x_case           = False
 use_common_label_bar = False
@@ -268,6 +300,12 @@ for v in range(num_var):
                 # if yr1 is not None: ds = ds.where(ds['time.year'] >= yr1, drop=True)
                 # if yr2 is not None: ds = ds.where(ds['time.year'] <= yr2, drop=True)
                 #---------------------------------------------------------------
+                # check for vertical dimension
+                valid_lev_dims = ['lev','ilev']
+                if not any([d in ds[var[v]].dims for d in valid_lev_dims]):
+                    print(); print(ds[var[v]]); print()
+                    raise ValueError(f'variable {var[v]} does not appear to have a valid vertical dimension?')
+                #---------------------------------------------------------------
                 if month_list is not None:
                     ds = ds.sel(time=ds['time.month'].isin(month_list))
                 #---------------------------------------------------------------
@@ -280,8 +318,10 @@ for v in range(num_var):
                     ps_var = None
                     if 'ps' in ds: ps_var = 'ps'
                     if 'PS' in ds: ps_var = 'PS'
-                    data = hapy.vinth2p_simple( ds[var[v]], ds['hyam'], ds['hybm'], 
-                                                target_plev_mb*1e2, ds[ps_var],
+                    da = ds[var[v]].mean(dim='time')
+                    ps = ds[ps_var].mean(dim='time')
+                    data = hapy.vinth2p_simple( da, ds['hyam'], ds['hybm'], 
+                                                target_plev_mb*1e2, ps,
                                                 interp_type='linear', extrapolate=False)
                 else:
                     lat  = ds['lat']
