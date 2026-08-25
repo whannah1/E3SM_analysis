@@ -61,24 +61,29 @@ if host=='olcf':
     # add_var('RESTOM',s='RESTOM')
 
     ### ZM baseline simulations
-    tmp_path = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch'
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
     # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
     # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
     scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
     htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # htype,first_file,num_files,tmp_sub = 'output.1ma.AVERAGE.nmonths_x1',12,1,'archive/atm/hist'
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # add_var('precip_total_surf_mass_flux',s='precip')
-    # add_var('VapWaterPath',s='VWP')
-    # add_var('LiqWaterPath',s='LWP')
-    # add_var('IceWaterPath',s='IWP')
     # add_var('RESTOM',s='RESTOM')
-    # add_var('ShortwaveCloudForcing',s='SWCF')
+    # add_var('VapWaterPath',s='VWP')
+    add_var('LiqWaterPath',s='LWP')
+    # add_var('IceWaterPath',s='IWP')
+    add_var('ShortwaveCloudForcing',s='SWCF')
     # add_var('LongwaveCloudForcing', s='LWCF')
     # add_var('U', s='850mb U', lev=850e2)
     # add_var('U', s='200mb U', lev=200e2)
-
     # add_var('zm_activity')
     # add_var('zm_prec')
 

@@ -46,7 +46,7 @@ if host=='nersc':
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019)
+    # add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
 
     # # ZM in-cloud water test
     # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
@@ -64,25 +64,29 @@ if host=='olcf':
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
     scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
     # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 w/ZM L128v3.6', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 w/ZM L128v3.6', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # htype,first_file,num_files = 'output.ne30pg2.1da.AVERAGE.nhours_x24',32,73*5 # 5 years - skip year 1
     htype,first_file,num_files = 'output.ne30pg2.1da.AVERAGE.nhours_x24',0,73*5 # 5 years - make sure year 1 files are not present
 
     # add_var('LW_flux_up_at_model_top')
     # add_var('precip_total_surf_mass_flux',s='precip')
     
-    fig_title = 'Un-normalized Spectra'
-    add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
-    add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
+    # fig_title = 'Un-normalized Spectra'
+    # add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
+    # add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
 
-    # fig_title = 'Normalized Spectra'
-    # add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
-    # add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
+    fig_title = 'Normalized Spectra'
+    add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
+    add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
 
 
-    add_var('LW_flux_up_at_model_top',    str='raw OLR',   normalize=False)
-    add_var('LW_flux_up_at_model_top',    str='norm OLR',   normalize=True)
+    # add_var('LW_flux_up_at_model_top',    str='raw OLR',   normalize=False)
+    # add_var('LW_flux_up_at_model_top',    str='norm OLR',  normalize=True)
     
 
 #---------------------------------------------------------------------------------------------------
@@ -97,7 +101,7 @@ segsize,noverlap = 96,60 # e3sm_diags
 fig_file      = 'figs_wk/wk.v1.png'
 tmp_file_head = 'data_temp/wk.v1'
 
-recalculate = True
+recalculate = False
 
 use_daily   = True
 normalize   = True
@@ -220,7 +224,11 @@ for v in range(num_var):
         print(' '*4+f'case: {hapy.tclr.GREEN}{case[c]}{hapy.tclr.END}')
         tmp_file = get_tmp_file_name(case[c],var[v],case_opts)
         #-----------------------------------------------------------------------
-        if recalculate:
+        recalculate_loc = recalculate
+        if case_opts.get('recalculate') is not None:
+            recalculate_loc = case_opts.get('recalculate')
+        #-----------------------------------------------------------------------
+        if recalculate_loc:
             #-------------------------------------------------------------------
             print(' '*6+'loading data...')
 
@@ -388,7 +396,7 @@ for v in range(num_var):
             title_left  = case_opts_list[c]['n']
             # title_right = var_opts['str']
         title_right = var_opts['str']
-        if normalize_var: title_right += ' (normalized)'
+        if normalize_var: title_right += ' (norm)'
         if kind=='diff' : title_right += ' (diff)'
         #-----------------------------------------------------------------------
         ax = axs[v,p] if var_x_case else axs[p,v]

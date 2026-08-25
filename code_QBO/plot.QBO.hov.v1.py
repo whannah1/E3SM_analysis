@@ -23,11 +23,15 @@ if host=='olcf':
 
     ### ZM baseline simulations
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
-    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
     htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,6#12*5
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
     # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     yr1,yr2=2,6
 
 #-------------------------------------------------------------------------------
@@ -74,7 +78,10 @@ if host=='nersc':
 # plev_target = np.array([   0.1, 0.2, 0.5, 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])*1e2
 plev_target = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])*1e2
 # zlev_target = np.arange(10e3,50e3,1e3)
-zlev_target = np.arange(10e3,45e3+250,500)
+zlev_target = np.arange(10e3,50e3+250,500)
+
+use_height_coord = True
+
 #-------------------------------------------------------------------------------
 var, var_str = [],[]
 def add_var(var_in,s=None):
@@ -87,7 +94,7 @@ add_var('U',s='Zonal Wind [m/s]')
 # add_var('T')
 # add_var('O3')
 
-recalculate = True
+recalculate = False
 
 #-------------------------------------------------------------------------------
 
@@ -101,8 +108,6 @@ lat1,lat2 = -5,5
 
 if 'yr1' not in locals(): yr1 = None
 if 'yr2' not in locals(): yr2 = None
-
-use_height_coord = True
 
 print_stats = True
 print_time  = False
@@ -198,8 +203,11 @@ def _finalize_ax(ax, tvec, lvec, vstr, title, panel_label, use_height_coord):
         ax.set_yticklabels([str(t) for t in tm_vals if 5 <= t <= 100], fontsize=8)
         ax.set_yscale('log')
 
-    xb_tm_vals = np.arange(1800, 2200, 2)
-    valid_xticks = [t for t in xb_tm_vals if tvec.min() <= t <= tvec.max()]
+    if yr1>=1800:
+        xb_tm_vals = np.arange(1800, 2200, 2)
+        valid_xticks = [t for t in xb_tm_vals if tvec.min() <= t <= tvec.max()]
+    else:
+        valid_xticks = np.arange(yr1, yr2+1, 1)
     ax.set_xticks(valid_xticks)
     ax.set_xticklabels([str(int(t)) for t in valid_xticks], fontsize=7, rotation=0, ha='right')
     ax.tick_params(axis='both', which='both', labelsize=8)
@@ -374,7 +382,8 @@ for v in range(num_var):
             vlev_list.append( data_avg['zlev'].values/1e3 )
         else:
             vlev_list.append( data_avg['plev'].values/1e2 )
-        time = data_avg['time.year'].values + data_avg['time.month'].values/12.
+
+        time = data_avg['time.year'].values + (data_avg['time.month'].values-1)/12.
         time_list.append( time )
 
     #----------------------------------------------------------------------------
