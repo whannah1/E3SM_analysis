@@ -46,7 +46,7 @@ if host=='nersc':
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    # add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
+    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
 
     # # ZM in-cloud water test
     # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
@@ -82,7 +82,7 @@ if host=='olcf':
 
     fig_title = 'Normalized Spectra'
     add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
-    add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
+    # add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
 
 
     # add_var('LW_flux_up_at_model_top',    str='raw OLR',   normalize=False)

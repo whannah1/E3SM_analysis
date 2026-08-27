@@ -45,11 +45,11 @@ if host=='olcf':
     # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 w/ZM L128v3.6', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
-    add_case(f'{prefix}',                            clr='red',n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case(f'{prefix}.L128v3.6',                   clr='green',n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', clr='blue',n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}',                            clr='red',     n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6',                   clr='green',   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', clr='blue',    n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # htype,first_file,num_files = 'output.1da.AVERAGE.nhours_x24',0,73*5 # 5 years - make sure year 1 files are not present
-    htype,first_file,num_files = 'output.1da.AVERAGE.nhours_x24',73*4,73 # last year
+    htype,first_file,num_files = 'output.1da.AVERAGE.nhours_x24',73*3,73*1 # 1 year
     lat1,lat2 = -30,30
 
 
@@ -69,8 +69,8 @@ if host=='nersc':
 add_var(x_var='precip_total_surf_mass_flux', y_var='LW_flux_up_at_model_top', str='OLR vs precip_total', \
         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
-# add_var(x_var='zm_prec', y_var='LW_flux_up_at_model_top', str='OLR vs zm_prec', \
-#         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
+add_var(x_var='zm_prec', y_var='LW_flux_up_at_model_top', str='OLR vs zm_prec', \
+        htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)
 
 # add_var(x_var='zm_prec', y_var='SW_flux_up_at_model_top', str='TOA SW up vs zm_prec', \
 #         htype=htype, xbin_min=0.1,xbin_max=1000,use_log=True)

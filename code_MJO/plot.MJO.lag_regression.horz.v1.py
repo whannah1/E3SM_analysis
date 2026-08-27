@@ -65,7 +65,7 @@ if host=='olcf':
     # add_var('U_at_850hPa',                s='850mb U [m/s]',        **kwargs)
     # add_var('U_at_200hPa',                s='200mb U [m/s]',        **kwargs)
     # add_var('VapWaterPath',               s='VWP [kg/m2]',          **kwargs)
-    add_var('zm_prec',                    s='ZM Precip [mm/day]',   **kwargs)
+    # add_var('zm_prec',                    s='ZM Precip [mm/day]',   **kwargs)
 
 #---------------------------------------------------------------------------------------------------
 if host=='nersc':
@@ -81,18 +81,32 @@ if host=='nersc':
 
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
+
+recalculate_ind = True
+recalculate_reg = True
+create_plot     = True
+
+if 'recalculate_ind' not in locals(): recalculate_ind = False
+if 'recalculate_reg' not in locals(): recalculate_reg = False
+if 'create_plot'     not in locals(): create_plot = False
+
+#---------------------------------------------------------------------------------------------------
+
 fig_file      = 'figs_MJO/MJO.lag_regression.horz.v1.png'
 tmp_file_root = 'data_temp'
 tmp_file_head = 'MJO.lag_regression.horz.v1'
 
 ### meridional extent of the equatorial average
-lat1,lat2 = -5,5
+# lat1,lat2 = -5,5
+lat1,lat2 = -15,15
 
 ### maximum time lag [days]
 mxlag = 25
 
 ### regression index box => ilon +/- iwid
-ilon,iwid = 90,5
+# ilon,iwid = 90,5
+ilon,iwid = 90,7.5
+# ilon,iwid = 90,15
 # ilon,iwid = 150,10
 
 ### longitude bins used for the meridional average
@@ -100,17 +114,13 @@ dlon = 2
 lon_bins = np.arange(dlon/2.,360.,dlon)
 
 ### only use base times that fall in these months (set to None to use all)
-regression_months = [10,11,12,1,2,3]
-# regression_months = None
+# regression_months = [10,11,12,1,2,3]
+regression_months = None
 
 ### 20-100 day band pass filter
 filter_data = True
 nwgt    = 121
 fhi,flo = 20.,100.
-
-recalculate_ind = True
-recalculate_reg = True
-create_plot     = True
 
 ### plot options
 plot_lon1,plot_lon2 = 0,360

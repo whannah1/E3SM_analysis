@@ -43,19 +43,27 @@ if host == 'olcf':
     # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,12#5*12
 
     ### ZM baseline simulations
-    tmp_path = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch'
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
     # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
     scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256 w/ZM', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256 L128v3.6 w/ZM', p=tmp_path,s='run',scrip_file=scrip_file)
-    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',6,3
+    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # htype,first_file,num_files,tmp_sub = 'output.1ma.AVERAGE.nmonths_x1',12,1,'archive/atm/hist'
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
 
-    add_var('qv',s='qv [g/kg]', unit_fac=1e3)
-    add_var('qc',s='qc [g/kg]', unit_fac=1e3)
-    add_var('qi',s='qi [g/kg]', unit_fac=1e3)
+    # add_var('qv',s='qv [g/kg]', unit_fac=1e3)
+    # add_var('qc',s='qc [g/kg]', unit_fac=1e3)
+    # add_var('qi',s='qi [g/kg]', unit_fac=1e3)
     # add_var('T_mid')
     # add_var('U')
+    add_var('omega')
     # add_var('cldfrac_liq')
     # add_var('cldfrac_ice_for_analysis')
 
@@ -154,12 +162,13 @@ month_list = None
 # month_list = [1]
 # month_list = [7]
 # month_list = [6, 7, 8]   # JJA
+# month_list = [12, 1, 2]   # DJF
 
 #---------------------------------------------------------------------------------------------------
-month_names = {1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',
-               7:'Jul',8:'Aug',9:'Sep',10:'Oct',11:'Nov',12:'Dec'}
-month_str = ('(' + ','.join(month_names[m] for m in month_list) + ')'
-             if month_list is not None else '')
+# month_names = {1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sep',10:'Oct',11:'Nov',12:'Dec'}
+# month_str = ('(' + ','.join(month_names[m] for m in month_list) + ')' if month_list is not None else '')
+month_names = {1:'J',2:'F',3:'M',4:'A',5:'M',6:'J',7:'J',8:'A',9:'S',10:'O',11:'N',12:'D'}
+month_str = ('(' + ''.join(month_names[m] for m in month_list) + ')' if month_list is not None else '')
 #---------------------------------------------------------------------------------------------------
 recalculate = True
 
@@ -424,14 +433,15 @@ for v in range(num_var):
         if diff_data_max > (-1e3 * diff_data_min): diff_data_max = -diff_data_min
 
         if var[v] == 'qv': diff_data_min,diff_data_max = -2,2
+        if var[v] == 'U' : diff_data_min,diff_data_max = -10,10
 
     # ------------------------------------------------------------------
     # Build contour levels for the absolute panels
     # ------------------------------------------------------------------
     if var[v] == 'OMEGA':
         abs_levels = np.linspace(-1, 1, 21) * 0.002
-    elif var[v] == 'U':
-        abs_levels = np.linspace(-50, 50, 41)
+    # elif var[v] == 'U':
+    #     abs_levels = np.linspace(-50, 50, 21)
     elif tem_list[v]:
         abs_levels = np.linspace(-4, 4, 21)
     else:
@@ -540,7 +550,7 @@ for v in range(num_var):
             #            linewidths=0.2, alpha=0.4)
 
             # Axes formatting
-            # ax.set_yscale('log')
+            ax.set_yscale('log')
             ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
             ax.yaxis.set_minor_formatter(mticker.NullFormatter())
             ax.set_ylim(max(LEV), min(LEV))   # pressure decreasing upward

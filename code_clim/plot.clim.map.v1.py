@@ -77,10 +77,10 @@ if host=='olcf':
     add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
     # add_var('precip_total_surf_mass_flux',s='precip')
     # add_var('RESTOM',s='RESTOM')
-    # add_var('VapWaterPath',s='VWP')
-    add_var('LiqWaterPath',s='LWP')
+    add_var('VapWaterPath',s='VWP')
+    # add_var('LiqWaterPath',s='LWP')
     # add_var('IceWaterPath',s='IWP')
-    add_var('ShortwaveCloudForcing',s='SWCF')
+    # add_var('ShortwaveCloudForcing',s='SWCF')
     # add_var('LongwaveCloudForcing', s='LWCF')
     # add_var('U', s='850mb U', lev=850e2)
     # add_var('U', s='200mb U', lev=200e2)
@@ -289,7 +289,7 @@ if host=='alcf':
 plot_diff,add_diff = True,True
 
 print_stats          = True
-var_x_case           = False
+var_x_case           = True
 
 # num_plot_col         = len(case)
 # num_plot_col         = 1#len(var)
@@ -565,7 +565,7 @@ for v in range(num_var):
 
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
-fig.savefig(fig_file, dpi=100, bbox_inches='tight')
+fig.savefig(fig_file, dpi=150, bbox_inches='tight')
 plt.close(fig)
 
 print(f'\n{fig_file}')
