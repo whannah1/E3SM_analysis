@@ -183,13 +183,33 @@ if host=='lcrc':
 
     # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/ne256pg2_scrip.nc'
 
-    tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
-    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    htype,first_file,num_files = 'eam.h1',0,0
-    add_var('PCONVT',htype='eam.h1')
+    # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    # tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # htype,first_file,num_files = 'eam.h1',0,0
+    # add_var('PCONVT',htype='eam.h1')
+
+    tmp_root,tmp_sub = '/lcrc/group/e3sm/ac.whannah/scratch/chrys','run'
+    scrip_file_ne4 = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
+    scrip_file_ne30 = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_0.gwo_0.gwc_0',n='ne4',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_1.gwc_1',n='ne4 gw_c',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_1.gwc_0',n='ne4 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_0.gwc_1',n='ne4 gw_o',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
+    
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_0.gwo_0.gwc_0',n='ne30',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_1',n='ne30 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
+    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_0',n='ne30 gw_o',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
+    add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_0.gwc_1',n='ne30 gw_c',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
+    htype,first_file,num_files = 'output.1da.AVERAGE',0,5
+    # add_var('shoc_horiz_winds_tend', lev='sum')
+    # add_var('zm_horiz_winds_tend', lev='sum')
+    add_var('gw_horiz_winds_tend', lev='sum')
+    # add_var('gw_T_mid_tend', lev='s/um')
+    # add_var('gw_conv_heating_depth')
+    # add_var('gw_conv_heating_max')
 
 #-------------------------------------------------------------------------------
 if host=='llnl':
@@ -403,7 +423,7 @@ for v in range(num_var):
         # grid_ds = grid_ds.where(mask, drop=True)
         grid_ds_list.append(grid_ds)
 
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
         if 'lev' in data.dims:
             if lev_list[v] is None:
                 raise ValueError('lev_list[v] is None - not sure what to do...')
@@ -422,12 +442,12 @@ for v in range(num_var):
                     plev_tmp = data['lev'].values[klev_tmp]
                     print(' '*4+f'{hapy.tclr.YELLOW}selecting model level {klev_tmp} (plev~{plev_tmp}mb){hapy.tclr.END}')
                     data = data.isel(lev=klev_tmp,drop=True)
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
         # # integrate over levels
         # if 'lev' in data.dims:
         #    print(' '*4+f'{hapy.tclr.RED}WARNING - summing over lev dimension{hapy.tclr.END}')
         #    data = data.sum(dim='lev')
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
         # adjust units
         if var[v]=='FRONTGF': data = data*86400e6 # K^2/M^2/S > K^2/KM^2/day
         if 'prec' in var[v] and var[v]!='zm_prec_frac': data = data*86400*1e3 # m/s > mm/day
@@ -435,10 +455,12 @@ for v in range(num_var):
         if use_snapshot and 'time' in data.dims:
             data = data.isel(time=ss_t,drop=True)
             print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
+        if 'dim2' in data.dims: data = data.isel(dim2=0)
+        #-----------------------------------------------------------------------
         # print stats before time averaging
         if print_stats: hapy.print_stat(data,name=var[v],stat='naxh',indent='    ',compact=True)
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
         # average over time dimension
         if 'time' in data.dims : 
             # hapy.print_time_length(data.time,indent=' '*6,print_span=True, print_length=False)
@@ -447,7 +469,7 @@ for v in range(num_var):
             #    print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
             if not use_snapshot:
                 data = data.mean(dim='time')
-        #-------------------------------------------------------------------------
+        #-----------------------------------------------------------------------
         # load into memory once - otherwise the min/max, the difference, and
         # to_raster each trigger a separate re-read of the input files
         data.load()
