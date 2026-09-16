@@ -136,14 +136,14 @@ else:
 #                 of the color scale. Set it well up into the interesting range -
 #                 too low and a light colormap washes out the whole background.
 #---------------------------------------------------------------------------------------------------
-add_var('precip_total_surf_mass_flux', s='Precipitation [mm/day]', scale=86400*1e3,
-        htype='eamxx.precip_total_surf_mass_flux.INSTANT.nmins_x30',
-        cmap=cmocean.cm.rain, clev=np.logspace(np.log10(0.1),np.log10(200),num=40),
-        alpha_floor=20.)
+# add_var('precip_total_surf_mass_flux', s='Precipitation [mm/day]', scale=86400*1e3,
+#         htype='eamxx.precip_total_surf_mass_flux.INSTANT.nmins_x30',
+#         cmap=cmocean.cm.rain, clev=np.logspace(np.log10(0.1),np.log10(200),num=40),
+#         alpha_floor=20.)
 
-# add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
-#         htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x30',
-#         cmap='gray_r', vmin=80, vmax=320)
+add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
+        htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x30',
+        cmap='gray_r', vmin=80, vmax=320)
 
 # add_var('VapWaterPath', s='CWV [mm]',
 #         htype='eamxx.VapWaterPath.INSTANT.nmins_x30',
@@ -188,8 +188,8 @@ region_dict = {
 #---------------------------------------------------------------------------------------------------
 # Default settings (all overridable on the command line)
 #---------------------------------------------------------------------------------------------------
-default_region      = 'conus'
-default_method      = 'hapy'      # 'hapy' or 'uxarray'
+default_region      = 'global'
+default_method      = 'uxarray'      # 'hapy' or 'uxarray'
 default_interp      = 'nearest'   # hapy only: 'nearest' or 'linear'
 default_proj        = 'platecarree'
 default_pixel_ratio = 1.0
