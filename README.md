@@ -27,3 +27,13 @@ salloc --time 4:00:00 --account=cli115 --nodes=1 # -p gpu
 micromamba activate taos_env
 micromamba activate ux_env
 ```
+
+# Grid Files
+
+```shell
+NE=30
+GRID_ROOT=/p/lustre1/hannah6/files_grid
+GenerateCSMesh --alt --res ${NE} --file ${GRID_ROOT}/ne${NE}.g
+GenerateVolumetricMesh --in ${GRID_ROOT}/ne${NE}.g --out ${GRID_ROOT}/ne${NE}pg2.g --np 2 --uniform
+ConvertMeshToSCRIP --in ${GRID_ROOT}/ne${NE}pg2.g --out ${GRID_ROOT}/ne${NE}pg2_scrip.nc
+```

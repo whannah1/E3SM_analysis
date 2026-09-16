@@ -68,6 +68,15 @@ if host=='nersc':
             n='SCREAM 13-km tuned', p=tmp_path_ne256, s='climo_180x360')
     htype = '_ANN_199501_200512_climo'
     yr1,yr2=1995,1999
+#-------------------------------------------------------------------------------
+if host=='llnl':
+    ### Phillip's GWD tests
+    tmp_path,tmp_sub = '/p/vast1/sohip/E3SM_stratosphere/E3SM_sensitivity_no14C',''
+    scrip_file = '/p/lustre1/hannah6/files_grid/ne30pg2_scrip.nc'
+    htype,first_file,num_files = 'eam.h0.',0,0
+    add_case(f'F2010_Base_E3SMv3_ne30_2degree', n='Base', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'F2010_2xGW_E3SMv3_ne30_2degree', n='2xGW', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # yr1,yr2=0,6
 
 #-------------------------------------------------------------------------------
 # ERA5 levels
