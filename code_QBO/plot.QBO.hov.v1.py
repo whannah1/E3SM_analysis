@@ -103,7 +103,7 @@ add_var('U',s='Zonal Wind [m/s]')
 # add_var('T')
 # add_var('O3')
 
-recalculate = False
+recalculate = True
 
 #-------------------------------------------------------------------------------
 
