@@ -31,9 +31,10 @@ micromamba activate ux_env
 # Grid Files
 
 ```shell
-NE=30
+NE=32
 GRID_ROOT=/p/lustre1/hannah6/files_grid # LLNL
 GRID_ROOT=/lcrc/group/e3sm/ac.whannah/files_grid # LCRC
+GRID_ROOT=/lustre/orion/cli115/proj-shared/hannah6/files_grid # OLCF
 GenerateCSMesh --alt --res ${NE} --file ${GRID_ROOT}/ne${NE}.g
 GenerateVolumetricMesh --in ${GRID_ROOT}/ne${NE}.g --out ${GRID_ROOT}/ne${NE}pg2.g --np 2 --uniform
 ConvertMeshToSCRIP --in ${GRID_ROOT}/ne${NE}pg2.g --out ${GRID_ROOT}/ne${NE}pg2_scrip.nc
