@@ -173,17 +173,28 @@ if host=='nersc':
     # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,0
 
     ### implicit flux tests
-    tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
-    tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
-    # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 ctrl - old', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',     n='ne256 ctrl - new', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
-    add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
-    add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_1',n='ne256 w/ implicit flux', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
-    htype='output.1ma.AVERAGE.nmonths_x1'
-    first_file,num_files = None,12
-    add_var('RESTOM',s='RESTOM')
-    add_var('ShortwaveCloudForcing',s='SWCF')
-    add_var('LongwaveCloudForcing', s='LWCF')
+    # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+    # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+    # # add_case('E3SM.2026-impflx-test-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 ctrl - old', p=tmp_scratch,s='run',scrip_file=tmp_grid_file)
+    # # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',     n='ne256 ctrl - new', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_0.gust_0',n='ne256 control',          p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-impflx-00.GPU.F2010-SCREAMv1.ne256pg2_ne256pg2.NN_128.iflx_1.gust_1',n='ne256 w/ implicit flux', p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    # htype='output.1ma.AVERAGE.nmonths_x1'
+    # first_file,num_files = None,12
+    # add_var('RESTOM',s='RESTOM')
+    # add_var('ShortwaveCloudForcing',s='SWCF')
+    # add_var('LongwaveCloudForcing', s='LWCF')
+
+
+    ### new time step recipe tests
+    # tmp_scratch = '/pscratch/sd/w/whannah/scream_scratch/pm-gpu'
+    # tmp_grid_file = '/pscratch/sd/w/whannah/files_grid/scrip_ne256pg2.nc'
+    # add_case('E3SM.2026-L128-TEST-02.F2010-SCREAMv1.GPU.NN_64.ne256pg2_ne256pg2',n='ne256 control',          p=tmp_scratch,s='archive/atm/hist',scrip_file=tmp_grid_file)
+    # htype='output.1da.AVERAGE'
+    # first_file,num_files = None,12
+    # add_var('???',s='???')
+
+    
 
 #-------------------------------------------------------------------------------
 if host=='lcrc':

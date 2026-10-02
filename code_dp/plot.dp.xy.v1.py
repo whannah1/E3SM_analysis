@@ -112,7 +112,7 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1',       n='dx=12 km zm-ctl',clr='blue',   ls='dashed', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1',        n='dx=22 km zm-ctl',clr='purple', ls='dashed', p=scratch_gpu,s='run')
     
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx=3 km zm mcta=3',clr='red',    ls='dotted', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_04.ne67.lx_600km.dt_75.enable_zm_1.mcta_3', n='dx=3 km zm mcta=3',clr='red',    ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_02.ne34.lx_600km.dt_150.enable_zm_1.mcta_3',n='dx= 6 km zm mcta=3',clr='green',  ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.mcta_3',n='dx=12 km zm mcta=3',clr='blue',   ls='dotted', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne9.lx_600km.dt_600.enable_zm_1.mcta_3', n='dx=22 km zm mcta=3',clr='purple', ls='dotted', p=scratch_gpu,s='run')
@@ -149,6 +149,12 @@ if host=='nersc':
     # first_file,num_files = -30,None
     # time_slice = -1
 
+
+    add_case('DP.2026-GATE-L128v4-00.arch_GPU.NN_03.ne50.lx_600km.dt_100',n='RCE 1m control',  p=scratch_gpu, s='run')
+    htype = 'output.2D.1hr.INSTANT.nhours_x1'
+    first_file,num_files = -1,None
+    time_slice = -1
+
 #-------------------------------------------------------------------------------
 if host=='olcf':
     scratch_frontier = '/lustre/orion/cli115/proj-shared/hannah6/scream_scratch'
@@ -159,16 +165,16 @@ if host=='olcf':
 
 # add_var('precip_total_surf_mass_flux', str='precip')
 # add_var('LW_flux_up_at_model_top',     str='LW_flux_up_at_model_top')
-# add_var('LiqWaterPath',                str='LiqWP')
+add_var('LiqWaterPath',                str='LiqWP')
 # add_var('IceWaterPath',                str='IceWP')
 
 # add_var('surf_evap',                   str='surf_evap')
 # add_var('ps',                          str='ps')
 
 
-add_var('zm_prec')
-add_var('zm_cape')
-add_var('zm_activity')
+# add_var('zm_prec')
+# add_var('zm_cape')
+# add_var('zm_activity')
 
 # add_var('CAPE')
 

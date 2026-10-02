@@ -175,18 +175,18 @@ if host=='nersc':
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0.5',  n='dx=12km cape=0 dcape=0.5',  clr='purple',    ls='solid', p=scratch_gpu,s='run')
     # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_1',    n='dx=12km cape=0 dcape=1.0',  clr='magenta', ls='solid', p=scratch_gpu,s='run')
 
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0',    n='dx=12km cape=0',    clr='black',     ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_10.dct_0',   n='dx=12km cape=10',   clr='darkred',   ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_50.dct_0',   n='dx=12km cape=50',   clr='red',       ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_100.dct_0',  n='dx=12km cape=100',  clr='orange',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_200.dct_0',  n='dx=12km cape=200',  clr='yellow',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_300.dct_0',  n='dx=12km cape=300',  clr='lightgreen',ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_400.dct_0',  n='dx=12km cape=400',  clr='green',     ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_500.dct_0',  n='dx=12km cape=500',  clr='cyan',      ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_600.dct_0',  n='dx=12km cape=600',  clr='blue',      ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_700.dct_0',  n='dx=12km cape=700',  clr='purple',    ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_800.dct_0',  n='dx=12km cape=800',  clr='pink',      ls='solid', p=scratch_gpu,s='run')
-    add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_900.dct_0',  n='dx=12km cape=900',  clr='magenta',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_0.dct_0',    n='dx=12km cape=0',    clr='black',     ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_10.dct_0',   n='dx=12km cape=10',   clr='darkred',   ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_50.dct_0',   n='dx=12km cape=50',   clr='red',       ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_100.dct_0',  n='dx=12km cape=100',  clr='orange',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_200.dct_0',  n='dx=12km cape=200',  clr='yellow',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_300.dct_0',  n='dx=12km cape=300',  clr='lightgreen',ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_400.dct_0',  n='dx=12km cape=400',  clr='green',     ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_500.dct_0',  n='dx=12km cape=500',  clr='cyan',      ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_600.dct_0',  n='dx=12km cape=600',  clr='blue',      ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_700.dct_0',  n='dx=12km cape=700',  clr='purple',    ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_800.dct_0',  n='dx=12km cape=800',  clr='pink',      ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-CTAL-GATE-01.arch_GPU.NN_01.ne17.lx_600km.dt_300.enable_zm_1.cpt_900.dct_0',  n='dx=12km cape=900',  clr='magenta',   ls='solid', p=scratch_gpu,s='run')
 
     # htype = 'output.1D.1hr.AVERAGE.nhours_x1'
     htype = 'output.2D.1hr.INSTANT.nhours_x1'
@@ -195,7 +195,7 @@ if host=='nersc':
     # add_var('zm_cape')
     # add_var('zm_prec')
     # add_var('zm_activity')
-    add_var('zm_activity', method='std')
+    # add_var('zm_activity', method='std')
 
     # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_0',           n='RCE 5m control',     clr='black', ls='solid',  p=scratch_gpu, s='run')
     # add_case('DP.2026-RCE-00.GPU.NN_01.ne_010.lx_400.dt_300.enable_zm_1.mvgr_100',  n='RCE 5m zm mvgr:100', clr='red',    ls='solid', p=scratch_gpu, s='run')
@@ -240,6 +240,13 @@ if host=='nersc':
     # add_case('DP.2026-MAGIC-00.NN_04.ne10.lx_100km.dt_100.L128v3.6',n='MAGIC L128v3.6',clr='cyan',   p=scratch_gpu,s='run')
     # htype = 'output.2D.1hr.AVERAGE.nhours_x1'
     # # first_file,num_files = 1,1
+
+    # # MCT vs MOAB driver test
+    # add_case('DP.2026-GATE-L128v4-02.arch_GPU.NN_03.ne50.lx_600km.dt_100.driver_mct',  n='driver=mct',  clr='red',  ls='solid', p=scratch_gpu,s='run')
+    # add_case('DP.2026-GATE-L128v4-02.arch_GPU.NN_03.ne50.lx_600km.dt_100.driver_moab', n='driver=moab', clr='blue', ls='dashed', p=scratch_gpu,s='run')
+    # htype = 'output.2D.1hr.INSTANT'
+    # first_file,num_files = None,None
+    # add_var('LiqWaterPath')
 
 #-------------------------------------------------------------------------------
 
@@ -354,8 +361,10 @@ for v in range(num_var):
                 if num_files  is not None: file_list = file_list[:num_files]
                 if file_list==[]:
                     print('ERROR: file list is empty?')
-                    print(f'file_path: {file_path}')
-                    print(f'file_list: {file_list}')
+                    print(f'  first_file  : {first_file}')
+                    print(f'  num_files   : {num_files}')
+                    print(f'  file_path   : {file_path}')
+                    print(f'  file_list   : {file_list}')
                     exit()
                 return file_list
             #-------------------------------------------------------------------
