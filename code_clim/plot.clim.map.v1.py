@@ -61,31 +61,31 @@ if host=='olcf':
     # add_var('RESTOM',s='RESTOM')
 
     ### ZM baseline simulations
-    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
-    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
-    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
-    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
-    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
-    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
-    # htype,first_file,num_files,tmp_sub = 'output.1ma.AVERAGE.nmonths_x1',12,1,'archive/atm/hist'
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
-    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_var('precip_total_surf_mass_flux',s='precip')
-    # add_var('RESTOM',s='RESTOM')
-    add_var('VapWaterPath',s='VWP')
-    # add_var('LiqWaterPath',s='LWP')
-    # add_var('IceWaterPath',s='IWP')
-    # add_var('ShortwaveCloudForcing',s='SWCF')
-    # add_var('LongwaveCloudForcing', s='LWCF')
-    # add_var('U', s='850mb U', lev=850e2)
-    # add_var('U', s='200mb U', lev=200e2)
-    # add_var('zm_activity')
-    # add_var('zm_prec')
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
+    # # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    # htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
+    # # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
+    # # htype,first_file,num_files,tmp_sub = 'output.1ma.AVERAGE.nmonths_x1',12,1,'archive/atm/hist'
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
+    # prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    # add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_var('precip_total_surf_mass_flux',s='precip')
+    # # add_var('RESTOM',s='RESTOM')
+    # add_var('VapWaterPath',s='VWP')
+    # # add_var('LiqWaterPath',s='LWP')
+    # # add_var('IceWaterPath',s='IWP')
+    # # add_var('ShortwaveCloudForcing',s='SWCF')
+    # # add_var('LongwaveCloudForcing', s='LWCF')
+    # # add_var('U', s='850mb U', lev=850e2)
+    # # add_var('U', s='200mb U', lev=200e2)
+    # # add_var('zm_activity')
+    # # add_var('zm_prec')
 
 
     # ### INITE 2026 CONUS
@@ -117,7 +117,14 @@ if host=='olcf':
     # # add_var('ps',htype='eamxx.ps.INSTANT.nmins_x30')
     # # first_file,num_files = None,None
 
-
+    ### ZM baseline simulations
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne32pg2_scrip.nc'
+    add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_old', n='ne32 Old IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_new', n='ne32 New IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    htype,first_file,num_files = 'output.debug.INSTANT.nhours_x1',0,1
+    use_snapshot,ss_t = True,11
+    add_var('SeaLevelPressure',s='SLP')
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -304,9 +311,9 @@ if host=='alcf':
 #-------------------------------------------------------------------------------
 
 
-# plot_diff,add_diff = False,False
+plot_diff,add_diff = False,False
 # plot_diff,add_diff = True,False
-plot_diff,add_diff = True,True
+# plot_diff,add_diff = True,True
 
 print_stats          = True
 var_x_case           = True
@@ -350,8 +357,8 @@ num_panel = len(case_panels)
 #---------------------------------------------------------------------------------------------------
 # set up figure objects
 subplot_kwargs = {}
-# subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
-subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
+subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
+# subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
 # subplot_kwargs['projection'] = ccrs.PlateCarree()
 (d1,d2) = (num_var,num_panel) if var_x_case else (num_panel,num_var)
 fdx,fdy=10,5;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
@@ -453,8 +460,11 @@ for v in range(num_var):
         if 'prec' in var[v] and var[v]!='zm_prec_frac': data = data*86400*1e3 # m/s > mm/day
         #-------------------------------------------------------------------------
         if use_snapshot and 'time' in data.dims:
-            data = data.isel(time=ss_t,drop=True)
-            print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
+            # data = data.isel(time=ss_t,drop=True)
+            # print(' '*4+f'{hapy.tclr.RED}WARNING - snapshot mode enabled{hapy.tclr.END}')
+
+            data = data.isel(time=1,drop=True) - data.isel(time=0,drop=True)
+            print(' '*4+f'{hapy.tclr.RED}WARNING - special time difference mode enabled{hapy.tclr.END}')
         #-----------------------------------------------------------------------
         if 'dim2' in data.dims: data = data.isel(dim2=0)
         #-----------------------------------------------------------------------

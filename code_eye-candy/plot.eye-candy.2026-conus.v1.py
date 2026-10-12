@@ -108,17 +108,20 @@ def add_var(var_name,s=None,**kwargs):
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
+    # /lustre/orion/cli115/proj-shared/brhillman/e3sm_scratch/conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.with-3d-turbulence.20260929/run/*eamxx.*.INSTANT.nmins_x5*
+
     tmp_scratch,tmp_sub = '/lustre/orion/cli115/proj-shared/brhillman/e3sm_scratch','run'
     grid_root = '/lustre/orion/cli115/world-shared/e3sm/2026-INCITE-CONUS-RRM/files_grid'
-    ### NOTE - the plain "*_scrip.nc" files in grid_root are currently 0 bytes,
-    ###        the cdf5 copy is the one with actual data in it
     tmp_grid_file = f'{grid_root}/2025-scream-conus-1024x2-pg2_scrip.cdf5.nc'
 
-    add_case('conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.20260727',
-             n='2026 CONUS RRM (1024x2)', p=tmp_scratch, s=tmp_sub, scrip_file=tmp_grid_file)
+    # add_case('conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.20260727',
+    #          n='2026 CONUS RRM (1024x2)', p=tmp_scratch, s=tmp_sub, scrip_file=tmp_grid_file)
+
+    add_case('conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.with-3d-turbulence.20260929',
+             n='1024x2 (20260929)', p=tmp_scratch, s=tmp_sub, scrip_file=tmp_grid_file)
 
     ### which files of the stream to use - 0/None means "all"
-    first_file,num_files = 0,1
+    first_file,num_files = -1,1
 
     ### default Blue Marble location on this machine - see notes_eye-candy.md
     bg_image_default = '/lustre/orion/cli115/proj-shared/hannah6/Blue_Marble/'\
@@ -137,37 +140,62 @@ else:
 #                 too low and a light colormap washes out the whole background.
 #---------------------------------------------------------------------------------------------------
 # add_var('precip_total_surf_mass_flux', s='Precipitation [mm/day]', scale=86400*1e3,
-#         htype='eamxx.precip_total_surf_mass_flux.INSTANT.nmins_x30',
+#         htype='eamxx.precip_total_surf_mass_flux.INSTANT.nmins_x5',
 #         cmap=cmocean.cm.rain, clev=np.logspace(np.log10(0.1),np.log10(200),num=40),
 #         alpha_floor=20.)
 
-add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
-        htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x30',
-        cmap='gray_r', vmin=80, vmax=320)
+# add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
+#         htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x5',
+#         cmap='gray_r', vmin=80, vmax=320)
 
 # add_var('VapWaterPath', s='CWV [mm]',
 #         htype='eamxx.VapWaterPath.INSTANT.nmins_x30',
 #         cmap=cmocean.cm.haline, vmin=0, vmax=70)
 
 # add_var('LiqWaterPath', s='LWP [kg/m2]',
-#         htype='eamxx.LiqWaterPath.INSTANT.nmins_x30',
+#         htype='eamxx.LiqWaterPath.INSTANT.nmins_x5',
 #         cmap='bone', clev=np.logspace(-2,0.5,num=30), alpha_floor=0.02)
 
 # add_var('IceWaterPath', s='IWP [kg/m2]',
 #         htype='eamxx.IceWaterPath.INSTANT.nmins_x30',
 #         cmap='bone', clev=np.logspace(-2,0.5,num=30), alpha_floor=0.02)
 
-# add_var('T_2m', s='2m Temperature [K]',
-#         htype='eamxx.T_2m.INSTANT.nmins_x30',
-#         cmap=cmocean.cm.thermal, vmin=240, vmax=310)
+add_var('T_2m', s='2m Temperature [K]',
+        htype='eamxx.T_2m.INSTANT.nmins_x5',
+        # cmap=cmocean.cm.thermal, vmin=240, vmax=310)
+        cmap=cmocean.cm.thermal, vmin=270, vmax=310)
 
 # add_var('wind_speed_10m', s='10m Wind Speed [m/s]',
-#         htype='eamxx.wind_speed_10m.INSTANT.nmins_x30',
-#         cmap=cmocean.cm.speed, vmin=0, vmax=40)
+#         htype='eamxx.wind_speed_10m.INSTANT.nmins_x5',
+#         cmap=cmocean.cm.speed, vmin=0, vmax=20)
+
+# add_var('horiz_winds_at_model_bot', s='Bottom Layer E/W Wind [m/s]',
+#         htype='eamxx.horiz_winds_at_model_bot.INSTANT.nmins_x5',
+#         cmap=cmocean.cm.balance, vmin=-20, vmax=20, dim2=0)
+
+# add_var('horiz_winds_at_model_bot', s='Bottom Layer N/S Wind [m/s]',
+#         htype='eamxx.horiz_winds_at_model_bot.INSTANT.nmins_x5',
+#         cmap=cmocean.cm.balance, vmin=-20, vmax=20, dim2=1)
 
 # add_var('ps', s='Surface Pressure [hPa]', scale=1e-2,
 #         htype='eamxx.ps.INSTANT.nmins_x30',
 #         cmap='viridis', vmin=950, vmax=1030)
+
+# add_var('SeaLevelPressure', s='Sea Level Pressure [hPa]', scale=1e-2,
+#         htype='SeaLevelPressure.INSTANT.nmins_x5',
+#         cmap='viridis', vmin=950, vmax=1030)
+
+# add_var('surf_sens_flux', s='Sensible Heat Flux [W/m2]',
+#         htype='surf_sens_flux.INSTANT.nmins_x5',
+#         cmap='viridis')#, vmin=950, vmax=1030)
+
+# add_var('surface_upward_latent_heat_flux', s='Latent Heat Flux [W/m2]', scale=1e-2,
+#         htype='surface_upward_latent_heat_flux.INSTANT.nmins_x5',
+#         cmap='viridis')#, vmin=950, vmax=1030)
+
+
+
+
 
 #---------------------------------------------------------------------------------------------------
 # Region presets - lon may be given as 0:360 or -180:180, it is normalized below
@@ -182,25 +210,28 @@ region_dict = {
     'frontrange':dict(lon1=-107, lon2=-102, lat1= 37, lat2= 42),
     ### ~1 degree boxes - this is where the <1km spacing actually shows up
     'okc'      : dict(lon1=-98.5, lon2=-97.0, lat1=35.0, lat2=36.2),
+    'dallas'   : dict(lon1=-96.3089, lon2=-97.3089, lat1=32.2792, lat2=33.2792),
     'olympic'  : dict(lon1=-124.9, lon2=-123.0, lat1=47.2, lat2=48.4),
 }
 
 #---------------------------------------------------------------------------------------------------
 # Default settings (all overridable on the command line)
 #---------------------------------------------------------------------------------------------------
-default_region      = 'global'
+default_region      = 'conus'
 default_method      = 'uxarray'      # 'hapy' or 'uxarray'
 default_interp      = 'nearest'   # hapy only: 'nearest' or 'linear'
 default_proj        = 'platecarree'
 default_pixel_ratio = 1.0
-default_dpi         = 150
+default_dpi         = 300# 150
 panel_w             = 11.0        # inches of map per panel when auto-sizing
 
 plot_diff,add_diff  = False,False # difference panels relative to diff_base
 diff_base           = 0
 
 print_stats         = True
-var_x_case          = True        # panels are var rows x case columns
+var_x_case          = False       # panel order: True = var-major (cases run fastest),
+                                  #              False = case-major (vars run fastest)
+num_plot_col        = None        # panels per row - None = num_var (1xN for a single case)
 
 ### padding (deg) added around the view when subsetting in ncol space
 region_pad_frac     = 0.05
@@ -213,7 +244,8 @@ NAN_SENTINEL        = -9.0e30
 read_workers        = 4
 
 repo_root  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-fig_root   = os.path.join(repo_root,'figs_eye-candy')
+# fig_root   = os.path.join(repo_root,'figs_eye-candy')
+fig_root   = 'figs_eye-candy'
 cache_root = os.path.join(fig_root,'.cache')
 
 #---------------------------------------------------------------------------------------------------
@@ -237,7 +269,9 @@ def parse_args():
                    help='camera height (m) for --proj nearside (default: %(default)s)')
     p.add_argument('--var',         default=None,
                    help='comma separated variable list, overrides the add_var() calls')
-    p.add_argument('--snapshot',    default=None, type=int, metavar='T',
+    # p.add_argument('--snapshot',    default=1, type=int, metavar='T',
+    p.add_argument('--snapshot',    default=-1, type=int, metavar='T',
+    # p.add_argument('--snapshot',    default=None, type=int, metavar='T',
                    help='plot a single time index instead of the time mean')
     p.add_argument('--background',  default='none', choices=['none','stock','image'],
                    help='what to draw under the data (default: %(default)s)')
@@ -256,6 +290,8 @@ def parse_args():
                    help='figure dpi (default: %(default)s)')
     p.add_argument('--figsize',     default=None, metavar='W,H',
                    help='figure size in inches (default: sized from the map aspect)')
+    p.add_argument('--num-plot-col', default=None, type=int, metavar='N',
+                   help='panels per row (default: number of variables)')
     p.add_argument('--no-subset',   action='store_true',
                    help='skip the ncol region subset (slower, but useful for debugging)')
     p.add_argument('--no-features', action='store_true', help='no coastlines/borders/states')
@@ -270,6 +306,7 @@ def parse_args():
 args = parse_args()
 if args.diff:     plot_diff = True
 if args.add_diff: plot_diff,add_diff = True,True
+if args.num_plot_col is not None: num_plot_col = args.num_plot_col
 
 #---------------------------------------------------------------------------------------------------
 # Resolve configuration
@@ -378,24 +415,29 @@ title_fontsize,label_fontsize = 16,12
 if args.bare: pad_l,pad_b,pad_t,cbar_in,gap_in = 0.,0.,0.,0.,0.
 else:         pad_l,pad_b,pad_t,cbar_in,gap_in = 0.35,0.35,0.55,1.05,0.45
 
-(d1,d2) = (num_var,num_panel) if var_x_case else (num_panel,num_var)
+### flat panel index for each (var,case panel) pair, filled row by row
+num_plot = num_var*num_panel
+def plot_index(v,p): return v*num_panel+p if var_x_case else p*num_var+v
+
+if num_plot_col is None: num_plot_col = num_var
+d2 = max(1,min(num_plot_col,num_plot))      # columns
+d1 = int(np.ceil(num_plot/d2))              # rows
 
 figsize = (10,6) if args.figsize is None else tuple(float(x) for x in args.figsize.split(','))
 fig = plt.figure(figsize=figsize, dpi=args.dpi, facecolor=fig_face)
-axs = np.empty((d1,d2), dtype=object)
-for i in range(d1):
-    for j in range(d2):
-        axs[i,j] = fig.add_subplot(d1,d2,i*d2+j+1, projection=projection)
-        if is_global or full_disk:
-            axs[i,j].set_global()
-        else:
-            axs[i,j].set_extent([region['lon1'],region['lon2'],region['lat1'],region['lat2']],
-                                crs=ccrs.PlateCarree())
+axs = np.empty(num_plot, dtype=object)
+for k in range(num_plot):
+    axs[k] = fig.add_subplot(d1,d2,k+1, projection=projection)
+    if is_global or full_disk:
+        axs[k].set_global()
+    else:
+        axs[k].set_extent([region['lon1'],region['lon2'],region['lat1'],region['lat2']],
+                          crs=ccrs.PlateCarree())
 
 #---------------------------------------------------------------------------------------------------
 # size the canvas to the shape of the map so the figure is not mostly whitespace
 if args.figsize is None:
-    x1,x2 = axs[0,0].get_xlim(); y1,y2 = axs[0,0].get_ylim()
+    x1,x2 = axs[0].get_xlim(); y1,y2 = axs[0].get_ylim()
     map_aspect = float(x2-x1)/float(y2-y1)
     pw = panel_w; ph = pw/map_aspect
     if ph > 2.0*pw: ph = 2.0*pw; pw = ph*map_aspect
@@ -433,7 +475,7 @@ def view_bounds():
     """
     if args.no_subset: return None
     try:
-        e = axs[0,0].get_extent(crs=ccrs.PlateCarree())
+        e = axs[0].get_extent(crs=ccrs.PlateCarree())
     except Exception as ex:
         print(' '*2+f'{hapy.tclr.RED}WARNING - could not determine the view extent '
                     f'({type(ex).__name__}), skipping the ncol subset{hapy.tclr.END}')
@@ -600,6 +642,12 @@ def load_field(ds, vname, idx, scale):
     a fancy index.
     """
     da = ds[vname]
+
+    if 'dim2' in da.dims: # useful for horiz_winds
+        if var_opts_list[v].get('dim2') is not None:
+            da = da.isel(dim2=var_opts_list[v].get('dim2'))
+        else:
+            da = da.isel(dim2=0)
     def finish(vals): return (vals if idx is None else vals[idx]).astype(np.float32)
 
     if 'time' not in da.dims:            return finish(da.values)*np.float32(scale)
@@ -763,7 +811,7 @@ for v in range(num_var):
     #-------------------------------------------------------------------------------
     for p in range(num_panel):
         kind,c = case_panels[p]
-        ax = axs[v,p] if var_x_case else axs[p,v]
+        ax = axs[plot_index(v,p)]
         lon,lat = sub_coords[c]
         #---------------------------------------------------------------------------
         if kind=='diff':

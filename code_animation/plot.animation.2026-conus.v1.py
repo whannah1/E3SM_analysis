@@ -77,14 +77,16 @@ xr.set_options(use_new_combine_kwarg_defaults=True)
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
     name      = '2026 CONUS RRM (1024x2)'
-    case      = 'conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.20260803c'
+    # case      = 'conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.20260803c'
+    case      = 'conus1024x2v1pg2_RRSwISC6to18E3r5.F2010-SCREAMv1.with-3d-turbulence.20260929'
     case_root = '/lustre/orion/cli115/proj-shared/brhillman/e3sm_scratch'
     case_sub  = 'run'
     grid_root = '/lustre/orion/cli115/world-shared/e3sm/2026-INCITE-CONUS-RRM/files_grid'
     scrip_file = f'{grid_root}/2025-scream-conus-1024x2-pg2_scrip.cdf5.nc'
     ux_grid_file = scrip_file
     # t1,t2,dt = 0,10,1
-    t1,t2,dt = 0,144,2 # first 12 hours
+    # t1,t2,dt = 0,144,2 # first 12 hours
+    t1,t2,dt = 12*3,12*12,1 # hour 6-9 (5-min output)
     # t1,t2,dt = 288,288+5,1
     # the simulation starts at 00Z or 6pm central standard time (CST)
     # so let's start the animation 12 hours later at 6am CST
@@ -113,13 +115,14 @@ def add_var(var_name,**kwargs):
 #         htype='eamxx.LiqWaterPath.INSTANT.nmins_x5',
 #         cmap=cmocean.cm.rain, clev=np.logspace(np.log10(0.1),np.log10(200),num=40))
 
-# add_var('T_2m', s='2m Temperature [K]',
-#         htype='eamxx.T_2m.INSTANT.nmins_x30',
-#         cmap=cmocean.cm.thermal, vmin=240, vmax=310)
+add_var('T_2m', s='2m Temperature [K]',
+        htype='eamxx.T_2m.INSTANT.nmins_x5',
+        # cmap=cmocean.cm.thermal, vmin=240, vmax=310)
+        cmap=cmocean.cm.thermal, vmin=280, vmax=310)
 
-add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
-        htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x5',
-        cmap='gray_r', vmin=80, vmax=320)
+# add_var('LW_flux_up_at_model_top', s='OLR [W/m2]',
+#         htype='eamxx.LW_flux_up_at_model_top.INSTANT.nmins_x5',
+#         cmap='gray_r', vmin=80, vmax=320)
 
 # add_var('VapWaterPath', s='VWP [kg/m2]',
 #         htype='eamxx.VapWaterPath.INSTANT.nmins_x30',
@@ -155,7 +158,7 @@ region_dict = {
 #---------------------------------------------------------------------------------------------------
 # Default run settings (all overridable on the command line)
 #---------------------------------------------------------------------------------------------------
-default_region     = 'conus'
+default_region     = 'plains'
 default_method     = 'hapy'      # 'hapy' or 'uxarray'
 default_interp     = 'nearest'   # hapy only: 'nearest' or 'linear'
 default_pixel_ratio= 1.0
