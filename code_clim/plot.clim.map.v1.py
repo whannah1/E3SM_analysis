@@ -18,7 +18,8 @@ def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
 #---------------------------------------------------------------------------------------------------
 var,lev_list,var_str = [],[],[]
 var_opts_list = []
-def add_var(var_name,lev=None,s=None,**kwargs): 
+# lev can be positive [mb], negative [mlev], or "sum"
+def add_var(var_name,lev=None,s=None,**kwargs):
     var.append(var_name); lev_list.append(lev); 
     var_str.append(var_name if s is None else s)
     var_opts = {}
@@ -201,33 +202,20 @@ if host=='lcrc':
 
     # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/ne256pg2_scrip.nc'
 
-    # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
-    # tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8',         n='E3SM ncin=1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_5',  n='E3SM ncin=5',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-ZM-MOD-00.F2010.ne30pg2.NN_8.ncin_20', n='E3SM ncin=20', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # htype,first_file,num_files = 'eam.h1',0,0
-    # add_var('PCONVT',htype='eam.h1')
-
-    tmp_root,tmp_sub = '/lcrc/group/e3sm/ac.whannah/scratch/chrys','run'
-    scrip_file_ne4 = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
-    scrip_file_ne30 = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_0.gwo_0.gwc_0',n='ne4',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_1.gwc_1',n='ne4 gw_c',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_1.gwc_0',n='ne4 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne4pg2.NN_1.use_gw_1.gwo_0.gwc_1',n='ne4 gw_o',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne4)
-    
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_0.gwo_0.gwc_0',n='ne30',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_1',n='ne30 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_0',n='ne30 gw_o',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_0.gwc_1',n='ne30 gw_c',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    htype,first_file,num_files = 'output.1da.AVERAGE',0,5
-    # add_var('shoc_horiz_winds_tend', lev='sum')
-    # add_var('zm_horiz_winds_tend', lev='sum')
-    add_var('gw_horiz_winds_tend', lev='sum')
-    # add_var('gw_T_mid_tend', lev='s/um')
-    # add_var('gw_conv_heating_depth')
-    # add_var('gw_conv_heating_max')
+    tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0',     n='mom_coeff=0',     p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.1',  n='mom_coeff=-0.1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.01', n='mom_coeff=-0.01', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.01',  n='mom_coeff=0.01',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.1',   n='mom_coeff=0.1',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
+    add_var('precip_total_surf_mass_flux',s='precip')
+    # add_var('wind_speed_10m',s='wspeed_10m')
+    # add_var('T_2m',s='T_2m')
+    add_var('U',s='U850',lev=850)
+    # add_var('U',s='U200',lev=200)
+    plot_diff,add_diff = True,False
 
 #-------------------------------------------------------------------------------
 if host=='llnl':
@@ -321,13 +309,13 @@ if host=='alcf':
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
 
-
-plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False
-# plot_diff,add_diff = True,True
+if 'plot_diff' not in locals():
+    plot_diff,add_diff = False,False
+    # plot_diff,add_diff = True,False
+    # plot_diff,add_diff = True,True
 
 print_stats          = True
-var_x_case           = True
+var_x_case           = False
 
 # num_plot_col         = len(case)
 # num_plot_col         = 1#len(var)
@@ -452,8 +440,12 @@ for v in range(num_var):
                 if lev_list[v]>0:
                     ps_var = next((v for v in ['ps', 'PS'] if v in ds), None)
                     if ps_var is None: raise ValueError('No sfc pressure variable found in dataset?')
-                    data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev_list[v], ds[ps_var],
+                    # lev is specified in mb, but vinth2p_simple expects Pa
+                    data = hapy.vinth2p_simple(data, ds['hyam'], ds['hybm'], lev_list[v]*1e2, ds[ps_var],
                                                         interp_type='log', extrapolate=False)
+                    # drop the singleton output level dimension
+                    if 'plev' in data.dims: data = data.isel(plev=0,drop=True)
+                    if 'lev'  in data.dims: data = data.isel(lev=0,drop=True)
                 if lev_list[v]<0:
                     # if requested lev<0 use model levels without interpolation
                     klev_tmp = np.absolute(lev_list[v])

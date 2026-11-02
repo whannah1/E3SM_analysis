@@ -45,6 +45,25 @@ if host == 'olcf':
     # add_var('surf_sens_flux')
     # add_var('surface_upward_latent_heat_flux')
     
+#---------------------------------------------------------------------------------------------------
+if host == 'lcrc':
+
+
+    tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0',     n='mom_coeff=0',     clr='black', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.3',  n='mom_coeff=-0.3',  clr='blue', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.1',  n='mom_coeff=-0.1',  clr='cyan', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.01', n='mom_coeff=-0.01', clr='cyan', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.01',  n='mom_coeff=0.01',  clr='orange', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.1',   n='mom_coeff=0.1',   clr='orange', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.3',   n='mom_coeff=0.3',   clr='red', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,3
+    add_var('precip_total_surf_mass_flux',s='precip')
+    # add_var('wind_speed_10m',s='wspeed_10m')
+    # add_var('T_2m',s='T_2m')
+    add_var('U',s='U850',lev=850)
+    add_var('U',s='U200',lev=200)
 
 #---------------------------------------------------------------------------------------------------
 # yr1, yr2 = 1995, 1999

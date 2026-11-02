@@ -34,35 +34,22 @@ def add_var(var_name, lev=-1, tem=False, s=None, **kwargs):
 #---------------------------------------------------------------------------------------------------
 if host == 'lcrc':
 
-    tmp_root,tmp_sub = '/lcrc/group/e3sm/ac.whannah/scratch/chrys','run'
-    scrip_file_ne30 = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_0.gwo_0.gwc_0',n='ne30',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_1',n='ne30 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_1.gwc_0',n='EAMxx ne30 gw oro only',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_2.use_gw_1.gwo_0.gwc_1',n='EAMxx ne30 gw conv only',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010.ne30pg2.NN_8.gwo_1.gwc_1',              n='EAM ne30',  htype='eam.h1',            p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-01.F2010xx-ZM.ne30pg2.NN_8.use_gw_1.gwo_1.gwc_1',n='EAMxx ne30',htype='output.1da.AVERAGE',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # htype,first_file,num_files = 'output.1da.AVERAGE',0,5
-    # add_var('shoc_horiz_winds_tend')
-    # add_var('zm_horiz_winds_tend')
-    # add_var('gw_horiz_winds_tend', s='GW U tend', unit_fac=86400, y_log=True)
-    # add_var('gw_oro_tend_u',  s='GW ORO U tend', unit_fac=86400, y_log=True, eam_var='UTGWORO')
-    # add_var('gw_conv_tend_u', s='GW CNV U tend', unit_fac=86400, y_log=True, eam_var='BUTGWSPEC')
+    tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    add_case('ERA5','ERA5')
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.3',  n='mom_coeff=-0.3',  clr='blue', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.1',  n='mom_coeff=-0.1',  clr='cyan', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.01', n='mom_coeff=-0.01', clr='cyan', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0',     n='mom_coeff=0',     clr='black', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.01',  n='mom_coeff=0.01',  clr='orange', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.1',   n='mom_coeff=0.1',   clr='orange', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.3',   n='mom_coeff=0.3',   clr='red', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
+    # month_list = [1,2,3]
+    add_var('U')
+    plot_diff,add_diff = True,False
+    num_plot_col = len(case)
 
-    # add_case('E3SM.2026-GW-DEV-01.F2010.ne30pg2.NN_2.gwo_1.gwc_1',n='EAM ne30 gw_oc',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # # add_case('E3SM.2026-GW-DEV-01.F2010.ne30pg2.NN_2.gwo_0.gwc_1',n='EAM ne30 gw_c',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-EAM-00.F2010.ne30pg2.NN_8.use_rr_0',n='ctrl',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-EAM-00.F2010.ne30pg2.NN_8.use_rr_1',n='w/RR 0',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-EAM-01.F2010.ne30pg2.NN_8.use_rr_1',n='w/RR 1',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    add_case('E3SM.2026-GW-DEV-EAM-02.F2010.ne30pg2.NN_8.use_rr_1',n='w/RR 2',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # add_case('E3SM.2026-GW-DEV-EAM-03.F2010.ne30pg2.NN_8.use_rr_1',n='w/RR 3',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    add_case('E3SM.2026-GW-DEV-EAM-04.F2010.ne30pg2.NN_8.use_rr_1',n='w/RR 4',p=tmp_root,s=tmp_sub,scrip_file=scrip_file_ne30)
-    # htype,first_file,num_files = 'h1',0,5
-    htype,first_file,num_files = 'h0',0,1
-    # add_var('UTGWORO',   unit_fac=86400, y_log=True)
-    # add_var('BUTGWSPEC', unit_fac=86400, y_log=True)
-    # add_var('UTGWSPEC', s='UTGWSPEC (abs)', unit_fac=86400, y_log=False, abs=True)
-    add_var('UTGWSPEC', s='UTGWSPEC',       unit_fac=86400, y_log=False, abs=False)
     
 #---------------------------------------------------------------------------------------------------
 if host == 'olcf':
@@ -169,12 +156,12 @@ if host == 'nersc':
     
 
 #---------------------------------------------------------------------------------------------------
-# target_plev_mb = np.array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
-#                             450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
-#                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
-target_plev_mb = np.array([ 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,
-                            100., 200., 300., 400., 500.,  600.,  700.,  750.,  775.,  800.,  825.,
+target_plev_mb = np.array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
+                            450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
+# target_plev_mb = np.array([ 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,
+#                             100., 200., 300., 400., 500.,  600.,  700.,  750.,  775.,  800.,  825.,
+#                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
 # target_plev_mb = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])
 # target_plev_mb = np.array([0.1, 0.2, 0.5, 1., 2., 3., 5., 7., 10., 20., 30., 50., 70., 100., 125., 150.])
 
@@ -195,7 +182,7 @@ target_plev_mb = np.array([ 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,
 # add_var('qc',s='Cloud Liquid [g/kg]',  unit_fac=1e3)
 # add_var('qi',s='Cloud Ice [g/kg]',     unit_fac=1e3)
 
-month_list = None
+if 'month_list' not in locals(): month_list = None
 # month_list = [1]
 # month_list = [7]
 # month_list = [6, 7, 8]   # JJA
@@ -216,7 +203,7 @@ var_x_case           = False
 use_common_label_bar = False
 print_stats          = True
 
-num_plot_col = 2
+if 'num_plot_col' not in locals(): num_plot_col = 2
 
 yr1, yr2 = None, None
 # yr1, yr2 = 2005, 2014
@@ -258,6 +245,14 @@ def nice_cntr_levels(data_min, data_max, max_steps=11, aboutZero=False):
     return cmin, cmax, cint
 
 #---------------------------------------------------------------------------------------------------
+def get_obs_root():
+    obs_root = None
+    if host=='nersc': obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series/ERA5'
+    if host=='lcrc' : obs_root = '/lcrc/soft/climate/e3sm_diags_data/obs_for_e3sm_diags/time-series/ERA5'
+    if host=='olcf' : obs_root = '/ccs/proj/cli115/e3sm_diags_data/obs_for_e3sm_diags/time-series/ERA5/'
+    if obs_root is None: raise ValueError(f'No valid obs_root found for host: {host}')
+    return obs_root
+    
 #---------------------------------------------------------------------------------------------------
 def get_tmp_file_name(case_in, var_in):
     tmp_file = f'data_temp/{tmp_file_head}.{case_in}.{var_in}.{yr1}-{yr2}'
@@ -275,6 +270,7 @@ all_data = {}   # keyed by (v, c) -> data_zonal.values
 all_lat  = {}
 all_lev  = {}
 
+var_loc_list = [None]*num_var
 for v in range(num_var):
     var_opts = var_opts_list[v]
     print()
@@ -292,16 +288,16 @@ for v in range(num_var):
             if case[c] == 'ERA5':
                 lat_name, lon_name = 'lat', 'lon'
                 xy_dims = (lon_name, lat_name)
-                obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series/ERA5'
+                obs_root = get_obs_root()
                 if var[v] == 'U' : obs_var, input_file_name = 'ua',   f'{obs_root}/ua_197901_201912.nc'
                 if var[v] == 'V' : obs_var, input_file_name = 'va',   f'{obs_root}/va_197901_201912.nc'
                 if var[v] == 'T' : obs_var, input_file_name = 'ta',   f'{obs_root}/ta_197901_201912.nc'
                 if var[v] == 'Q' : obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
                 if var[v] == 'qv': obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
                 if var[v] == 'O3': obs_var, input_file_name = 'tro3', f'{obs_root}/tro3_197901_201912.nc'
+                var_loc_list[v] = obs_var
 
-
-                input_file_name = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/climatology_1985-2014/ERA5/ERA5_ANN_198501_201412_climo.nc'
+                # input_file_name = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/climatology_1985-2014/ERA5/ERA5_ANN_198501_201412_climo.nc'
 
                 ds   = xr.open_dataset(input_file_name)
                 # if yr1 is not None: ds = ds.where(ds['time.year'] >= yr1, drop=True)
@@ -351,24 +347,24 @@ for v in range(num_var):
                 # if yr1 is not None: ds = ds.where(ds['time.year'] >= yr1, drop=True)
                 # if yr2 is not None: ds = ds.where(ds['time.year'] <= yr2, drop=True)
                 #---------------------------------------------------------------
-                var_loc = var[v]
+                var_loc_list[v] = var[v]
                 if var_opts.get('eam_var') is not None:
                     if var_opts.get('eam_var') in ds:
-                        var_loc = var_opts.get('eam_var')
+                        var_loc_list[v] = var_opts.get('eam_var')
                 #---------------------------------------------------------------
-                if var_loc not in ds:
+                if var_loc_list[v] not in ds:
                     raise ValueError(f'variable {var_loc} not found in file?')
                 #---------------------------------------------------------------
                 # check for vertical dimension
                 valid_lev_dims = ['lev','ilev']
-                if not any([d in ds[var_loc].dims for d in valid_lev_dims]):
-                    print(); print(ds[var_loc]); print()
-                    raise ValueError(f'variable {var_loc} does not appear to have a valid vertical dimension?')
+                if not any([d in ds[var_loc_list[v]].dims for d in valid_lev_dims]):
+                    print(); print(ds[var_loc_list[v]]); print()
+                    raise ValueError(f'variable {var_loc_list[v]} does not appear to have a valid vertical dimension?')
                 #---------------------------------------------------------------
                 if month_list is not None:
                     ds = ds.sel(time=ds['time.month'].isin(month_list))
                 #---------------------------------------------------------------
-                if 'dim2' in ds[var_loc].dims:
+                if 'dim2' in ds[var_loc_list[v]].dims:
                     ds = ds.isel(dim2=0)
                 #---------------------------------------------------------------
                 if 'ncol' in ds.dims:
@@ -378,18 +374,18 @@ for v in range(num_var):
                     if 'ps' in ds: ps_var = 'ps'
                     if 'PS' in ds: ps_var = 'PS'
                     if ps_var is not None:
-                        da = ds[var_loc].mean(dim='time')
+                        da = ds[var_loc_list[v]].mean(dim='time')
                         ps = ds[ps_var].mean(dim='time')
                         data = hapy.vinth2p_simple( da, ds['hyam'], ds['hybm'], 
                                                     target_plev_mb*1e2, ps,
                                                     interp_type='linear', extrapolate=False)
                     else:
                         print(f'{hapy.tclr.RED}WARNING - no sfc pressure found - reverting to model levels{hapy.tclr.END}')
-                        data = ds[var_loc].mean(dim='time').rename({'lev':'plev'})
+                        data = ds[var_loc_list[v]].mean(dim='time').rename({'lev':'plev'})
                         data['plev'] = data['plev']*1e2
                 else:
                     lat  = ds['lat']
-                    data = ds[var_loc].mean(dim='time')
+                    data = ds[var_loc_list[v]].mean(dim='time')
                     data = data.sel(lev=target_plev_mb)
             #-------------------------------------------------------------------
             if var_opts.get('abs'): 
@@ -398,7 +394,7 @@ for v in range(num_var):
             # adjust units
             if 'unit_fac' in var_opts: data = data*var_opts['unit_fac']
             #-------------------------------------------------------------------
-            # if print_stats: hapy.print_stat(data,name=var_loc,stat='naxs',indent='    ',compact=True)
+            # if print_stats: hapy.print_stat(data,name=var_loc_list[v],stat='naxs',indent='    ',compact=True)
             #-------------------------------------------------------------------
             # compute zonal mean
             # if 'ncol' in ds.dims:
@@ -411,18 +407,18 @@ for v in range(num_var):
                 # lat_bins   = bin_ds['bin'].values
                 data_zonal = bin_ds['bin_val'].transpose()
             #-------------------------------------------------------------------
-            if print_stats: hapy.print_stat(data,name=var_loc,stat='naxs',indent='    ',compact=True)
+            if print_stats: hapy.print_stat(data,name=var_loc_list[v],stat='naxs',indent='    ',compact=True)
             #-------------------------------------------------------------------
-        #     tmp_file = get_tmp_file_name(case[c], var_loc)
+        #     tmp_file = get_tmp_file_name(case[c], var_loc_list[v])
         #     print(' '*6 + f'writing to file: {tmp_file}')
         #     ds_tmp = xr.Dataset()
-        #     ds_tmp[var_loc] = data_zonal
+        #     ds_tmp[var_loc_list[v]] = data_zonal
         #     ds_tmp.to_netcdf(path=tmp_file, mode='w')
         # else:
-        #     tmp_file = get_tmp_file_name(case[c], var_loc)
+        #     tmp_file = get_tmp_file_name(case[c], var_loc_list[v])
         #     print(' '*6 + f'reading from file: {tmp_file}')
         #     ds_tmp      = xr.open_dataset(tmp_file)
-        #     data_zonal = ds_tmp[var_loc]
+        #     data_zonal = ds_tmp[var_loc_list[v]]
         #-----------------------------------------------------------------------
         # print()
         # print(data_zonal)
@@ -450,12 +446,19 @@ lat_ticks  = np.array([-90, -60, -30, 0, 30, 60, 90])
 FONT_SMALL = 7
 FONT_MED   = 8
 
+# number of panels for each variable
 if plot_diff and add_diff:
-    num_cols = num_case * 2 - 1
+    num_pnl_per_var = num_case * 2 - 1
 else:
-    num_cols = num_case
+    num_pnl_per_var = num_case
 
-num_rows = num_var
+num_plots = num_var * num_pnl_per_var
+
+if 'num_plot_col' in globals() and num_plot_col is not None:
+    num_cols = min(num_plot_col, num_plots)
+    num_rows = int(np.ceil(num_plots / float(num_cols)))
+else:
+    num_rows, num_cols = num_var, num_pnl_per_var
 
 fig_width  = 4 * num_cols
 fig_height = 2 * num_rows
@@ -463,6 +466,17 @@ fig, axes  = plt.subplots(num_rows, num_cols,
                            figsize=(fig_width, fig_height),
                            squeeze=False)
 fig.subplots_adjust(hspace=0.4, wspace=0.35)
+
+#---------------------------------------------------------------------------------------------------
+def get_row_col(p, v):
+    # p = panel index within the variable (0 to num_pnl_per_var-1)
+    if 'num_plot_col' in globals() and num_plot_col is not None:
+        ip  = v*num_pnl_per_var+p if var_x_case else p*num_var+v
+        row = ip // num_cols
+        col = ip - row*num_cols
+    else:
+        row, col = v, p
+    return (row, col)
 
 #---------------------------------------------------------------------------------------------------
 # Plotting loop
@@ -478,21 +492,28 @@ for v in range(num_var):
     # ------------------------------------------------------------------
     if plot_diff:
         tmp_data = [data_list[c] - data_list[0] for c in range(num_case)]
+
         diff_data_min = np.nanmin([np.nanmin(np.ma.masked_invalid(d)) for d in tmp_data])
         diff_data_max = np.nanmax([np.nanmax(np.ma.masked_invalid(d)) for d in tmp_data])
 
         if diff_data_min < (-1e3 * diff_data_max): diff_data_min = -diff_data_max
         if diff_data_max > (-1e3 * diff_data_min): diff_data_max = -diff_data_min
 
-        if var_loc == 'qv': diff_data_min,diff_data_max = -2,2
-        if var_loc == 'U' : diff_data_min,diff_data_max = -10,10
+        if var_loc_list[v] == 'qv': diff_data_min,diff_data_max = -2,2
+        if var_loc_list[v] == 'U' : diff_data_min,diff_data_max = -10,10
+
+        if print_stats:
+            print()
+            for c in range(1,num_case):
+                tmp_data = data_list[c] - data_list[0]
+                hapy.print_stat(tmp_data,name=f'{name[c]} {var_loc_list[v]} diff',stat='naxr',indent='    ',compact=True)
 
     # ------------------------------------------------------------------
     # Build contour levels for the absolute panels
     # ------------------------------------------------------------------
-    if var_loc == 'OMEGA':
+    if var_loc_list[v] == 'OMEGA':
         abs_levels = np.linspace(-1, 1, 21) * 0.002
-    # elif var_loc == 'U':
+    # elif var_loc_list[v] == 'U':
     #     abs_levels = np.linspace(-50, 50, 21)
     elif tem_list[v]:
         abs_levels = np.linspace(-4, 4, 21)
@@ -503,7 +524,7 @@ for v in range(num_var):
         abs_levels = np.linspace(cmin, cmax, 21)
 
     # Override for GW tendency variables (log-style levels)
-    if var_loc in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO','gw_horiz_winds_tend']:
+    if var_loc_list[v] in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO','gw_horiz_winds_tend']:
         cn_lev2  = np.array([0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8])
         cn_lev1  = cn_lev2[::-1] * -1
         abs_levels = np.concatenate([cn_lev1, [0], cn_lev2])
@@ -514,7 +535,7 @@ for v in range(num_var):
     # Build contour levels for difference panels
 
     if plot_diff:
-        if var_loc in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO']:
+        if var_loc_list[v] in ['PUTEND', 'UTGWSPEC', 'BUTGWSPEC', 'UTGWORO']:
             cn_lev2  = np.array([0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4])
             cn_lev1  = cn_lev2[::-1] * -1
             diff_levels = np.concatenate([cn_lev1, [0], cn_lev2])
@@ -531,10 +552,10 @@ for v in range(num_var):
     cmap_abs  = 'viridis'
     cmap_diff = cmocean.cm.balance
 
-    if var_loc=='OMEGA': cmap_abs = cmocean.cm.balance
-    if var_loc=='gw_horiz_winds_tend': cmap_abs = cmocean.cm.curl
-    if var_loc=='UTGWORO': cmap_abs = cmocean.cm.curl
-    if var_loc=='BUTGWSPEC': cmap_abs = cmocean.cm.curl
+    if var_loc_list[v]=='OMEGA': cmap_abs = cmocean.cm.balance
+    if var_loc_list[v]=='gw_horiz_winds_tend': cmap_abs = cmocean.cm.curl
+    if var_loc_list[v]=='UTGWORO': cmap_abs = cmocean.cm.curl
+    if var_loc_list[v]=='BUTGWSPEC': cmap_abs = cmocean.cm.curl
     
     # Norm helpers
     def make_norm(levels):
@@ -554,14 +575,11 @@ for v in range(num_var):
             # Map (i,c) to column index to match panel ordering:
             #   add_diff=True : [ctrl | full1 | ... | diff1 | ... | diffN]
             #   add_diff=False: [ctrl | diff1 | diff2 | ... | diffN]
-            if plot_diff:
-                if add_diff:
-                    col = c if i == 0 else num_case + (c - 1)
-                else:
-                    col = c       # baseline full field at col 0, diffs at col c
+            if plot_diff and add_diff:
+                p = c if i == 0 else num_case + (c - 1)
             else:
-                col = c if var_x_case else c
-            row = v
+                p = c       # baseline full field at p=0, diffs (if any) at p=c
+            row, col = get_row_col(p, v)
 
             ax = axes[row, col]
 
@@ -588,7 +606,7 @@ for v in range(num_var):
                 cmap   = cmap_diff
                 title_left  = f'{name[c]} - {name[0]}'
                 title_right = var_str[v]
-                # title_right = f'{var_loc} (diff)' + (' ' + month_str if month_str else '')
+                # title_right = f'{var_loc_list[v]} (diff)' + (' ' + month_str if month_str else '')
             else:
                 Z      = np.ma.masked_invalid(data_c)
                 levels = abs_levels
@@ -626,12 +644,11 @@ for v in range(num_var):
                 cb.ax.tick_params(labelsize=FONT_SMALL)
                 cb.set_ticks(levels[::max(1, len(levels)//10)])
 
-    # ------------------------------------------------------------------
-    # Hide any unused axes in this row
-    # ------------------------------------------------------------------
-    for col in range(num_cols):
-        if not axes[row, col].collections and not axes[row, col].has_data():
-            axes[row, col].set_visible(False)
+#---------------------------------------------------------------------------------------------------
+# Hide any unused axes
+#---------------------------------------------------------------------------------------------------
+for ax in axes.flatten()[num_plots:]:
+    ax.set_visible(False)
 
 # ------------------------------------------------------------------
 # Common label bar (optional)

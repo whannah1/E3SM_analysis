@@ -1,4 +1,4 @@
-import os, numpy as np, cmocean, uxarray as ux, geovista as gv, pyvista
+import os, numpy as np, cmocean, uxarray as ux, geovista as gv, pyvista, cartopy.crs as ccrs
 from scipy.spatial import cKDTree
 from geovista.common import to_cartesian
 pyvista.OFF_SCREEN = True
@@ -45,14 +45,31 @@ topo_data_file = '/lcrc/group/e3sm/public_html/inputdata/atm/cam/topo/USGS-gtopo
 topo_grid_file = '/lcrc/group/e3sm/ac.whannah/files_grid/ne1024pg2_scrip.nc'
 
 
+# target_lat, target_lon = 85, 0
 # target_lat, target_lon = 35.6762, 139.6503 # Tokyo
+# target_lat, target_lon = 10, 220
 # target_lat, target_lon = 18.4331, 360.-66.0517 # Puerto Rico
-target_lat, target_lon = 35, 360.-70
+# target_lat, target_lon = 35, 360.-70
 # target_lat, target_lon = 30, 360.-120. # Baja
+target_lat, target_lon = 10, 360.-110.
 # target_lat, target_lon = -60, 360.-55 # Falkland Islands
 
 xyz_vector = to_cartesian(target_lon, target_lat, radius=1.0).squeeze()
 # xyz_vector = to_cartesian(target_lon, target_lat, radius=0.8).squeeze()
+
+# Ocean field used for shading/coloring (ssh always drives the warp/relief
+# separately, regardless of this choice). clim (and colormap) are worked
+# out automatically below from the actual data - just change this name to
+# try a different field, no manual retuning needed.
+ocn_shade_var = "temperatureAtSurface"
+# ocn_shade_var = "relativeVorticityAtSurface"
+# ocn_shade_var = "kineticEnergyAtSurface"
+# ocn_shade_var = "boundaryLayerDepth"
+# ocn_shade_var = "salinityAtSurface"
+# ocn_shade_var = "divergenceAtSurface"
+# ocn_shade_var = "windStressZonal"
+
+add_cld_layer = True
 
 #-------------------------------------------------------------------------------
 print()
@@ -66,7 +83,7 @@ lons = uxds.uxgrid.node_lon.values
 lats = uxds.uxgrid.node_lat.values
 conn = uxds.uxgrid.face_node_connectivity.values
 ssh = uxds["ssh"].isel(Time=0).values
-sst = uxds["temperatureAtSurface"].isel(Time=0).values  # deg C
+ocn_shade = uxds[ocn_shade_var].isel(Time=0).values
 
 # A small fraction of cells (all under Antarctic ice shelves, e.g. Ronne/
 # Filchner - lat < -62) have wildly unphysical ssh (down to ~-2300 m) since
@@ -77,14 +94,14 @@ valid_face = np.abs(ssh) < ssh_threshold
 print(f'masking out {(~valid_face).sum()} of {len(ssh)} faces with |ssh| >= {ssh_threshold} m')
 conn = conn[valid_face]
 ssh = ssh[valid_face]
-sst = sst[valid_face]
+ocn_shade = ocn_shade[valid_face]
 
-# Color by sea surface temperature (like the reference image), but keep
-# ssh driving the warp/relief - attach both as cell data up front so they
-# go through triangulate()/smoothing together, consistently
+# Color by whatever field ocn_shade_var names above, but keep ssh driving
+# the warp/relief - attach both as cell data up front so they go through
+# triangulate()/smoothing together, consistently
 ssh_mesh = gv.Transform.from_unstructured( lons, lats, connectivity=conn,
                                            data=ssh, name="ssh", start_index=0)
-ssh_mesh.cell_data["sst"] = sst
+ssh_mesh.cell_data["ocn_shade"] = ocn_shade
 #-------------------------------------------------------------------------------
 # MPAS cells are irregular n-gons (5-8 sided). VTK triangulates them
 # internally at render time to draw them, but per-vertex Phong normals get
@@ -105,6 +122,32 @@ ssh_mesh = ssh_mesh.cell_data_to_point_data()
 n_smooth_passes = 2 # 8
 for _ in range(n_smooth_passes):
     ssh_mesh = ssh_mesh.point_data_to_cell_data().cell_data_to_point_data()
+
+# Auto clim + colormap for whichever field ocn_shade_var picked, from the
+# actual (post-smoothing) values that will be rendered - so switching
+# ocn_shade_var above needs no manual retuning. 1st/99th percentiles keep
+# a few extreme outlier cells from blowing out the range (same idea as the
+# ssh_threshold masking above, just automatic/generic instead of a
+# hand-picked cutoff). If the field is signed and crosses zero meaningfully
+# (e.g. vorticity: circulation can go either way), center the range on 0
+# with a symmetric magnitude and switch to a diverging colormap so the
+# zero-crossing reads correctly; otherwise use the raw low/high range with
+# a sequential colormap (e.g. temperature, which has no natural zero here).
+shade_lo, shade_hi = np.nanpercentile(ssh_mesh["ocn_shade"], [1, 99])
+if shade_lo < 0 and shade_hi > 0:
+    shade_mag = max(abs(shade_lo), abs(shade_hi))
+    ocn_shade_clim = [-shade_mag, shade_mag]
+    ocn_shade_cmap = cmocean.cm.balance
+else:
+    ocn_shade_clim = [shade_lo, shade_hi]
+    ocn_shade_cmap = "rainbow4"
+
+# temporary override for ENSO related viz
+if ocn_shade_var == "temperatureAtSurface":
+    ocn_shade_clim = [5, 28]
+    ocn_shade_cmap = "rainbow"
+
+print(f'ocn_shade_var={ocn_shade_var}  auto clim={ocn_shade_clim}')
 #-------------------------------------------------------------------------------
 # Give the eddies a bit of relief. add_base_layer() draws an OPAQUE sphere
 # at the default radius=1.0, same as this mesh's rest radius, and
@@ -121,33 +164,24 @@ for _ in range(n_smooth_passes):
 # the *entire* ocean outward by that same large near-constant baseline
 # before any real local relief, growing a visible coastline gap as factor
 # increases; ssh_clim[0] is representative of the actual displayed range.
-# (this is the warp-only clim, distinct from sst_clim used for coloring below)
-sst_clim = [0, 29]  # deg C
+# (this is the warp-only clim, distinct from ocn_shade_clim used for coloring, computed above)
 ssh_clim = [-3, 0.25]
 ssh_warp_factor = 0.02
 ssh_mesh["ssh_warp"] = np.clip(ssh_mesh["ssh"], ssh_clim[0], None) - ssh_clim[0]
 ssh_mesh.compute_normals(cell_normals=False, point_normals=True, inplace=True)
 ssh_mesh.warp_by_scalar(scalars="ssh_warp", inplace=True, factor=ssh_warp_factor)
 #-------------------------------------------------------------------------------
-# Land topography (native ne256pg2 physics grid - a different mesh than the
-# ocean's, so this is a separate PolyData composited alongside ssh_mesh, not
-# merged with it). PHIS is surface geopotential (m^2/s^2); divide by g for
-# elevation in meters.
-#
+# Land topography - PHIS is surface geopotential (m^2/s^2)
+
 # NOTE: originally masked to LANDFRAC > 0.5 to avoid painting over the
 # ocean, but that hard threshold produced a scrambled "swiss cheese" look
 # over places like the Canadian Shield lake district, where thousands of
-# sub-grid-cell lakes push neighboring cells randomly across the 0.5 cutoff
-# - some cells get excluded (falling through to raw blue_marble) right next
-# to included ones (elevation-colored), which reads as scrambled/corrupted
-# data even though each individual cell's value is correct (verified: grid
-# file and data file column ordering match exactly). Fix: don't mask at
-# all - render the topo mesh globally (it already covers the whole planet;
-# ocean columns just have near-zero elevation). ssh_mesh is added on top
+# sub-grid-cell lakes push neighboring cells randomly across the 0.5 cutoff.
+# Fix: don't mask at all - render the topo mesh globally. ssh_mesh is added
 # afterwards and already covers ~all ocean area, so it naturally occludes
 # this layer over open ocean with no hard-threshold gap artifacts at
 # coastlines. Real gaps (sea-ice/ice-shelf areas ssh_mesh's own mask
-# dropped) fall through to blue_marble underneath, per your note.
+# dropped) fall through to base layer underneath
 uxtopo = ux.open_dataset(topo_grid_file, topo_data_file)
 topo_lons = uxtopo.uxgrid.node_lon.values
 topo_lats = uxtopo.uxgrid.node_lat.values
@@ -156,10 +190,9 @@ topo_data = uxtopo["PHIS"].values / 9.80616  # m
 topo_factor = 5e-6  # named up front now - needed below for the local shift math too
 
 # Mask out topo columns that fall over the ocean, using the *ocean* mesh's
-# own valid cell centers (not topo's independent LANDFRAC - that had the
-# swiss-cheese lake problem earlier). topo (ne256pg2) and the ocean (MPAS)
-# are unrelated grids with no shared indexing, so this is a real spatial
-# join: nearest-neighbor via a KDTree on unit-sphere xyz (avoids lon
+# own valid cell centers. topo and ocean grids are unrelated grids with no 
+# shared indexing, so this is a real spatial join: 
+# nearest-neighbor via a KDTree on unit-sphere xyz (avoids lon
 # wraparound/pole issues that a naive lat/lon distance would have), then
 # threshold by distance. This should track the ocean model's actual
 # coastline far more cleanly than an independent land-fraction estimate.
@@ -235,49 +268,56 @@ fac = 0.7 # factor to reduce limits to get white peaks over mountains
 topo_clim = [-np.sqrt(elev_clim_max)*fac, np.sqrt(elev_clim_max)*fac]
 #-------------------------------------------------------------------------------
 # Translucent cloud layer from FLUT 
-uxatm = ux.open_dataset(atm_grid_file, atm_data_file)
-atm_lons = uxatm.uxgrid.node_lon.values
-atm_lats = uxatm.uxgrid.node_lat.values
-atm_conn = uxatm.uxgrid.face_node_connectivity.values
-flut = uxatm["FLUT"].isel(time=0).values  # W/m^2
+if add_cld_layer:
+    uxatm = ux.open_dataset(atm_grid_file, atm_data_file)
+    atm_lons = uxatm.uxgrid.node_lon.values
+    atm_lats = uxatm.uxgrid.node_lat.values
+    atm_conn = uxatm.uxgrid.face_node_connectivity.values
+    flut = uxatm["FLUT"].isel(time=0).values  # W/m^2
 
-flut_threshold = 220.0  # mask out clear/thin-cloud sky above this
-flut_valid = flut < flut_threshold
-print(f'clouds: keeping {flut_valid.sum()} of {len(flut)} columns with FLUT < {flut_threshold}')
-atm_conn = atm_conn[flut_valid]
-flut = flut[flut_valid]
+    flut_threshold = 220.0  # mask out clear/thin-cloud sky above this
+    flut_valid = flut < flut_threshold
+    print(f'clouds: keeping {flut_valid.sum()} of {len(flut)} columns with FLUT < {flut_threshold}')
+    atm_conn = atm_conn[flut_valid]
+    flut = flut[flut_valid]
 
-cloud_radius = 1.10 # 1.08  # fixed shell: tallest topo peaks (~1.16)
+    cloud_radius = 1.10 # 1.08  # fixed shell: tallest topo peaks (~1.16)
 
-cloud_mesh = gv.Transform.from_unstructured( atm_lons, atm_lats, connectivity=atm_conn,
-                                             data=flut, name="FLUT", radius=cloud_radius, start_index=0)
-cloud_mesh = cloud_mesh.triangulate()
-cloud_mesh = cloud_mesh.cell_data_to_point_data()
+    cloud_mesh = gv.Transform.from_unstructured( atm_lons, atm_lats, connectivity=atm_conn,
+                                                 data=flut, name="FLUT", radius=cloud_radius, start_index=0)
+    cloud_mesh = cloud_mesh.triangulate()
+    cloud_mesh = cloud_mesh.cell_data_to_point_data()
 
-flut_min = 80.0  # (actual min ~68)
-opacity = np.clip((flut_threshold - cloud_mesh["FLUT"]) / (flut_threshold - flut_min), 0.0, 1.0)
-cloud_mesh["opacity"] = opacity
-# gamma = 2.0  # higher = more aggressive push of the top end toward 1.0
-# cloud_mesh["opacity"] = 1.0 - (1.0 - opacity)**gamma
-cloud_mesh["opacity"] = np.clip(cloud_mesh["opacity"], 0.0, 0.98)
+    flut_min = 65.0  # (actual min ~68)
+    opacity = np.clip((flut_threshold - cloud_mesh["FLUT"]) / (flut_threshold - flut_min), 0.0, 1.0)
+    cloud_mesh["opacity"] = opacity
+    # gamma = 2.0  # higher = more aggressive push of the top end toward 1.0
+    # cloud_mesh["opacity"] = 1.0 - (1.0 - opacity)**gamma
+    cloud_mesh["opacity"] = np.clip(cloud_mesh["opacity"], 0.0, 0.98)
 
 #-------------------------------------------------------------------------------
-# Composite the scene: blue marble base (fills any gaps - see note above),
-# then land topography, then the ocean SSH-warped/SST-colored layer on top
+# Composite the scene: black backstop (fills any gaps - see note above),
+# then land topography, then the ocean SSH-warped/ocn_shade_var-colored layer on top
 p = gv.GeoPlotter()
+# p = gv.GeoPlotter(crs=ccrs.Mollweide()) # doesn't work
 p.enable_anti_aliasing("ssaa")  # supersample AA - softens jagged coastlines/mesh edges
                                 # (did NOT fix the n-gon faceting noise; see ssh_mesh.triangulate() above)
 # p.add_base_layer(texture=gv.blue_marble())
+# Plain black backstop instead of trying to perfectly close every coastline
+# gap between the two independent (topo vs ocean) meshes: both are built so
+# their baseline radius is always >= 1.0 (that's what the clip/shift warp
+# math upstream guarantees), so a solid sphere at a radius just under 1.0
+# stays hidden behind real geometry everywhere and only shows through
+# actual gaps - turning any remaining seam into a clean, consistent black
+# line instead of the far side of the globe/background showing through.
+p.add_mesh(pyvista.Sphere(radius=0.999, theta_resolution=180, phi_resolution=180), color="black")
 p.add_mesh( topo_mesh, scalars="topo_display", 
             # cmap=cmocean.cm.topo, clim=topo_clim,
             cmap="topo", clim=topo_clim,
             show_scalar_bar=False, smooth_shading=True)
-p.add_mesh( ssh_mesh, scalars="sst", 
-            # cmap=cmocean.cm.thermal,
-            # cmap="spectral", 
-            # cmap="rainbow4",
-            cmap="turbo",
-            clim=sst_clim,
+p.add_mesh( ssh_mesh, scalars="ocn_shade",
+            cmap=ocn_shade_cmap,
+            clim=ocn_shade_clim,
             show_scalar_bar=False, smooth_shading=True)
 if 'cloud_mesh' in locals():
     p.add_mesh( cloud_mesh, color="white", opacity=cloud_mesh["opacity"], smooth_shading=True)
@@ -285,6 +325,7 @@ p.view_vector(xyz_vector)
 p.camera.zoom(1.7)
 #-------------------------------------------------------------------------------
 os.makedirs(os.path.dirname(fig_file), exist_ok=True)
-p.screenshot(fig_file,scale=1.5)
+# p.screenshot(fig_file,scale=1.5)
+p.screenshot(fig_file,scale=1.8)
 print(f'\n{fig_file}\n')
 #-------------------------------------------------------------------------------
