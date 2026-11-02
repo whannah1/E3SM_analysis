@@ -119,13 +119,65 @@ if host=='olcf':
     # # first_file,num_files = None,None
 
     ### ZM baseline simulations
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne32pg2_scrip.nc'
+    # add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_old', n='ne32 Old IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_new', n='ne32 New IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # htype,first_file,num_files = 'output.debug.INSTANT.nhours_x1',0,1
+    # use_snapshot,ss_t = True,11
+    # add_var('SeaLevelPressure',s='SLP')
+
+    ### TMS parameter sensitivity tests
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne32pg2_scrip.nc'
-    add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_old', n='ne32 Old IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_new', n='ne32 New IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    htype,first_file,num_files = 'output.debug.INSTANT.nhours_x1',0,1
-    use_snapshot,ss_t = True,11
-    add_var('SeaLevelPressure',s='SLP')
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',                   n='noTMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',                   n='w/TMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5',           n='w/TMS+ohf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.035',         n='w/TMS+rlf=0.035', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5',           n='w/TMS+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_1.5.dsf_0.5',   n='w/TMS+ohf=1.5+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_0.5',           n='w/TMS+ohn=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_2',             n='w/TMS+ohn=2', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25',            n='w/TMS+ohf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.01',            n='w/TMS+rlf=0.01',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.25',            n='w/TMS+dsf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.4.rlf_0.07.dsf_0.4',  n='w/TMS ohf=0.4+rlf=0.07+dsf=0.4',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.75.rlf_0.04.dsf_0.25',n='w/TMS ohf=0.75+rlf=0.04+dsf=0.25', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25.rlf_0.04.dsf_0.75',n='w/TMS ohf=0.25+rlf=0.04+dsf=0.75', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5.rlf_0.04.dsf_0.5',  n='w/TMS ohf=0.5+rlf=0.04+dsf=0.5',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5.wsn_4',   n='w/TMS+dsf=0.50+wsn=4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.05.wsn_1',    n='w/TMS+dsf=0.05+wsn=1', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1',     n='w/TMS+dsf=0.1+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.2.wsn_1',     n='w/TMS+dsf=0.2+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
+    plot_diff,add_diff = True,False
+    num_plot_col = 2
+    add_var('T_2m')
+    # add_var('wind_speed_10m')
+    # add_var('surf_radiative_T')
+    # add_var('ps')
+    # add_var('VapWaterPath')
+    # add_var('LiqWaterPath')
+    # add_var('precip_total_surf_mass_flux',s='precip_total')
+
+
+    # ### COSP porting tests
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    # add_case('E3SM.2026-COSP-TEST-00.ne30pg2.cosp_impl_cxx',n='cosp_impl=cxx',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-COSP-TEST-00.ne30pg2.cosp_impl_f90',n='cosp_impl=f90',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,None
+    # plot_diff,add_diff = True,True
+    # add_var('isccp_cldtot')
+    
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -317,8 +369,11 @@ if 'plot_diff' not in locals():
 print_stats          = True
 var_x_case           = False
 
-# num_plot_col         = len(case)
-# num_plot_col         = 1#len(var)
+# num_plot_col = None => rows/cols set by var_x_case (var x panel grid)
+if 'num_plot_col' not in locals():
+    num_plot_col     = None
+    # num_plot_col     = len(case)
+    # num_plot_col     = 1#len(var)
 
 use_common_label_bar = False
 
@@ -356,16 +411,22 @@ num_panel = len(case_panels)
 #---------------------------------------------------------------------------------------------------
 # set up figure objects
 subplot_kwargs = {}
-subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
-# subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
+# subplot_kwargs['projection'] = ccrs.Orthographic(central_latitude=-85); lat_min, lat_max = -90, -80
+subplot_kwargs['projection'] = ccrs.PlateCarree(central_longitude=180)
 # subplot_kwargs['projection'] = ccrs.PlateCarree()
-(d1,d2) = (num_var,num_panel) if var_x_case else (num_panel,num_var)
-fdx,fdy=10,5;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
+num_plots = num_var*num_panel
+if num_plot_col is None:
+    (d1,d2) = (num_var,num_panel) if var_x_case else (num_panel,num_var)
+else:
+    d1 = int(np.ceil(num_plots / float(num_plot_col)))
+    d2 = min(num_plot_col, num_plots)
+fdx,fdy=10,5;figsize = (fdx*d2,fdy*d1)
 title_fontsize,lable_fontsize = 20,18
 # fdx,fdy=20,10;figsize = (fdx*num_panel,fdy*num_var) if var_x_case else (fdx*num_var,fdy*num_panel)
 # title_fontsize,lable_fontsize = 30,25
 
 fig, axs = plt.subplots(d1,d2, subplot_kw=subplot_kwargs, figsize=figsize, squeeze=False )
+axs_flat = axs.flatten()
 
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
@@ -561,7 +622,11 @@ for v in range(num_var):
         # print(img_kwargs)
         # print()
 
-        ax = axs[v,p] if var_x_case else axs[p,v]
+        if num_plot_col is None:
+            ax = axs[v,p] if var_x_case else axs[p,v]
+        else:
+            ip = v*num_panel+p if var_x_case else p*num_var+v
+            ax = axs_flat[ip]
         ax.coastlines(linewidth=0.2,edgecolor='white')
         if kind=='diff':
             ax.set_title(f'{name[c]} - {name[diff_base]}',fontsize=title_fontsize, loc='left')
@@ -598,6 +663,10 @@ for v in range(num_var):
         #    fig.colorbar(img, ax=ax, fraction=0.05, orientation='horizontal')
         
 
+#---------------------------------------------------------------------------------------------------
+# hide unused panels
+for i in range(num_plots, len(axs_flat)):
+    axs_flat[i].set_visible(False)
 #---------------------------------------------------------------------------------------------------
 # Finalize plot
 fig.savefig(fig_file, dpi=150, bbox_inches='tight')
