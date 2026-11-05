@@ -18,7 +18,21 @@ def add_case(case_in,n=None,p=None,s=None,g=None,d=0,c='black',m=0,scrip_file=No
 # tar -czvf QBO.hov.2023_L80_ensemble.tar.gz data_temp/QBO.hov.* 
 # tar -czvf QBO.hov.2023_AMIP.tar.gz data_temp/QBO.hov.v1.E3SM.2023-SCIDAC-v2-AMIP* 
 #-------------------------------------------------------------------------------
+if host=='alcf':
+    ### QBO tuning
+    tmp_path,tmp_sub = '/lus/flare/projects/E3SM_Dec/whannah/scratch/bundles/E3SM.2026-v4-QBO-TUNE-00.ne256/cases','run'
+    htype = 'output.1ma.AVERAGE.nmonths_x1'
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_000.EF_0.35.CF_10.HD_0.5.HM_2.5',   n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_001.EF_0.15.CF_18.HD_0.45.HM_2.5',  n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_002.EF_0.16.CF_19.HD_0.35.HM_2.4',  n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_003.EF_0.3.CF_14.HD_0.9.HM_4.2',    n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_004.EF_0.24.CF_15.HD_0.72.HM_4.3',  n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_005.EF_0.1.CF_20.HD_0.6.HM_1.9',    n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_006.EF_0.56.CF_15.HD_0.38.HM_3.5',  n='',p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_007.EF_0.08.CF_20.HD_0.8.HM_1.7',   n='',p=tmp_path,s=tmp_sub)
+    yr1,yr2=1,1
 
+#-------------------------------------------------------------------------------
 if host=='olcf':
 
     ### ZM baseline simulations
