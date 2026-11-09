@@ -153,16 +153,36 @@ if host == 'nersc':
     htype,first_file,num_files = 'eam.h0',0,1
     # add_var('U',s='U [m/s]')
     # add_var('UTGWORO', unit_fac=86400)
-    
 
 #---------------------------------------------------------------------------------------------------
-target_plev_mb = np.array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
-                            450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
-                            850.,  875.,  900.,  925.,  950.,  975., 1000.])
+if host=='alcf':
+
+    ### QBO tuning
+    tmp_path,tmp_sub = '/lus/flare/projects/E3SM_Dec/whannah/scratch/bundles/E3SM.2026-v4-QBO-TUNE-00.ne256/cases','run'
+    scrip_file='/lus/flare/projects/E3SM_Dec/whannah/files_grid/ne256pg2_scrip.nc'
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
+    add_case('ERA5','ERA5')
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_000.EF_0.35.CF_10.HD_0.5.HM_2.5',   n='m000',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_001.EF_0.15.CF_18.HD_0.45.HM_2.5',  n='m001',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_002.EF_0.16.CF_19.HD_0.35.HM_2.4',  n='m002',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_003.EF_0.3.CF_14.HD_0.9.HM_4.2',    n='m003',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_004.EF_0.24.CF_15.HD_0.72.HM_4.3',  n='m004',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_005.EF_0.1.CF_20.HD_0.6.HM_1.9',    n='m005',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_006.EF_0.56.CF_15.HD_0.38.HM_3.5',  n='m006',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_007.EF_0.08.CF_20.HD_0.8.HM_1.7',   n='m007',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    plot_diff,add_diff = True,False
+    # add_var('U',    s='U')
+    add_var('T_mid',s='T')
+    month_list = [2,3,4]
+
+#---------------------------------------------------------------------------------------------------
+# target_plev_mb = np.array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
+#                             450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
+#                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
 # target_plev_mb = np.array([ 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,
 #                             100., 200., 300., 400., 500.,  600.,  700.,  750.,  775.,  800.,  825.,
 #                             850.,  875.,  900.,  925.,  950.,  975., 1000.])
-# target_plev_mb = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])
+target_plev_mb = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])
 # target_plev_mb = np.array([0.1, 0.2, 0.5, 1., 2., 3., 5., 7., 10., 20., 30., 50., 70., 100., 125., 150.])
 
 # add_var('U',s='Zonal Wind [m/s]')
@@ -196,6 +216,9 @@ month_str = ('(' + ''.join(month_names[m] for m in month_list) + ')' if month_li
 #---------------------------------------------------------------------------------------------------
 recalculate = True
 
+if 'first_file' not in globals(): first_file = None
+if 'num_files'  not in globals(): num_files  = None
+if num_files==0: num_files  = None
 if 'plot_diff' not in globals(): plot_diff = False
 if 'add_diff'  not in globals(): add_diff  = True
 
@@ -250,6 +273,7 @@ def get_obs_root():
     if host=='nersc': obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series/ERA5'
     if host=='lcrc' : obs_root = '/lcrc/soft/climate/e3sm_diags_data/obs_for_e3sm_diags/time-series/ERA5'
     if host=='olcf' : obs_root = '/ccs/proj/cli115/e3sm_diags_data/obs_for_e3sm_diags/time-series/ERA5/'
+    if host=='alcf' : obs_root = '/lus/flare/projects/E3SMinput/diagnostics/observations/Atm/time-series/ERA5'
     if obs_root is None: raise ValueError(f'No valid obs_root found for host: {host}')
     return obs_root
     
@@ -289,12 +313,14 @@ for v in range(num_var):
                 lat_name, lon_name = 'lat', 'lon'
                 xy_dims = (lon_name, lat_name)
                 obs_root = get_obs_root()
-                if var[v] == 'U' : obs_var, input_file_name = 'ua',   f'{obs_root}/ua_197901_201912.nc'
-                if var[v] == 'V' : obs_var, input_file_name = 'va',   f'{obs_root}/va_197901_201912.nc'
-                if var[v] == 'T' : obs_var, input_file_name = 'ta',   f'{obs_root}/ta_197901_201912.nc'
-                if var[v] == 'Q' : obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
-                if var[v] == 'qv': obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
-                if var[v] == 'O3': obs_var, input_file_name = 'tro3', f'{obs_root}/tro3_197901_201912.nc'
+                era5_var = var[v]
+                if era5_var=='T_mid': era5_var = 'T'
+                if era5_var=='U' : obs_var, input_file_name = 'ua',   f'{obs_root}/ua_197901_201912.nc'
+                if era5_var=='V' : obs_var, input_file_name = 'va',   f'{obs_root}/va_197901_201912.nc'
+                if era5_var=='T' : obs_var, input_file_name = 'ta',   f'{obs_root}/ta_197901_201912.nc'
+                if era5_var=='Q' : obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
+                if era5_var=='qv': obs_var, input_file_name = 'hus',  f'{obs_root}/hus_197901_201912.nc'
+                if era5_var=='O3': obs_var, input_file_name = 'tro3', f'{obs_root}/tro3_197901_201912.nc'
                 var_loc_list[v] = obs_var
 
                 # input_file_name = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/climatology_1985-2014/ERA5/ERA5_ANN_198501_201412_climo.nc'
@@ -316,6 +342,7 @@ for v in range(num_var):
                 data = data.sel(plev=target_plev_mb*1e2)
                 data = data.mean(dim='time')
                 # data_zonal = data.mean(dim='lon')
+                #---------------------------------------------------------------
             else:
                 tmp_sub = case_sub[c]
                 htype_loc = None
@@ -335,8 +362,8 @@ for v in range(num_var):
                 #     yr = int(file_list_all[f][-10:-10+4])
                 #     if yr >= yr1 and yr <= yr2:
                 #         file_list.append(file_list_all[f])
-                if 'first_file' in locals(): file_list = file_list[first_file:]
-                if 'num_files'  in locals(): file_list = file_list[:num_files]
+                if first_file is not None: file_list = file_list[first_file:]
+                if num_files  is not None: file_list = file_list[:num_files]
                 if file_list == []: raise ValueError(f'No files found for path: {file_path}')
                 #---------------------------------------------------------------
                 # print()
@@ -407,7 +434,7 @@ for v in range(num_var):
                 # lat_bins   = bin_ds['bin'].values
                 data_zonal = bin_ds['bin_val'].transpose()
             #-------------------------------------------------------------------
-            if print_stats: hapy.print_stat(data,name=var_loc_list[v],stat='naxs',indent='    ',compact=True)
+            if print_stats: hapy.print_stat(data,name=var_loc_list[v],stat='naxh',indent='    ',compact=True)
             #-------------------------------------------------------------------
         #     tmp_file = get_tmp_file_name(case[c], var_loc_list[v])
         #     print(' '*6 + f'writing to file: {tmp_file}')
@@ -500,7 +527,7 @@ for v in range(num_var):
         if diff_data_max > (-1e3 * diff_data_min): diff_data_max = -diff_data_min
 
         if var_loc_list[v] == 'qv': diff_data_min,diff_data_max = -2,2
-        if var_loc_list[v] == 'U' : diff_data_min,diff_data_max = -10,10
+        # if var_loc_list[v] == 'U' : diff_data_min,diff_data_max = -10,10
 
         if print_stats:
             print()

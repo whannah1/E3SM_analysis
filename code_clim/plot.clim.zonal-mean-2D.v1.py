@@ -66,6 +66,24 @@ if host == 'lcrc':
     add_var('U',s='U200',lev=200)
 
 #---------------------------------------------------------------------------------------------------
+if host=='alcf':
+
+    ### QBO tuning
+    tmp_path,tmp_sub = '/lus/flare/projects/E3SM_Dec/whannah/scratch/bundles/E3SM.2026-v4-QBO-TUNE-00.ne256/cases','run'
+    scrip_file='/lus/flare/projects/E3SM_Dec/whannah/files_grid/ne256pg2_scrip.nc'
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,None
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_000.EF_0.35.CF_10.HD_0.5.HM_2.5',   n='m000',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_001.EF_0.15.CF_18.HD_0.45.HM_2.5',  n='m001',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_002.EF_0.16.CF_19.HD_0.35.HM_2.4',  n='m002',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_003.EF_0.3.CF_14.HD_0.9.HM_4.2',    n='m003',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_004.EF_0.24.CF_15.HD_0.72.HM_4.3',  n='m004',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_005.EF_0.1.CF_20.HD_0.6.HM_1.9',    n='m005',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_006.EF_0.56.CF_15.HD_0.38.HM_3.5',  n='m006',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_case('E3SM.2026-v4-QBO-TUNE-00.ne256.F2010xx-ZM-CICE.member_007.EF_0.08.CF_20.HD_0.8.HM_1.7',   n='m007',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    add_var('LiqWaterPath')
+    add_var('IceWaterPath')
+
+#---------------------------------------------------------------------------------------------------
 # yr1, yr2 = 1995, 1999
 
 lat1, lat2, dlat = -90., 90., 2.
@@ -86,6 +104,7 @@ if 'month_list' not in locals(): month_list = None
 #---------------------------------------------------------------------------------------------------
 if 'first_file' not in globals(): first_file = None
 if 'num_files'  not in globals(): num_files  = None
+if num_files==0: num_files  = None
 
 num_var  = len(var)
 num_case = len(case)
