@@ -300,15 +300,15 @@ if host=='lcrc':
     # add_case(f'{prefix}.ufs_1.use_1.evn_1e-07.evx_6e-06',   n='use=0.1-6.0(E-06)',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
     add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
     # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_4.5e-06',n='use=2.5-4.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
+    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,5*12
     # htype,first_file,num_files = 'output.1da.AVERAGE.ndays_x1',0,0
-    # add_var('precip_total_surf_mass_flux',s='precip')
+    add_var('precip_total_surf_mass_flux',s='precip')
     # add_var('VapWaterPath')
     add_var('LiqWaterPath')
     add_var('IceWaterPath')
     # add_var('U',s='U850',lev=850)
-    add_var('zm_activity')
-    # add_var('zm_prec')
+    # add_var('zm_activity')
+    add_var('zm_prec')
     # add_var('mcsp_freq')
     # add_var('mcsp_shear')
     # add_var('mcsp_ds_out',lev='sum_abs')
