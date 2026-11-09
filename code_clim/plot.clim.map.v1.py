@@ -158,7 +158,7 @@ if host=='olcf':
     add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
 
     htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
-    plot_diff,add_diff = True,False
+    # plot_diff,add_diff = True,False
     num_plot_col = 2
     add_var('T_2m')
     # add_var('wind_speed_10m')
@@ -180,7 +180,7 @@ if host=='olcf':
     
 
 #-------------------------------------------------------------------------------
-if host=='nersc':
+# if host=='nersc':
     
     ### 2025 scidac multi-fidelity tests
     # add_case('E3SM.2025-MF-test-00.ne18pg2.F20TR.NN_12',n='ne18',p='/pscratch/sd/w/whannah/e3sm_scratch/pm-cpu',s='run',scrip_file='/global/cfs/cdirs/m4310/whannah/files_grid/ne18pg2_scrip.nc')
@@ -254,20 +254,71 @@ if host=='lcrc':
 
     # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/ne256pg2_scrip.nc'
 
+    # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    # tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0',     n='mom_coeff=0',     p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.1',  n='mom_coeff=-0.1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.01', n='mom_coeff=-0.01', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.01',  n='mom_coeff=0.01',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.1',   n='mom_coeff=0.1',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
+    # add_var('precip_total_surf_mass_flux',s='precip')
+    # # add_var('wind_speed_10m',s='wspeed_10m')
+    # # add_var('T_2m',s='T_2m')
+    # add_var('U',s='U850',lev=850)
+    # # add_var('U',s='U200',lev=200)
+    # plot_diff,add_diff = True,False
+
+    # tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
+    # tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
+    # add_case('E3SM.2026-ZM-TURB-00.F2010xx-ZM-CICE.ne30pg2.NN_8.ftm_0',      n='control',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-TURB-00.F2010xx-ZM-CICE.ne30pg2.NN_8.ftm_0.0001', n='ftm=0.1e-3', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-TURB-00.F2010xx-ZM-CICE.ne30pg2.NN_8.ftm_0.0005', n='ftm=0.5e-3', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case('E3SM.2026-ZM-TURB-00.F2010xx-ZM-CICE.ne30pg2.NN_8.ftm_0.001',  n='ftm=1.0e-3',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,0
+    # # add_var('precip_total_surf_mass_flux',s='precip')
+    # # add_var('VapWaterPath')
+    # # add_var('LiqWaterPath')
+    # # add_var('IceWaterPath')
+    # # add_var('U',s='U850',lev=850)
+    # add_var('zm_activity')
+    # add_var('zm_prec')
+    # plot_diff,add_diff = True,False
+
+
     tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
     tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
-    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0',     n='mom_coeff=0',     p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.1',  n='mom_coeff=-0.1',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_-0.01', n='mom_coeff=-0.01', p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.01',  n='mom_coeff=0.01',  p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    add_case('E3SM.2026-ZM-DEV-01.F2010xx-ZM-CICE.ne30pg2.NN_4.mscp_new.mcsp_mom_coeff_0.1',   n='mom_coeff=0.1',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    prefix = 'E3SM.2026-MCSP-SS-00.F2010xx-ZM-CICE.NN_4.ne30pg2'
+    add_case(f'{prefix}.ufs_1.usm_0.mtc_0.3',               n='ctrl',       p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_0.mtc_0.6',               n='mtc=0.6',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_0.3', n='usm=20-60+mtc=0.3',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_0.6', n='usm=20-60+mtc=0.6',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_0.8', n='usm=20-60+mtc=0.8',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1',   n='usm=20-60+mtc=1',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1.2', n='usm=20-60+mtc=1',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.use_1.evn_2e-06.evx_4e-06',   n='use=2.0-4.0(E-06)',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.use_1.evn_1e-07.evx_6e-06',   n='use=0.1-6.0(E-06)',    p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_4.5e-06',n='use=2.5-4.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
     htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,12
-    add_var('precip_total_surf_mass_flux',s='precip')
-    # add_var('wind_speed_10m',s='wspeed_10m')
-    # add_var('T_2m',s='T_2m')
-    add_var('U',s='U850',lev=850)
-    # add_var('U',s='U200',lev=200)
+    # htype,first_file,num_files = 'output.1da.AVERAGE.ndays_x1',0,0
+    # add_var('precip_total_surf_mass_flux',s='precip')
+    # add_var('VapWaterPath')
+    add_var('LiqWaterPath')
+    add_var('IceWaterPath')
+    # add_var('U',s='U850',lev=850)
+    add_var('zm_activity')
+    # add_var('zm_prec')
+    # add_var('mcsp_freq')
+    # add_var('mcsp_shear')
+    # add_var('mcsp_ds_out',lev='sum_abs')
+    # add_var('mcsp_dq_out',lev='sum')
+    # add_var('mcsp_du_out',lev='sum')
+    # add_var('evap_ds_out',lev='sum')
+    # add_var('evap_dq_out',lev='sum')
     plot_diff,add_diff = True,False
+    # plot_diff,add_diff = True,True
+    
 
 #-------------------------------------------------------------------------------
 if host=='llnl':
@@ -317,8 +368,8 @@ if host=='alcf':
 # add_var('zm_prec')
 # add_var('zm_prec_frac')
 # add_var('zm_dcape')
-# add_var('zm_detr_liq')
-# add_var('zm_detr_ice')
+# add_var('zm_detr_liq',lev='sum')
+# add_var('zm_detr_ice',lev='sum')
 
 # add_var('TS')
 # add_var('PRECT',s='Precipitation')
@@ -360,7 +411,6 @@ if host=='alcf':
 # lat1,lat2,lon1,lon2 = -40,30,360-120,360-40      # S. America
 # lat1,lat2,lon1,lon2 = -20,15,360-90,360-60       # S. America - zoom in on Andes
 #-------------------------------------------------------------------------------
-
 if 'plot_diff' not in locals():
     plot_diff,add_diff = False,False
     # plot_diff,add_diff = True,False
@@ -475,6 +525,12 @@ for v in range(num_var):
         else:
             data = ds[var[v]]
 
+
+        # # mask out -999 fill values
+        # if var[v] in ['mcsp_shear']:
+        #     data = data.where(data<100)
+        #     # data = data.where(data != -999)
+
         # # lon_min, lon_max = -180, 180
         # mask = ((ds['lat'] >= lat_min) & (ds['lat'] <= lat_max))
         # # mask.load()
@@ -497,6 +553,8 @@ for v in range(num_var):
             if isinstance(lev_list[v], str):
                 if lev_list[v]=='sum':
                     data = data.sum(dim='lev')
+                if lev_list[v]=='sum_abs':
+                    data = np.abs(data).sum(dim='lev')
             elif isinstance(lev_list[v], (int, float)):
                 if lev_list[v]>0:
                     ps_var = next((v for v in ['ps', 'PS'] if v in ds), None)
@@ -596,6 +654,8 @@ for v in range(num_var):
     # cmap = cmocean.cm.amp
     # cmap = cmocean.cm.balance
     if var[v]=='PCONVT': cmap = cmocean.cm.rain_r
+    if var[v] in ['U','V']:
+        cmap = cmocean.cm.curl
     #----------------------------------------------------------------------------
     for p in range(num_panel):
         kind,c = case_panels[p]
