@@ -55,21 +55,25 @@ if host=='nersc':
 #---------------------------------------------------------------------------------------------------
 if host=='alcf':
 
+    # add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
+    # add_case('IMERG',n='IMERG',yr1=2011,yr2=2021, recalculate=False)
+
     ### E3SMv4 ZM tuning ensemble (bundled runs) - native ne30pg2 output
     tmp_path,tmp_sub = '/lus/flare/projects/E3SM_Dec/whannah/scratch/bundles/E3SM.2026-v4-ZM-TUNE-00.ne30/cases','run'
     add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE',                    n='default',  p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_100',           n='cape_100', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_200',           n='cape_200', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_300',           n='cape_300', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_400',           n='cape_400', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.005',        n='dcape_0.005', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.01',         n='dcape_0.01', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.05',         n='dcape_0.05', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.1',          n='dcape_0.1', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_100',           n='cape_100', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_200',           n='cape_200', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_300',           n='cape_300', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cape_400',           n='cape_400', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.005',        n='dcape_0.005', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.01',         n='dcape_0.01', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.05',         n='dcape_0.05', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.1',          n='dcape_0.1', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0',      n='mtc_0.5.mqc_0', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.3.mqc_0.3',    n='mtc_0.3.mqc_0.3', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0.3',    n='mtc_0.5.mqc_0.3', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0.5',    n='mtc_0.5.mqc_0.5', p=tmp_path,s=tmp_sub)
+
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_5e-6',            n='ke_5e-6', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_7.5e-6',          n='ke_7.5e-6', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_1e-5',            n='ke_1e-5', p=tmp_path,s=tmp_sub)
@@ -85,10 +89,12 @@ if host=='alcf':
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.tpf_3',              n='tpf_3', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.tka_0.8',            n='tka_0.8', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.tka_1.6',            n='tka_1.6', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.001.c0o_0.002',n='c0l_0.001.c0o_0.002', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.003.c0o_0.002',n='c0l_0.003.c0o_0.002', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.003',n='c0l_0.002.c0o_0.003', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.001',n='c0l_0.002.c0o_0.001', p=tmp_path,s=tmp_sub)
+    
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.001.c0o_0.002',n='c0l_0.001.c0o_0.002', p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.003.c0o_0.002',n='c0l_0.003.c0o_0.002', p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.003',n='c0l_0.002.c0o_0.003', p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.001',n='c0l_0.002.c0o_0.001', p=tmp_path,s=tmp_sub)
+
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1',              n='cda_1', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1.cape_100',     n='cda_1.cape_100', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1.cape_200',     n='cda_1.cape_200', p=tmp_path,s=tmp_sub)
@@ -107,15 +113,16 @@ if host=='alcf':
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1.tau_1800',     n='cda_1.tau_1800', p=tmp_path,s=tmp_sub)
     htype,first_file,num_files = 'output.1da.AVERAGE.ndays_x',0,None
 
-    fig_title = 'Normalized Spectra'
-    # add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
+    # fig_title = 'Normalized Spectra'
     add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
     add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
+
+    plot_diff,add_diff = True,False
 
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
+    add_case('NOAA', n='NOAA', yr1=1990,yr2=2019, recalculate=False)
 
     # # ZM in-cloud water test
     # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','remap_90x180'
@@ -182,9 +189,10 @@ use_daily   = True
 normalize   = True
 var_x_case  = True
 
-plot_diff,add_diff = False,False
-# plot_diff,add_diff = True,False   # diff panels replace the full field for non-baseline cases
-# plot_diff,add_diff = True,True    # diff panels are added alongside the full fields
+if 'plot_diff' not in locals():
+    plot_diff,add_diff = False,False
+    # plot_diff,add_diff = True,False   # diff panels replace the full field for non-baseline cases
+    # plot_diff,add_diff = True,True    # diff panels are added alongside the full fields
 
 #---------------------------------------------------------------------------------------------------
 if case==[]: raise ValueError('ERROR - case list is empty!')
@@ -199,6 +207,11 @@ afq1,afq2 = 0.095,0.125
 FONT_SMALL = 7
 FONT_MED   = 8
 
+#---------------------------------------------------------------------------------------------------
+if host=='nersc': obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series'
+if host=='lcrc' : obs_root = '/lcrc/soft/climate/e3sm_diags_data/obs_for_e3sm_diags/time-series'
+if host=='olcf' : obs_root = '/ccs/proj/cli115/e3sm_diags_data/obs_for_e3sm_diags/time-series'
+if host=='alcf' : obs_root = '/lus/flare/projects/E3SMinput/diagnostics/observations/Atm/time-series'
 #---------------------------------------------------------------------------------------------------
 def get_tmp_file_name(case_in,var_in,case_opts):
     tmp_file = f'{tmp_file_head}.{case_in}.{var_in}'
@@ -308,12 +321,13 @@ for v in range(num_var):
         if recalculate_loc:
             #-------------------------------------------------------------------
             print(' '*6+'loading data...')
-
             if case[c]=='NOAA':
-                obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.daily.1974-2021.nc'
-                # obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.day.mean.nc'
+                # obs_file = os.getenv('HOME')+'/Data/Obs/OLR/olr.daily.1974-2021.nc'; var_name = 'olr'
+                obs_file = f'{obs_root}/NOAA-OLR_Daily/FLUT_198601_202112.nc'; var_name = 'FLUT'
                 ds = xr.open_dataset(obs_file)
-                var_name = 'olr'
+            elif case[c]=='IMERG':
+                obs_file = f'{obs_root}/IMERG_Daily/PRECT_200101_202012.nc'; var_name = 'PRECT'
+                ds = xr.open_dataset(obs_file)
             else:
                 file_path = f'{case_opts["p"]}/{case[c]}/{case_opts["s"]}/*{htype}*'
                 file_list = sorted(glob.glob(file_path))
