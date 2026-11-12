@@ -82,18 +82,18 @@ if host=='nersc':
 #-------------------------------------------------------------------------------
 if host=='lcrc':
 
-    tmp_path,tmp_sub = '/lcrc/group/e3sm/ac.whannah/scratch/chrys','run'
+    tmp_root,tmp_sub = '/lcrc/group/e3sm/ac.whannah/scratch/chrys','run'
     prefix = 'E3SM.2026-MCSP-SS-00.F2010xx-ZM-CICE.NN_4.ne30pg2'
-    add_case(f'{prefix}.ufs_1.usm_0.mtc_0.3',               n='ctrl',                 p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1',   n='usm=20-60+mtc=1',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1.2', n='usm=20-60+mtc=1.2',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_4.5e-06',n='use=2.5-4.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case(f'{prefix}.ufs_1.usm_0.mtc_0.3',               n='ctrl',                 p=tmp_root,s=tmp_sub)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1',   n='usm=20-60+mtc=1',      p=tmp_root,s=tmp_sub)
+    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1.2', n='usm=20-60+mtc=1.2',    p=tmp_root,s=tmp_sub)
+    add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_root,s=tmp_sub)
+    # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_4.5e-06',n='use=2.5-4.5(E-06)',   p=tmp_root,s=tmp_sub)
     htype = 'output.1da.AVERAGE.ndays_x1'
+    ind_var,ind_htype = 'LW_flux_up_at_model_top',None
     kwargs = {'cvar':'U_at_850hPa','cvar_str':'850mb U'}
     add_var('precip_total_surf_mass_flux',s='precip [mm/day]',      **kwargs)
     add_var('LW_flux_up_at_model_top',    s='OLR [W/m2]',           **kwargs)
-    recalculate = True
 
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------

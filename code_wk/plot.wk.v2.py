@@ -55,20 +55,21 @@ if host=='nersc':
 #-------------------------------------------------------------------------------
 if host=='lcrc':
 
-    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
+    # add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
 
     tmp_grid_file = '/lcrc/group/e3sm/ac.whannah/scratch/chrys/files_grid/scrip_ne30pg2.nc'
     tmp_scratch = '/lcrc/group/e3sm/ac.whannah/scratch/chrys'
     prefix = 'E3SM.2026-MCSP-SS-00.F2010xx-ZM-CICE.NN_4.ne30pg2'
     add_case(f'{prefix}.ufs_1.usm_0.mtc_0.3',               n='ctrl',                 p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1',   n='usm=20-60+mtc=1',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    # add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1.2', n='usm=20-60+mtc=1.2',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
-    add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1',   n='usm=20-60+mtc=1',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    add_case(f'{prefix}.ufs_1.usm_1.son_20.sox_60.mtc_1.2', n='usm=20-60+mtc=1.2',      p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
+    # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_3.5e-06',n='use=2.5-3.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
     # add_case(f'{prefix}.ufs_1.use_1.evn_2.5e-06.evx_4.5e-06',n='use=2.5-4.5(E-06)',   p=tmp_scratch, s='run',scrip_file=tmp_grid_file)
     htype,first_file,num_files = 'output.1da.AVERAGE.ndays_x1',0,None
     # fig_title = 'Normalized Spectra'
-    add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
-    # add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
+    add_var('LW_flux_up_at_model_top',    str='OLR',    normalize=False)
+    add_var('precip_total_surf_mass_flux',str='precip', normalize=False)
+    # add_var('U_at_850hPa',                str='U850',   normalize=False)
     # add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=True)
     # add_var('precip_total_surf_mass_flux',str='precip',normalize=True)
     recalculate = True
