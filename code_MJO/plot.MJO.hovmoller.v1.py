@@ -67,11 +67,16 @@ if host=='lcrc':
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
 
-    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
-    htype = 'output.ne30pg2.1da.AVERAGE.nhours_x24'
-    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
-    add_case(f'{prefix}', n='ne256+ZM', p=tmp_path,s=tmp_sub)
-    yr1,yr2 = 2,6
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
+    # htype = 'output.ne30pg2.1da.AVERAGE.nhours_x24'
+    # prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    # add_case(f'{prefix}', n='ne256+ZM', p=tmp_path,s=tmp_sub)
+    # yr1,yr2 = 2,6
+
+    # v4 baseline
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    add_case('E3SM.2026-v4-baseline-00.ne256pg2.20261105',n='20261105 baseline',p=tmp_path,s=tmp_sub)
+    htype,first_file,num_files = 'output.1da_ne30pg2.AVERAGE.ndays_x1',None,None
 
     kwargs = {'cvar':'U_at_850hPa','cvar_str':'850mb U'}
     add_var('LW_flux_up_at_model_top',    s='OLR [W/m2]',      **kwargs)

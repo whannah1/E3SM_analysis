@@ -8,13 +8,17 @@ xr.set_options(use_new_combine_kwarg_defaults=True)
 #---------------------------------------------------------------------------------------------------
 name,case,case_dir,case_sub = [],[],[],[]
 scrip_file_list = []
-def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None):
+case_opts_list = []
+def add_case(case_in,n=None,p=None,s=None,g=None,c=None,scrip_file=None,**kwargs):
     global name,case,case_dir,case_sub
     tmp_name = case_in if n is None else n
     case.append(case_in); name.append(tmp_name); 
     case_dir.append(p); case_sub.append(s);
     if scrip_file is None: raise ValueError('scrip_file cannot be None')
     scrip_file_list.append(scrip_file)
+    case_opts = {}
+    for k, val in kwargs.items(): case_opts[k] = val
+    case_opts_list.append(case_opts)
 #---------------------------------------------------------------------------------------------------
 var,lev_list,var_str = [],[],[]
 var_opts_list = []
@@ -105,61 +109,6 @@ if host=='olcf':
     # check for grids here:
     # /lustre/orion/cli115/proj-shared/hannah6/files_grid/*pg2_scrip.nc
 
-    # ### ZM in-cloud water test
-    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-    # # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne4pg2_scrip.nc'
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne4pg2.NN_1.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # scrip_file = os.getenv('HOME')+f'/E3SM/data_grid/ne30pg2_scrip.nc'
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0', n='no zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1', n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0',          n='ctrl',      p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_1',          n='w/ zm_rad', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.001', n='c0=1.0e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0.0001',n='c0=0.1e-3', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.c0_0',     n='c0=0.0',    p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-ICW-00.F2010xx-ZM.ne30pg2.NN_4.zm_rad_0.alt_zm_call_1',n='alt-ZM-order',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # htype,first_file,num_files = 'output.daily.AVERAGE.nhours_x24',0,None
-    # htype,first_file,num_files = 'output.monthly.AVERAGE.nmonths_x1',0,5*12
-    # # use_snapshot,ss_t = True,4
-    # # htype,first_file,num_files = 'output.2D.INSTANT.nsteps_x1',0,1
-    # # add_var('precip_total_surf_mass_flux',s='precip')
-    # # add_var('LW_flux_up_at_model_top',s='OLR')
-    # # add_var('VapWaterPath',s='VWP')
-    # # add_var('LiqWaterPath',s='LWP')
-    # # add_var('IceWaterPath',s='IWP')
-    # # add_var('zm_activity')
-    # # add_var('zm_prec')
-    # add_var('RESTOM',s='RESTOM')
-
-    ### ZM baseline simulations
-    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
-    # # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
-    # # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',0,6#12*5
-    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
-    # htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,12*5
-    # # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne256pg2_scrip.nc'
-    # # htype,first_file,num_files,tmp_sub = 'output.1ma.AVERAGE.nmonths_x1',12,1,'archive/atm/hist'
-    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s='archive/atm/hist_ne30',scrip_file=scrip_file)
-    # prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
-    # add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # # add_var('precip_total_surf_mass_flux',s='precip')
-    # # add_var('RESTOM',s='RESTOM')
-    # add_var('VapWaterPath',s='VWP')
-    # # add_var('LiqWaterPath',s='LWP')
-    # # add_var('IceWaterPath',s='IWP')
-    # # add_var('ShortwaveCloudForcing',s='SWCF')
-    # # add_var('LongwaveCloudForcing', s='LWCF')
-    # # add_var('U', s='850mb U', lev=850e2)
-    # # add_var('U', s='200mb U', lev=200e2)
-    # # add_var('zm_activity')
-    # # add_var('zm_prec')
-
-
     # ### INITE 2026 CONUS
     # # salloc --time 4:00:00 --account=cli115 --nodes=1 -p gpu
     # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/brhillman/e3sm_scratch','run'
@@ -189,55 +138,39 @@ if host=='olcf':
     # # add_var('ps',htype='eamxx.ps.INSTANT.nmins_x30')
     # # first_file,num_files = None,None
 
-    ### ZM baseline simulations
+    # ### TMS parameter sensitivity tests
     # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne32pg2_scrip.nc'
-    # add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_old', n='ne32 Old IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case(f'E3SM.2026-GW-DEV-01.F2010xx-ZM-CICE.ne32pg2_ne32pg2.NN_4.ic_new', n='ne32 New IC', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # htype,first_file,num_files = 'output.debug.INSTANT.nhours_x1',0,1
-    # use_snapshot,ss_t = True,11
-    # add_var('SeaLevelPressure',s='SLP')
-
-    ### TMS parameter sensitivity tests
-    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
-    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',                   n='noTMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',                   n='w/TMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5',           n='w/TMS+ohf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.035',         n='w/TMS+rlf=0.035', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5',           n='w/TMS+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_1.5.dsf_0.5',   n='w/TMS+ohf=1.5+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_0.5',           n='w/TMS+ohn=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_2',             n='w/TMS+ohn=2', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25',            n='w/TMS+ohf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.01',            n='w/TMS+rlf=0.01',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.25',            n='w/TMS+dsf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.4.rlf_0.07.dsf_0.4',  n='w/TMS ohf=0.4+rlf=0.07+dsf=0.4',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.75.rlf_0.04.dsf_0.25',n='w/TMS ohf=0.75+rlf=0.04+dsf=0.25', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25.rlf_0.04.dsf_0.75',n='w/TMS ohf=0.25+rlf=0.04+dsf=0.75', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5.rlf_0.04.dsf_0.5',  n='w/TMS ohf=0.5+rlf=0.04+dsf=0.5',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5.wsn_4',   n='w/TMS+dsf=0.50+wsn=4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.05.wsn_1',    n='w/TMS+dsf=0.05+wsn=1', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1',     n='w/TMS+dsf=0.1+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.2.wsn_1',     n='w/TMS+dsf=0.2+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-
-    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
-    # plot_diff,add_diff = True,False
-    num_plot_col = 2
-    add_var('T_2m')
-    # add_var('wind_speed_10m')
-    # add_var('surf_radiative_T')
-    # add_var('ps')
-    # add_var('VapWaterPath')
-    # add_var('LiqWaterPath')
-    # add_var('precip_total_surf_mass_flux',s='precip_total')
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',                   n='noTMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',                   n='w/TMS', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5',           n='w/TMS+ohf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.035',         n='w/TMS+rlf=0.035', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5',           n='w/TMS+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_1.5.dsf_0.5',   n='w/TMS+ohf=1.5+dsf=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_0.5',           n='w/TMS+ohn=0.5', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_2',             n='w/TMS+ohn=2', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25',            n='w/TMS+ohf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.01',            n='w/TMS+rlf=0.01',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.25',            n='w/TMS+dsf=0.25',       p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.4.rlf_0.07.dsf_0.4',  n='w/TMS ohf=0.4+rlf=0.07+dsf=0.4',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.75.rlf_0.04.dsf_0.25',n='w/TMS ohf=0.75+rlf=0.04+dsf=0.25', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25.rlf_0.04.dsf_0.75',n='w/TMS ohf=0.25+rlf=0.04+dsf=0.75', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5.rlf_0.04.dsf_0.5',  n='w/TMS ohf=0.5+rlf=0.04+dsf=0.5',   p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5.wsn_4',   n='w/TMS+dsf=0.50+wsn=4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.05.wsn_1',    n='w/TMS+dsf=0.05+wsn=1', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1',     n='w/TMS+dsf=0.1+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.2.wsn_1',     n='w/TMS+dsf=0.2+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
+    # # plot_diff,add_diff = True,False
+    # num_plot_col = 2
+    # add_var('T_2m')
+    # # add_var('wind_speed_10m')
+    # # add_var('surf_radiative_T')
+    # # add_var('ps')
+    # # add_var('VapWaterPath')
+    # # add_var('LiqWaterPath')
+    # # add_var('precip_total_surf_mass_flux',s='precip_total')
 
 
     # ### COSP porting tests
@@ -248,7 +181,15 @@ if host=='olcf':
     # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,None
     # plot_diff,add_diff = True,True
     # add_var('isccp_cldtot')
-    
+
+    # v4 baseline
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    obs_root = '/lustre/orion/cli115/proj-shared/hannah6/obs_data/ERA5/diag_data_remap_ne30pg2'
+    add_case('E3SM.2026-v4-baseline-00.ne256pg2.20261105',n='20261105 baseline',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    htype,first_file,num_files = 'output.1ma_ne30pg2.AVERAGE.nmonths_x1',None,12*1
+    # add_var('precip_total_surf_mass_flux',s='precip_total')
+    add_var('T_2m',s='T_2m [K]', method='bias', obs_file=f'{obs_root}/t2m_197901_201912.remap_ne30pg2.nc', obs_var='t2m')
 
 #-------------------------------------------------------------------------------
 # if host=='nersc':
@@ -560,13 +501,18 @@ for v in range(num_var):
     grid_ds_list = []
     for c in range(num_case):
         print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
+        case_opts = case_opts_list[c]
         #-------------------------------------------------------------------------
         htype_tmp = None
         if 'htype' in globals(): htype_tmp = htype
-        if 'htype' in var_opts: htype_tmp = var_opts['htype']
+        if 'htype' in var_opts:  htype_tmp = var_opts['htype']
+        if 'htype' in case_opts: htype_tmp = case_opts['htype']
         #-------------------------------------------------------------------------
-        # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
-        file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
+        if case[c]=='ERA5':
+            file_path = f'{case_dir[c]}/*{htype_tmp}*'
+        else:
+            # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}*{htype}*'
+            file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
         file_list = sorted(glob.glob(file_path))
         if first_file is not None and first_file!=0: file_list = file_list[first_file:]
         if num_files  is not None and num_files !=0: file_list = file_list[:num_files]
@@ -589,10 +535,15 @@ for v in range(num_var):
 
         if var[v]=='zm_prec_frac':
             data = ds['zm_prec'] / ds['precip_total_surf_mass_flux']
-        if var[v]=='RESTOM':
+        elif var[v]=='RESTOM':
             data = ds['SW_flux_dn_at_model_top'] \
                   -ds['SW_flux_up_at_model_top'] \
                   -ds['LW_flux_up_at_model_top']
+        elif var[v]=='precip_total_surf_mass_flux' \
+            and 'precip_total_surf_mass_flux' not in ds \
+            and 'precip_liq_surf_mass_flux' in ds \
+            and 'precip_ice_surf_mass_flux' in ds:
+            data = ds['precip_liq_surf_mass_flux'] + ds['precip_ice_surf_mass_flux']
         else:
             data = ds[var[v]]
 
@@ -687,6 +638,19 @@ for v in range(num_var):
         # # print stats after time averaging
         # if print_stats: hapy.print_stat(data,name=var[v],stat='naxsh',indent='    ',compact=True)
         #-------------------------------------------------------------------------
+        if var_opts.get('method') is not None:
+            if var_opts.get('method')=='bias':
+                obs_ds = xr.open_dataset(var_opts['obs_file'])
+                obs = obs_ds[var_opts['obs_var']]
+                # if obs_yr1 is not None: obs = obs.where(obs['time.year']>=obs_yr1, drop=True)
+                # if obs_yr2 is not None: obs = obs.where(obs['time.year']<=obs_yr2, drop=True)
+                # obs_clim = seasonal_clim(obs, obs['time.month'])
+                obs_clim = obs.mean(dim='time').load()
+                data = data - obs_clim
+            # elif var_opts.get('method')=='???':
+            else:
+                raise ValueError(f'var_opts method option: {var_opts.get("method")} is not supported')
+        #-------------------------------------------------------------------------
         # append to data lists
         data_list.append( data )
         #-------------------------------------------------------------------------
@@ -724,6 +688,7 @@ for v in range(num_var):
     # cmap = cmocean.cm.rain
     # cmap = cmocean.cm.amp
     # cmap = cmocean.cm.balance
+    if var_opts.get('method')=='bias': cmap = cmocean.cm.balance
     if var[v]=='PCONVT': cmap = cmocean.cm.rain_r
     if var[v] in ['U','V']:
         cmap = cmocean.cm.curl
@@ -743,6 +708,9 @@ for v in range(num_var):
             img_kwargs['vmax']   = diff_data_max
         else:
             plot_data = data_list[c]
+            if var_opts.get('method')=='bias':
+                data_mag = max(np.absolute(data_min),np.absolute(data_max))
+                data_min, data_max = -1*data_mag, data_mag
             if clev is None:
                 img_kwargs['vmin'],img_kwargs['vmax'] = data_min, data_max
             else:
@@ -763,7 +731,13 @@ for v in range(num_var):
             ax.set_title(f'{name[c]} - {name[diff_base]}',fontsize=title_fontsize, loc='left')
         else:
             ax.set_title(name[c],fontsize=title_fontsize, loc='left')
-        ax.set_title(var_str[v],fontsize=title_fontsize, loc='right')
+
+        rght_title = None
+        if var_opts.get('method')=='bias':
+            rght_title = f'{var_str[v]} bias'
+        else:
+            rght_title = var_str[v]
+        ax.set_title(rght_title,fontsize=title_fontsize, loc='right')
         
         # add global mean value
         # print(grid_ds_list[c].grid_area)
@@ -771,7 +745,7 @@ for v in range(num_var):
         if kind=='diff':
             gbl_mean = ( (diff_list[c]*area).sum() / area.sum() ).values 
         else:
-            gbl_mean = ( (data_list[c]*area).sum() / area.sum() ).values 
+            gbl_mean = ( (data_list[c]*area).sum() / area.sum() ).values
         ax.set_title(f'mean: {gbl_mean:8.2f}', fontsize=int(title_fontsize*0.5), \
                      loc='center', y=0.9, backgroundcolor='white')
 

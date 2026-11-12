@@ -35,18 +35,27 @@ if host=='alcf':
 #-------------------------------------------------------------------------------
 if host=='olcf':
 
-    ### ZM baseline simulations
-    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
+    # ### ZM baseline simulations
+    # tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','archive/atm/hist_ne30'
+    # scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
+    # htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,6#12*5
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    # # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
+    # prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
+    # add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    # yr1,yr2=2,6
+
+    # v4 baseline
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
     scrip_file = '/lustre/orion/cli115/proj-shared/hannah6/files_grid/ne30pg2_scrip.nc'
-    htype,first_file,num_files = 'output.ne30pg2.1ma.AVERAGE.nmonths_x1',0,6#12*5
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010-SCREAMv1',          n='ne256 noZM',        p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE',         n='ne256_ZM',          p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
-    # add_case('E3SM.2026-ZM-BASE-00.ne256pg2.NN_128.F2010xx-ZM-CICE.L128v3.6',n='ne256_ZM_L128v3.6', p=tmp_path,s=tmp_sub)#,scrip_file=scrip_file)
-    prefix = 'E3SM.2026-ZM-BASE-01.ne256pg2.NN_256.F2010xx-ZM-CICE.COSP'
-    add_case(f'{prefix}',                            n='ne256+ZM', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'{prefix}.L128v3.6',                   n='ne256+ZM+L128v4', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    add_case(f'{prefix}.L128v3.6.phys_order_swap_1', n='ne256+ZM+L128v4+swap', p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
-    yr1,yr2=2,6
+    add_case('ERA5', n='ERA5')
+    add_case('E3SM.2026-v4-baseline-00.ne256pg2.20261105',n='20261105 baseline',p=tmp_path,s=tmp_sub,scrip_file=scrip_file)
+    htype = 'output.1ma_ne30pg2.AVERAGE.nmonths_x1'
+    yr1,yr2=2010,2011
+    
 
 #-------------------------------------------------------------------------------
 if host=='nersc':
@@ -94,16 +103,16 @@ if host=='llnl':
 
 #-------------------------------------------------------------------------------
 # ERA5 levels
-# lev = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,
-#                  100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
-#                  450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
-#                  850.,  875.,  900.,  925.,  950.,  975., 1000.])
+# plev_target = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,
+#                          100.,  125.,  150.,  175.,  200.,  225.,  250.,  300.,  350.,  400.,
+#                          450.,  500.,  550.,  600.,  650.,  700.,  750.,  775.,  800.,  825.,
+#                          850.,  875.,  900.,  925.,  950.,  975., 1000.])
 # plev_target = np.array([   0.1, 0.2, 0.5, 1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])*1e2
 plev_target = np.array([   1.,    2.,    3.,    5.,    7.,   10.,   20.,   30.,   50.,   70.,  100.,  125.,  150.,])*1e2
 # zlev_target = np.arange(10e3,50e3,1e3)
 zlev_target = np.arange(10e3,50e3+250,500)
 
-use_height_coord = True
+use_height_coord = False
 
 #-------------------------------------------------------------------------------
 var, var_str = [],[]
@@ -112,6 +121,7 @@ def add_var(var_in,s=None):
     var_str.append(var_in if s is None else s)
 #-------------------------------------------------------------------------------
 
+# add_var('U',s='Zonal Wind [m/s]')
 add_var('U',s='Zonal Wind [m/s]')
 # add_var('OMEGA')
 # add_var('T')
@@ -144,6 +154,11 @@ num_plot_col = 1
 
 # write_to_file = True
 
+#---------------------------------------------------------------------------------------------------
+if host=='nersc': obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series'
+if host=='lcrc' : obs_root = '/lcrc/soft/climate/e3sm_diags_data/obs_for_e3sm_diags/time-series'
+if host=='olcf' : obs_root = '/lustre/orion/cli115/world-shared/diagnostics/observations/Atm/time-series'
+if host=='alcf' : obs_root = '/lus/flare/projects/E3SMinput/diagnostics/observations/Atm/time-series'
 #---------------------------------------------------------------------------------------------------
 # Set up plot resources
 #---------------------------------------------------------------------------------------------------
@@ -226,8 +241,11 @@ def _finalize_ax(ax, tvec, lvec, vstr, title, panel_label, use_height_coord):
         ax.set_yticklabels([str(t) for t in tm_vals if 5 <= t <= 100], fontsize=8)
         ax.set_yscale('log')
 
+    stride = 2
+    if (yr2-yr1)<5: stride=1
+
     if yr1>=1800:
-        xb_tm_vals = np.arange(1800, 2200, 2)
+        xb_tm_vals = np.arange(1800, 2200, stride)
         valid_xticks = [t for t in xb_tm_vals if tvec.min() <= t <= tvec.max()]
     else:
         valid_xticks = np.arange(yr1, yr2+1, 1)
@@ -258,29 +276,27 @@ for v in range(num_var):
 
                 lat_name,lon_name = 'lat','lon'
                 xy_dims = (lon_name,lat_name)
-                obs_root = '/global/cfs/cdirs/e3sm/diagnostics/observations/Atm/time-series/ERA5'
                 # if var[v]=='U' : input_file_name = f'{obs_root}/ua_197901_201912.nc'
                 # if var[v]=='O3': input_file_name = f'{obs_root}/tro3_197901_201912.nc'
-                if var[v]=='U' : obs_var,input_file_name =  'ua', f'{obs_root}/ua_197901_201912.nc'
-                if var[v]=='V' : obs_var,input_file_name =  'va', f'{obs_root}/va_197901_201912.nc'
-                if var[v]=='T' : obs_var,input_file_name =  'ta', f'{obs_root}/ta_197901_201912.nc'
-                if var[v]=='Q' : obs_var,input_file_name = 'hus', f'{obs_root}/hus_197901_201912.nc'
-                if var[v]=='O3': obs_var,input_file_name = 'tro3',f'{obs_root}/tro3_197901_201912.nc'
+                if var[v]=='U' : obs_var,input_file_name =  'ua', f'{obs_root}/ERA5/ua_197901_201912.nc'
+                if var[v]=='V' : obs_var,input_file_name =  'va', f'{obs_root}/ERA5/va_197901_201912.nc'
+                if var[v]=='T' : obs_var,input_file_name =  'ta', f'{obs_root}/ERA5/ta_197901_201912.nc'
+                if var[v]=='Q' : obs_var,input_file_name = 'hus', f'{obs_root}/ERA5/hus_197901_201912.nc'
+                if var[v]=='O3': obs_var,input_file_name = 'tro3',f'{obs_root}/ERA5/tro3_197901_201912.nc'
 
                 ds = xr.open_dataset( input_file_name )
 
                 # era5_yr0 = 1979
                 # ds = ds.isel(time=slice( (12*(yr1-era5_yr0)),(12*(yr2+1-era5_yr0)), ))
 
-                ds = ds.where( ds['time.year']>=yr1, drop=True)
-                ds = ds.where( ds['time.year']<=yr2, drop=True)
+                ds = ds.sel(time=slice(None if yr1 is None else str(yr1), None if yr2 is None else str(yr2)))
 
                 area = hapy.calculate_area_from_latlon(ds['lon'].values,ds['lat'].values,ds['lon_bnds'].values,ds['lat_bnds'].values)
                 area = xr.DataArray( area, coords=[ds['lat'],ds['lon']] )  
                 data = ds[obs_var]
-                data = data.rename({'plev':'lev'})
-                data['lev'] = data['lev']#/1e2
-                data = data.sel(lev=lev)
+                # data = data.rename({'plev':'lev'})
+                # data['lev'] = data['lev']#/1e2
+                data = data.sel(plev=plev_target)
 
                 data = mask_data(ds,data)
                 area = mask_data(ds,area)
@@ -288,7 +304,7 @@ for v in range(num_var):
 
             else:
                 #-------------------------------------------------------------------
-                comp = 'eam'
+                # comp = 'eam'
                 # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*.{comp}.{htype}.*'
                 # file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/{case[c]}.{comp}.{htype}.*' # used for certain v3HR cases
                 file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype}*.nc' # used for SCREAM

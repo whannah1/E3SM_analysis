@@ -7,11 +7,15 @@ host = hapy.get_host()
 xr.set_options(use_new_combine_kwarg_defaults=True)
 #---------------------------------------------------------------------------------------------------
 name,case,case_dir,case_sub,clr = [],[],[],[],[]
-def add_case(case_in,n=None,p=None,s=None,c=None):
+case_opts_list = []
+def add_case(case_in,n=None,p=None,s=None,c=None,**kwargs):
     global name,case,case_dir,case_sub,clr
     tmp_name = case_in if n is None else n
     case.append(case_in); name.append(tmp_name)
     case_dir.append(p); case_sub.append(s); clr.append(c)
+    case_opts = {}
+    for k, val in kwargs.items(): case_opts[k] = val
+    case_opts_list.append(case_opts)
 #---------------------------------------------------------------------------------------------------
 var,var_str = [],[]
 var_opts_list = []
@@ -29,36 +33,48 @@ if host=='olcf':
     ### TMS parameter sensitivity tests
     tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
     land_frac_file = '/lustre/orion/cli115/world-shared/e3sm/inputdata/share/domains/domain.lnd.ne30pg2_gx1v6.190806.nc'
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',                   n='noTMS',                 c='tab:gray',  p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',                   n='w/TMS',                 c='red',  p=tmp_path,s=tmp_sub)
 
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5',           n='w/TMS+ohf=0.5',        c='tab:cyan',  p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.035',         n='w/TMS+rlf=0.035',      c='tab:purple',p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5',           n='w/TMS+dsf=0.5',        c='tab:orange',p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',                   n='noTMS',                 c='tab:gray',  p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',                   n='w/TMS',                 c='red',  p=tmp_path,s=tmp_sub)
+
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5',           n='w/TMS+ohf=0.5',        c='tab:cyan',  p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.035',         n='w/TMS+rlf=0.035',      c='tab:purple',p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.5',           n='w/TMS+dsf=0.5',        c='tab:orange',p=tmp_path,s=tmp_sub)
     
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_1.5.dsf_0.5',   n='w/TMS+ohf=1.5+dsf=0.5',c='tab:red',   p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_0.5',           n='w/TMS+ohn=0.5',        c='tab:green', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_2',             n='w/TMS+ohn=2',          c='tab:olive', p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_1.5.dsf_0.5',   n='w/TMS+ohf=1.5+dsf=0.5',c='tab:red',   p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_0.5',           n='w/TMS+ohn=0.5',        c='tab:green', p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohn_2',             n='w/TMS+ohn=2',          c='tab:olive', p=tmp_path,s=tmp_sub)
     
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25',            n='w/TMS ohf=0.25',       c='blue',p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.01',            n='w/TMS rlf=0.01',       c='fuchsia',p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.25',            n='w/TMS dsf=0.25',       c='peru',p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25',            n='w/TMS ohf=0.25',       c='blue',p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.rlf_0.01',            n='w/TMS rlf=0.01',       c='fuchsia',p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.25',            n='w/TMS dsf=0.25',       c='peru',p=tmp_path,s=tmp_sub)
 
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.4.rlf_0.07.dsf_0.4',  n='w/TMS ohf=0.4+rlf=0.07+dsf=0.4',   c='aquamarine', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.75.rlf_0.04.dsf_0.25',n='w/TMS ohf=0.75+rlf=0.04+dsf=0.25', c='teal',       p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25.rlf_0.04.dsf_0.75',n='w/TMS ohf=0.25+rlf=0.04+dsf=0.75', c='gold',  p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5.rlf_0.04.dsf_0.5',  n='w/TMS ohf=0.5+rlf=0.04+dsf=0.5',   c='skyblue',    p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.4.rlf_0.07.dsf_0.4',  n='w/TMS ohf=0.4+rlf=0.07+dsf=0.4',   c='aquamarine', p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.75.rlf_0.04.dsf_0.25',n='w/TMS ohf=0.75+rlf=0.04+dsf=0.25', c='teal',       p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.25.rlf_0.04.dsf_0.75',n='w/TMS ohf=0.25+rlf=0.04+dsf=0.75', c='gold',  p=tmp_path,s=tmp_sub)
+    # # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.ohf_0.5.rlf_0.04.dsf_0.5',  n='w/TMS ohf=0.5+rlf=0.04+dsf=0.5',   c='skyblue',    p=tmp_path,s=tmp_sub)
 
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.05.wsn_1',    n='w/TMS+dsf=0.05+wsn=1', c='green', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1',     n='w/TMS+dsf=0.1+wsn=1',  c='blue',  p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.2.wsn_1',     n='w/TMS+dsf=0.2+wsn=1',  c='cyan',  p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  c='purple',p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.05.wsn_1',    n='w/TMS+dsf=0.05+wsn=1', c='green', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1',     n='w/TMS+dsf=0.1+wsn=1',  c='blue',  p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.2.wsn_1',     n='w/TMS+dsf=0.2+wsn=1',  c='cyan',  p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.4.wsn_1',     n='w/TMS+dsf=0.4+wsn=1',  c='purple',p=tmp_path,s=tmp_sub)
 
-    htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
+    # htype,first_file,num_files = 'output.1ma.AVERAGE.nmonths_x1',None,60
+
+    htype = 'output.1ma.AVERAGE.nmonths_x1'
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_0',               n='ne30 noTMS',               c='tab:gray', p=tmp_path,s=tmp_sub,htype=htype)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1',               n='ne30 w/TMS',               c='red',      p=tmp_path,s=tmp_sub,htype=htype)
+    add_case('E3SM.2026-TMS-TEST-01.ne30pg2.rmf_1.tms_1.dsf_0.1.wsn_1', n='ne30 w/TMS weak', c='blue',     p=tmp_path,s=tmp_sub,htype=htype)
+
+    # v4 baseline
+    tmp_path,tmp_sub = '/lustre/orion/cli115/proj-shared/hannah6/e3sm_scratch','run'
+    htype,first_file,num_files = 'output.1ma_ne30pg2.AVERAGE.nmonths_x1',None,12*1
+    add_case('E3SM.2026-v4-baseline-00.ne256pg2.20261105',n='20261105 baseline', c='green', p=tmp_path,s=tmp_sub,htype=htype)
+    
 
     obs_root = '/lustre/orion/cli115/proj-shared/hannah6/obs_data/ERA5/diag_data_remap_ne30pg2'
     add_var('T_2m', s='T_2m [K]', obs_file=f'{obs_root}/t2m_197901_201912.remap_ne30pg2.nc', obs_var='t2m')
-    add_var('T_2m', s='T_2m [K]', obs_file=f'{obs_root}/t2m_197901_201912.remap_ne30pg2.nc', obs_var='t2m', stat='rmse')
+    # add_var('T_2m', s='T_2m [K]', obs_file=f'{obs_root}/t2m_197901_201912.remap_ne30pg2.nc', obs_var='t2m', stat='rmse')
 
 #---------------------------------------------------------------------------------------------------
 season_list = ['ANN','DJF','JJA']
@@ -156,7 +172,11 @@ for v in range(num_var):
     box_stats = [[None]*num_season for c in range(num_case)]
     for c in range(num_case):
         print(' '*4+'case: '+hapy.tclr.GREEN+case[c]+hapy.tclr.END)
-        htype_tmp = var_opts['htype'] if 'htype' in var_opts else htype
+        case_opts = case_opts_list[c]
+        htype_tmp = None
+        if 'htype' in globals(): htype_tmp = htype
+        if 'htype' in var_opts:  htype_tmp = var_opts['htype']
+        if 'htype' in case_opts: htype_tmp = case_opts['htype']
         file_path = f'{case_dir[c]}/{case[c]}/{case_sub[c]}/*{htype_tmp}*'
         file_list = sorted(glob.glob(file_path))
         if first_file is not None and first_file!=0: file_list = file_list[first_file:]
