@@ -76,7 +76,7 @@ if host=='lcrc':
 #---------------------------------------------------------------------------------------------------
 if host=='alcf':
 
-    # add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=False)
+    add_case('NOAA',n='NOAA',yr1=1990,yr2=2019, recalculate=True)
     # add_case('IMERG',n='IMERG',yr1=2011,yr2=2021, recalculate=False)
 
     ### E3SMv4 ZM tuning ensemble (bundled runs) - native ne30pg2 output
@@ -91,12 +91,12 @@ if host=='alcf':
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.05',         n='dcape_0.05', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.dcape_0.1',          n='dcape_0.1', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0',      n='mtc_0.5.mqc_0', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.3.mqc_0.3',    n='mtc_0.3.mqc_0.3', p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.3.mqc_0.3',    n='mtc_0.3.mqc_0.3', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0.3',    n='mtc_0.5.mqc_0.3', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.mtc_0.5.mqc_0.5',    n='mtc_0.5.mqc_0.5', p=tmp_path,s=tmp_sub)
 
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_5e-6',            n='ke_5e-6', p=tmp_path,s=tmp_sub)
-    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_7.5e-6',          n='ke_7.5e-6', p=tmp_path,s=tmp_sub)
+    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_7.5e-6',          n='ke_7.5e-6', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.ke_1e-5',            n='ke_1e-5', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.alfa_0.1',           n='alfa_0.1', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.alfa_0.2',           n='alfa_0.2', p=tmp_path,s=tmp_sub)
@@ -111,10 +111,10 @@ if host=='alcf':
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.tka_0.8',            n='tka_0.8', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.tka_1.6',            n='tka_1.6', p=tmp_path,s=tmp_sub)
     
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.001.c0o_0.002',n='c0l_0.001.c0o_0.002', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.003.c0o_0.002',n='c0l_0.003.c0o_0.002', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.003',n='c0l_0.002.c0o_0.003', p=tmp_path,s=tmp_sub)
-    add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.001',n='c0l_0.002.c0o_0.001', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.001.c0o_0.002',n='c0l_0.001.c0o_0.002', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.003.c0o_0.002',n='c0l_0.003.c0o_0.002', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.003',n='c0l_0.002.c0o_0.003', p=tmp_path,s=tmp_sub)
+    # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.c0l_0.002.c0o_0.001',n='c0l_0.002.c0o_0.001', p=tmp_path,s=tmp_sub)
 
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1',              n='cda_1', p=tmp_path,s=tmp_sub)
     # add_case('E3SM.2026-v4-ZM-TUNE-00.ne30.F2010xx-ZM-CICE.cda_1.cape_100',     n='cda_1.cape_100', p=tmp_path,s=tmp_sub)
@@ -136,9 +136,9 @@ if host=='alcf':
 
     # fig_title = 'Normalized Spectra'
     add_var('LW_flux_up_at_model_top',    str='OLR',   normalize=False)
-    add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
+    # add_var('precip_total_surf_mass_flux',str='precip',normalize=False)
 
-    plot_diff,add_diff = True,False
+    # plot_diff,add_diff = True,False
 
 #---------------------------------------------------------------------------------------------------
 if host=='olcf':
@@ -195,8 +195,8 @@ lat1,lat2 = -15,15
 dlat_native = 2.5
 kmax_native = 30
 
-# segsize,noverlap = 96,60 # e3sm_diags
-segsize,noverlap = 192,120
+segsize,noverlap = 96,60 # e3sm_diags
+# segsize,noverlap = 192,120
 # segsize,noverlap = 96,32
 # segsize,noverlap = 180,30
 
